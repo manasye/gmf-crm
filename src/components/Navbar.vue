@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" class="navbar">
-      <b-navbar-brand href="/#"
+      <b-navbar-brand href="/#/project-customer"
         ><img src="../assets/img/logo-white.png" alt="" class="nav-img"
       /></b-navbar-brand>
 
@@ -14,7 +14,9 @@
             :href="nav.route"
             :key="nav.name"
             class="navbar-item"
-            :class="{ 'navbar-item-active': activeRoutes.includes(nav.name.toLowerCase()) }"
+            :class="{
+              'navbar-item-active': activeRoutes.toLowerCase().includes(nav.name.toLowerCase())
+            }"
             >{{ nav.name }}</b-nav-item
           >
         </b-navbar-nav>
@@ -73,7 +75,7 @@ export default {
   height: 40px;
 }
 .navbar-item a {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: rgba(255, 255, 255, 0.6) !important;
 }
 .navbar-item:hover a {
   color: white !important;
@@ -83,5 +85,6 @@ export default {
 }
 .user-img {
   height: 25px;
+  margin-right: 5px;
 }
 </style>

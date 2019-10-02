@@ -5,49 +5,43 @@ Vue.use(Router);
 
 export default new Router({
   routes: [
-    // Customer Routes
-    {
-      path: "/",
-      name: "home",
-      component: () => import(/* webpackChunkName: "home" */ "./views/Home.vue")
-    },
     {
       path: "/project-customer",
-      name: "project customer",
+      name: "projectcustomer",
       component: () =>
-        import(/* webpackChunkName: "project customer" */ "./views/Customer/Projects.vue")
+        import(/* webpackChunkName: "projectcustomer" */ "./views/Customer/Projects.vue")
     },
     {
       path: "/information-customer",
-      name: "information customer",
+      name: "informationcustomer",
       component: () =>
-        import(/* webpackChunkName: "information customer" */ "./views/Customer/Information.vue")
+        import(/* webpackChunkName: "informationcustomer" */ "./views/Customer/Information.vue")
     },
     {
       path: "/profile-customer",
-      name: "profile customer",
+      name: "profilecustomer",
       component: () =>
-        import(/* webpackChunkName: "profile customer" */ "./views/Customer/Profile.vue")
+        import(/* webpackChunkName: "profilecustomer" */ "./views/Customer/Profile.vue")
     },
     {
       path: "/services-customer",
-      name: "services customer",
+      name: "GMF Services customer",
       component: () =>
-        import(/* webpackChunkName: "services customer" */ "./views/Customer/Service.vue")
+        import(/* webpackChunkName: "servicescustomer" */ "./views/Customer/Service.vue")
     },
     {
       path: "/feedback-customer",
       name: "your feedback customer",
       component: () =>
-        import(/* webpackChunkName: "feedback customer" */ "./views/Customer/Feedback.vue")
-    },
+        import(/* webpackChunkName: "feedbackcustomer" */ "./views/Customer/Feedback.vue")
+    }
 
     // Admin Routes
-    {
-      path: "/feedback-customer",
-      name: "feedback customer",
-      component: () =>
-        import(/* webpackChunkName: "feedback customer" */ "./views/Customer/Feedback.vue")
-    }
+    // {
+    //   path: "/feedback-customer",
+    //   name: "feedbackcustomer",
+    //   component: () =>
+    //     import(/* webpackChunkName: "feedback customer" */ "./views/Customer/Feedback.vue")
+    // }
   ]
 });
