@@ -5,21 +5,49 @@ Vue.use(Router);
 
 export default new Router({
   routes: [
+    // Customer Routes
     {
       path: "/",
       name: "home",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "home" */ "./views/Home.vue")
     },
     {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ "./views/About.vue")
+      path: "/project-customer",
+      name: "project customer",
+      component: () =>
+        import(/* webpackChunkName: "project customer" */ "./views/Customer/Projects.vue")
+    },
+    {
+      path: "/information-customer",
+      name: "information customer",
+      component: () =>
+        import(/* webpackChunkName: "information customer" */ "./views/Customer/Information.vue")
+    },
+    {
+      path: "/profile-customer",
+      name: "profile customer",
+      component: () =>
+        import(/* webpackChunkName: "profile customer" */ "./views/Customer/Profile.vue")
+    },
+    {
+      path: "/services-customer",
+      name: "services customer",
+      component: () =>
+        import(/* webpackChunkName: "services customer" */ "./views/Customer/Service.vue")
+    },
+    {
+      path: "/feedback-customer",
+      name: "your feedback customer",
+      component: () =>
+        import(/* webpackChunkName: "feedback customer" */ "./views/Customer/Feedback.vue")
+    },
+
+    // Admin Routes
+    {
+      path: "/feedback-customer",
+      name: "feedback customer",
+      component: () =>
+        import(/* webpackChunkName: "feedback customer" */ "./views/Customer/Feedback.vue")
     }
   ]
 });
