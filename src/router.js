@@ -12,6 +12,12 @@ export default new Router({
         import(/* webpackChunkName: "projectcustomer" */ "./views/Customer/Projects.vue")
     },
     {
+      path: "/project-customer/:id",
+      name: "projectcustomerdetail",
+      component: () =>
+        import(/* webpackChunkName: "projectcustomerdeetail" */ "./views/Customer/ProjectDetail.vue")
+    },
+    {
       path: "/information-customer",
       name: "informationcustomer",
       component: () =>

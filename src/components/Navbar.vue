@@ -2,7 +2,7 @@
   <div>
     <b-navbar toggleable="lg" type="dark" class="navbar">
       <b-navbar-brand href="/#/project-customer"
-        ><img src="../assets/img/logo-white.png" alt="" class="nav-img"
+        ><img src="../assets/img/logo-white.png" alt="" class="logo-img"
       /></b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -21,19 +21,21 @@
           >
         </b-navbar-nav>
 
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
+        <b-navbar-nav class="ml-auto nav-search">
           <b-nav-form>
             <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
           </b-nav-form>
 
-          <b-nav-item-dropdown right>
-            <!-- Using 'button-content' slot -->
+          <b-nav-item>
+            <img src="../assets/img/help.png" class="navbar-img" alt="" />
+          </b-nav-item>
+
+          <b-nav-item-dropdown right class="user-navbar">
             <template v-slot:button-content>
               <img
                 src="https://ra.ac.ae/wp-content/uploads/2017/02/user-icon-placeholder.png"
                 alt=""
-                class="user-img"
+                class="navbar-img"
               />
             </template>
             <b-dropdown-item href="#">Profile</b-dropdown-item>
@@ -56,7 +58,6 @@ export default {
         { name: "GMF Services", route: "/#/services-customer" },
         { name: "Your Feedback", route: "/#/feedback-customer" }
       ]
-      // activeRoutes: this.$router.
     };
   },
   computed: {
@@ -71,7 +72,7 @@ export default {
 .navbar {
   background-color: #022f46;
 }
-.nav-img {
+.logo-img {
   height: 40px;
 }
 .navbar-item a {
@@ -83,8 +84,16 @@ export default {
 .navbar-item-active a {
   color: white !important;
 }
-.user-img {
+.navbar-img {
   height: 25px;
   margin-right: 5px;
+}
+@media (max-width: 700px) {
+  .user-navbar {
+    display: none;
+  }
+  .nav-search {
+    margin: 5px 0 10px 0;
+  }
 }
 </style>
