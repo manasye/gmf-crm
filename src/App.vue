@@ -50,6 +50,9 @@ h2 {
   background-color: #7ebe42 !important;
   border-color: #7ebe42 !important;
 }
+img {
+  max-width: 100%;
+}
 @media (max-width: 700px) {
   .container-app {
     padding: 20px 10px !important;
