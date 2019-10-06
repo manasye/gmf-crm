@@ -36,8 +36,11 @@ export default {
 }
 body {
   font-family: "circularstd", sans-serif !important;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
-h1, h2 {
+h1,
+h2 {
   font-weight: bold !important;
 }
 .container-app {
@@ -46,6 +49,13 @@ h1, h2 {
 @media (max-width: 700px) {
   .container-app {
     padding: 20px 10px !important;
+  }
+  h2 {
+    font-size: 1.5rem !important;
+  }
+  p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem !important;
   }
 }
 </style>

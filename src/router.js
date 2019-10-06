@@ -6,6 +6,10 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
+      path: "/",
+      redirect: "/project-customer"
+    },
+    {
       path: "/project-customer",
       name: "projectcustomer",
       component: () =>
@@ -16,6 +20,12 @@ export default new Router({
       name: "projectcustomerdetail",
       component: () =>
         import(/* webpackChunkName: "projectcustomerdeetail" */ "./views/Customer/ProjectDetail.vue")
+    },
+    {
+      path: "/project-customer/:id/feedback",
+      name: "projectcustomerfeedback",
+      component: () =>
+        import(/* webpackChunkName: "projectcustomerdeetail" */ "./views/Customer/ProjectFeedback.vue")
     },
     {
       path: "/information-customer",

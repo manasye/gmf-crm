@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
 import StarRating from "vue-star-rating";
 
 export default {
@@ -115,7 +114,6 @@ export default {
     };
   },
   components: {
-    Header,
     StarRating
   },
   computed: {

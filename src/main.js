@@ -7,6 +7,7 @@ import "./registerServiceWorker";
 import BootstrapVue from "bootstrap-vue";
 import VueQuillEditor from "vue-quill-editor";
 import Chat from "vue-beautiful-chat";
+import Header from "./components/Header";
 
 // require styles
 import "quill/dist/quill.core.css";
@@ -18,6 +19,8 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 Vue.use(BootstrapVue);
 Vue.use(VueQuillEditor);
 Vue.use(Chat);
+
+Vue.component("Header", Header);
 
 Vue.config.productionTip = false;
 

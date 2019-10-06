@@ -48,7 +48,13 @@ export default {
 @media (max-width: 700px) {
   .support {
     margin-bottom: 20px;
-    float: left;
   }
+}
+</style>
+
+<style>
+.breadcrumb {
+  background-color: transparent !important;
+  padding: 0 0 !important;
 }
 </style>
