@@ -44,6 +44,7 @@
           read-only
           :show-rating="false"
           :star-size="25"
+          :increment="0.5"
           v-if="rate.value"
         ></star-rating>
       </template>
@@ -55,6 +56,7 @@
 
 <script>
 import StarRating from "vue-star-rating";
+import { perPageOptions } from "@/utility/globalVar.js";
 
 export default {
   name: "ProjectCustomer",
@@ -75,20 +77,7 @@ export default {
         }
       ],
       selectedStatus: null,
-      perPageOptions: [
-        {
-          value: "10",
-          text: "10"
-        },
-        {
-          value: "20",
-          text: "20"
-        },
-        {
-          value: "50",
-          text: "50"
-        }
-      ],
+      perPageOptions,
       perPage: "10",
       currentPage: 1,
       projectFields: [
@@ -134,12 +123,5 @@ export default {
   .per-page-text {
     margin-top: 5px;
   }
-}
-</style>
-
-<style>
-.page-item.active .page-link {
-  background-color: #7ebe42;
-  border-color: #7ebe42;
 }
 </style>

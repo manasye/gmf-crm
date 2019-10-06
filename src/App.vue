@@ -46,6 +46,10 @@ h2 {
 .container-app {
   padding: 30px !important;
 }
+.page-item.active .page-link {
+  background-color: #7ebe42 !important;
+  border-color: #7ebe42 !important;
+}
 @media (max-width: 700px) {
   .container-app {
     padding: 20px 10px !important;
