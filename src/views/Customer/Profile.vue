@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header title="PROFILE"></Header>
-    <div class="profile-wrapper mt-4">
+    <div class="profile-wrapper mt-md-4">
       <b-row>
         <b-col cols="12" md="4" class="mt-4 mt-md-0">
           <img

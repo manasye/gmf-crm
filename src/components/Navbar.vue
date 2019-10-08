@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" class="navbar">
+    <b-navbar toggleable="md" type="dark" class="navbar">
       <b-navbar-brand href="/#/project-customer"
         ><img src="../assets/img/logo-white.png" alt="" class="logo-img"
       /></b-navbar-brand>
@@ -17,7 +17,8 @@
             :class="{
               'navbar-item-active': activeRoutes.toLowerCase().includes(nav.name.toLowerCase())
             }"
-            >{{ nav.name }}</b-nav-item
+          >
+            <font-awesome-icon :icon="nav.icon" /> &nbsp;{{ nav.name }}</b-nav-item
           >
         </b-navbar-nav>
 
@@ -38,8 +39,15 @@
                 class="navbar-img"
               />
             </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+            <div style="margin: 15px 15px 0 15px">
+              <img
+                src="https://ra.ac.ae/wp-content/uploads/2017/02/user-icon-placeholder.png"
+                alt=""
+                class="navbar-img-expand mb-3"
+              />
+              <p class="mb-2 text-center">John Henderson</p>
+              <b-button variant="primary" size="sm" class="d-block mx-auto">LOG OUT</b-button>
+            </div>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -52,11 +60,11 @@ export default {
   data() {
     return {
       navItems: [
-        { name: "Project", route: "/#/project-customer" },
-        { name: "Information", route: "/#/information-customer" },
-        { name: "Profile", route: "/#/profile-customer" },
-        { name: "GMF Services", route: "/#/services-customer" },
-        { name: "Your Feedback", route: "/#/feedback-customer" }
+        { name: "Project", route: "/#/project-customer", icon: "tasks" },
+        { name: "Information", route: "/#/information-customer", icon: "info-circle" },
+        { name: "Profile", route: "/#/profile-customer", icon: "users" },
+        { name: "GMF Services", route: "/#/services-customer", icon: "tools" },
+        { name: "Your Feedback", route: "/#/feedback-customer", icon: "comment-dots" }
       ]
     };
   },
@@ -77,6 +85,7 @@ export default {
 }
 .navbar-item a {
   color: rgba(255, 255, 255, 0.6) !important;
+  margin-right: 11px;
 }
 .navbar-item:hover a {
   color: white !important;
@@ -88,12 +97,20 @@ export default {
   height: 25px;
   margin-right: 5px;
 }
+.navbar-img-expand {
+  height: 40px;
+  margin: 0 auto;
+  display: block;
+}
+</style>
+
+<style>
 @media (max-width: 700px) {
-  .user-navbar {
-    display: none;
+  .navbar-nav .dropdown-menu {
+    width: 30vw;
   }
-  .nav-search {
-    margin: 5px 0 10px 0;
+  .nav-search input {
+    margin: 7px 0;
   }
 }
 </style>

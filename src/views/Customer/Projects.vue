@@ -83,11 +83,12 @@ export default {
       projectFields: [
         "project_id",
         "project_name",
-        "start_date",
-        "finish_date",
+        { key: "start_date", sortable: true },
+        { key: "finish_date", sortable: true },
         "location",
         { key: "status", label: "Status" },
-        { key: "rating", label: "Rating" }
+        "project_type",
+        { key: "rating", label: "Rating", sortable: true }
       ],
       projects: [
         {
@@ -97,6 +98,7 @@ export default {
           finish_date: "a",
           location: "a",
           status: "Open",
+          project_type: "Base Maintenance",
           rating: "2"
         }
       ]

@@ -56,6 +56,11 @@ export default new Router({
       name: "your feedback customer",
       component: () =>
         import(/* webpackChunkName: "feedbackcustomer" */ "./views/Customer/Feedback.vue")
+    }, {
+      path: "/feedback-customer-new",
+      name: "your feedback customer new",
+      component: () =>
+        import(/* webpackChunkName: "feedbackcustomernew" */ "./views/Customer/FeedbackNew.vue")
     }
 
     // Admin Routes

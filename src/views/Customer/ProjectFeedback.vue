@@ -67,6 +67,7 @@
 
 <script>
 import StarRating from "vue-star-rating";
+import { departments } from "@/utility/globalVar";
 
 export default {
   data() {
@@ -85,20 +86,7 @@ export default {
           active: true
         }
       ],
-      services: [
-        { name: "Base Maintenance", value: "a" },
-        { name: "Outstation Line Maintenance", value: "a" },
-        { name: "Logistic & Material Maintenance", value: "a" },
-        { name: "Learning / Training", value: "a" },
-        { name: "Cabin Maintenance", value: "a" },
-        { name: "Engineering Services", value: "a" },
-        { name: "Power Service (IGTE)", value: "a" },
-        { name: "Component Services", value: "a" },
-        { name: "Line Maintenance", value: "a" },
-        { name: "Engine Services", value: "a" },
-        { name: "Ground Support", value: "a" },
-        { name: "Facility / IT / Other Services", value: "a" }
-      ],
+      services: departments,
       serviceSelected: null,
       improvements: [
         { name: "Product Quality", value: "" },
