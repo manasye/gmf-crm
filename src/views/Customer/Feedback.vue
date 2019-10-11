@@ -1,5 +1,5 @@
-<template>
-  <div>
+<template
+  ><b-container fluid class="container-app">
     <Header title="YOUR FEEDBACK LIST"></Header>
 
     <b-row class="mt-0 mt-md-4">
@@ -51,7 +51,7 @@
     </b-table>
 
     <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage"></b-pagination>
-  </div>
+  </b-container>
 </template>
 
 <script>

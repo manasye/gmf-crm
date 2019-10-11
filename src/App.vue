@@ -3,7 +3,7 @@
     <div id="nav">
       <navbar></navbar>
     </div>
-    <b-container fluid class="container-app"><router-view /></b-container>
+    <router-view />
     <chat></chat>
   </div>
 </template>

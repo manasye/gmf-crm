@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-container fluid class="container-app">
     <Header title="PROFILE"></Header>
     <div class="profile-wrapper mt-md-4">
       <b-row>
@@ -31,7 +31,7 @@
         </b-col>
       </b-row>
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>

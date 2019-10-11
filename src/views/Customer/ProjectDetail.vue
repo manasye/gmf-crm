@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-container fluid class="container-app">
     <Header :title="$route.params.id" :breadcrumbs="breadcrumbs"></Header>
     <div class="detail-header">
       <b-row>
@@ -28,7 +28,7 @@
         </b-col>
       </b-row>
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>

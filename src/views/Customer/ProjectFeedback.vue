@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-container fluid class="container-app">
     <Header title="CUSTOMER FEEDBACK" :breadcrumbs="breadcrumbs"></Header>
     <div class="feedback-wrapper">
       <p>What service(s) did your company use for this project?</p>
@@ -62,7 +62,7 @@
         >SUBMIT</b-button
       >
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-container fluid class="container-app">
     <Header title="INFORMATION LIST"></Header>
 
     <b-row>
@@ -28,7 +28,7 @@
     </b-table>
 
     <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage"></b-pagination>
-  </div>
+  </b-container>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-container fluid class="container-app">
     <Header title="NEW FEEDBACK" :breadcrumbs="breadcrumbs"></Header>
     <div class="feedback-wrapper">
       <p class="mb-2">Subject / Complaint</p>
@@ -33,7 +33,7 @@
       <br /><br />
       <b-button variant="success" class="mb-2">SUBMIT</b-button>
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>
