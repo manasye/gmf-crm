@@ -10,6 +10,11 @@ export default new Router({
       redirect: '/project-customer'
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import(/* webpackChunkName: "login" */ './views/Login.vue')
+    },
+    {
       path: '/project-customer',
       name: 'projectcustomer',
       component: () =>

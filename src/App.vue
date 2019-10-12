@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <div id="nav" v-if="$route.name !== 'login'">
       <navbar></navbar>
     </div>
     <router-view />
-    <chat></chat>
+    <chat v-if="$route.name !== 'login'"></chat>
   </div>
 </template>
 
@@ -38,6 +38,7 @@ body {
   font-family: "circularstd", sans-serif !important;
   max-width: 100vw;
   overflow-x: hidden;
+  min-height: 100.1vh;
 }
 h1,
 h2 {
@@ -50,6 +51,10 @@ h2 {
 .btn-success {
   background-color: #7ebe42 !important;
   border-color: #7ebe42 !important;
+}
+.btn-primary {
+  background-color: #016299 !important;
+  border-color: #016299 !important;
 }
 img {
   max-width: 100%;

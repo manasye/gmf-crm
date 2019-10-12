@@ -3,15 +3,16 @@
     <b-row>
       <b-col cols="12" md="6" order="2" order-md="1">
         <b-breadcrumb :items="breadcrumbs" v-if="breadcrumbs.length > 0"></b-breadcrumb>
-        <h2>{{ title }}</h2></b-col
-      >
+        <h2>{{ title }}</h2>
+      </b-col>
       <b-col cols="12" md="6" order="1" order-md="2">
         <div class="support">
           <p>SUPPORT</p>
-          <img src="../assets/img/call.png" alt="" /> +62 21 550 8609, M-F 8 AM - 4 PM WIB <br />
-          <img src="../assets/img/mail.png" alt="" /> marketing@gmf-aeroasia.co.id
-        </div></b-col
-      >
+          <img src="../assets/img/call.png" alt /> +62 21 550 8609, M-F 8 AM - 4 PM WIB
+          <br />
+          <img src="../assets/img/mail.png" alt /> marketing@gmf-aeroasia.co.id
+        </div>
+      </b-col>
     </b-row>
   </div>
 </template>
@@ -48,6 +49,9 @@ export default {
 @media (max-width: 700px) {
   .support {
     margin-bottom: 20px;
+    p {
+      margin-bottom: 0 !important;
+    }
   }
 }
 </style>
