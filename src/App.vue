@@ -46,7 +46,8 @@ h2 {
 .container-app {
   padding: 30px !important;
 }
-.page-item.active .page-link {
+.page-item.active .page-link,
+.btn-success {
   background-color: #7ebe42 !important;
   border-color: #7ebe42 !important;
 }
