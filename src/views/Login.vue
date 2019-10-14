@@ -30,7 +30,7 @@
             </b-col>
           </b-row>
 
-          <b-button variant="primary" size="lg" style="width: 100%">LOGIN</b-button>
+          <b-button variant="primary" size="lg" style="width: 100%" @click="login">LOGIN</b-button>
 
           <img src="../assets/img/logo.png" alt class="d-block d-md-none mt-4" />
         </div>
@@ -45,6 +45,11 @@ export default {
     return {
       remember: false
     };
+  },
+  methods: {
+    login() {
+      this.$store.dispatch("goToPage", "/project-customer");
+    }
   }
 };
 </script>
@@ -65,7 +70,7 @@ export default {
     width: 300px;
   }
   .desc {
-    height: calc(100vh - 73.5px * 2);
+    min-height: calc(100vh - 73.5px * 2);
     padding: 0 40px;
   }
 }
@@ -93,8 +98,11 @@ input {
   }
   .left {
     margin-bottom: 20px;
+    background: url("../assets/img/login-bg-mobile.jpg");
+    background-size: cover;
+
     .desc {
-      height: 70vh;
+      min-height: 60vh;
     }
   }
   .r-container {

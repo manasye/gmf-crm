@@ -3,7 +3,7 @@
     <Header title="NEW FEEDBACK" :breadcrumbs="breadcrumbs"></Header>
     <div class="feedback-wrapper">
       <p class="mb-2">Subject / Complaint</p>
-      <b-form-input v-model="subject" placeholder=""></b-form-input>
+      <b-form-input v-model="subject" placeholder></b-form-input>
       <p class="mb-2 mt-4">Department</p>
       <b-form-checkbox-group>
         <b-row>
@@ -14,13 +14,12 @@
               v-model="serviceSelected"
               :value="idx"
               class="checkbox"
-              >{{ service.name }}</b-form-checkbox
-            ></b-col
-          >
+            >{{ service.name }}</b-form-checkbox>
+          </b-col>
         </b-row>
       </b-form-checkbox-group>
       <p class="mb-2 mt-4">Description</p>
-      <b-form-textarea v-model="description" placeholder="" rows="3" max-rows="6"></b-form-textarea>
+      <b-form-textarea v-model="description" placeholder rows="3" max-rows="6"></b-form-textarea>
 
       <b-form-file
         id="file-default"
@@ -30,7 +29,8 @@
         :file-name-formatter="formatNames"
       ></b-form-file>
 
-      <br /><br />
+      <br />
+      <br />
       <b-button variant="success" class="mb-2">SUBMIT</b-button>
     </div>
   </b-container>
@@ -38,6 +38,7 @@
 
 <script>
 import { departments } from "@/utility/globalVar";
+import { shortenText } from "@/utility/func.js";
 
 export default {
   data() {
@@ -62,7 +63,7 @@ export default {
   methods: {
     formatNames(files) {
       if (files.length === 1) {
-        return files[0].name;
+        return shortenText(files[0].name, 10);
       } else {
         return `${files.length} files selected`;
       }
@@ -82,7 +83,7 @@ export default {
 }
 @media (max-width: 700px) {
   .file-form {
-    width: 70%;
+    width: 100%;
   }
 }
 </style>

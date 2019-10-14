@@ -14,7 +14,9 @@ import {
   faUsers,
   faCommentDots,
   faTasks,
-  faLink
+  faLink,
+  faAngleDown,
+  faAngleUp
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -28,6 +30,8 @@ library.add(faUsers);
 library.add(faCommentDots);
 library.add(faTasks);
 library.add(faLink);
+library.add(faAngleDown);
+library.add(faAngleUp);
 
 Vue.use(BootstrapVue);
 Vue.use(Chat);

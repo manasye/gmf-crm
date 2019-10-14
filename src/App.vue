@@ -36,9 +36,12 @@ export default {
 }
 body {
   font-family: "circularstd", sans-serif !important;
-  max-width: 100vw;
+  width: 100vw;
   overflow-x: hidden;
   min-height: 100.1vh;
+}
+.sc-chat-window {
+  z-index: 3;
 }
 h1,
 h2 {
