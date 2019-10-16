@@ -1,6 +1,6 @@
 <template>
   <div style="margin-bottom: 10px">
-    <b-row>
+    <b-row no-gutters>
       <b-col cols="12" md="6" order="2" order-md="1">
         <b-breadcrumb :items="breadcrumbs" v-if="breadcrumbs.length > 0"></b-breadcrumb>
         <h2>{{ title }}</h2>

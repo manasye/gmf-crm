@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header :title="$route.params.id" :breadcrumbs="breadcrumbs"></Header>
+    <Header :title="`Complaint ${$route.params.id}`" :breadcrumbs="breadcrumbs"></Header>
     <div class="detail-header">
       <b-row>
         <b-col cols="4" md="2" v-for="i in 6" class="mb-md-0" :class="{ 'mb-3': i === 1 }" :key="i">
@@ -49,11 +49,11 @@ export default {
     return {
       breadcrumbs: [
         {
-          text: "Feedback List",
+          text: "Complaint List",
           href: "/#/feedback-customer"
         },
         {
-          text: this.$route.params.id,
+          text: `Complaint ${this.$route.params.id}`,
           active: true
         }
       ],

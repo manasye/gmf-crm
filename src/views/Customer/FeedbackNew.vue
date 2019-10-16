@@ -45,7 +45,7 @@ export default {
     return {
       breadcrumbs: [
         {
-          text: "Your Feedback",
+          text: "Complaint List",
           href: `/#/feedback-customer`
         },
         {

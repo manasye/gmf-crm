@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import './registerServiceWorker';
+import VModal from 'vue-js-modal';
 
 import BootstrapVue from 'bootstrap-vue';
 import Chat from 'vue-beautiful-chat';
@@ -35,6 +36,7 @@ library.add(faAngleUp);
 
 Vue.use(BootstrapVue);
 Vue.use(Chat);
+Vue.use(VModal);
 
 Vue.component('Header', Header);
 Vue.component('font-awesome-icon', FontAwesomeIcon);

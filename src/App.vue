@@ -5,6 +5,9 @@
     </div>
     <router-view />
     <chat v-if="$route.name !== 'login'"></chat>
+    <modal name="modal" :adaptive="true" width="90%" height="auto" :maxWidth="700">
+      <img src="https://www.urbansplash.co.uk/images/placeholder-16-9.jpg" alt />
+    </modal>
   </div>
 </template>
 
@@ -14,6 +17,10 @@ import Chat from "@/components/Chat.vue";
 
 export default {
   name: "app",
+  mounted() {
+    // this.$modal.show("modal");
+    // console.log(this.$store.getters.walkthrough);
+  },
   data() {
     return {};
   },
@@ -38,7 +45,7 @@ body {
   font-family: "circularstd", sans-serif !important;
   width: 100vw;
   overflow-x: hidden;
-  min-height: 100.1vh;
+  /* min-height: 100.1vh; */
 }
 .sc-chat-window {
   z-index: 3;

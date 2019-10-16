@@ -1,25 +1,28 @@
 <template
-  ><b-container fluid class="container-app">
-    <Header title="YOUR FEEDBACK LIST"></Header>
+  >
+  <b-container fluid class="container-app">
+    <Header title="COMPLAINT LIST"></Header>
 
     <b-row class="mt-0 mt-md-4">
-      <b-col cols="8" md="2" class="mt-2">Numbers of item per page</b-col>
-      <b-col cols="4" md="1"
-        ><b-form-select v-model="perPage" :options="perPageOptions"></b-form-select
-      ></b-col>
-      <b-col cols="6" md="2" class="mt-3 mt-md-0">
+      <b-col cols="6" md="2">
         <b-form-select v-model="sender" :options="sendersOptions"></b-form-select>
       </b-col>
-      <b-col cols="6" md="2" class="mt-3 mt-md-0">
+      <b-col cols="6" md="2">
         <b-form-select v-model="dept" :options="deptOptions"></b-form-select>
       </b-col>
-      <b-col cols="6" md="2" class="mt-3 mt-md-0">
+      <b-col cols="6" md="2" class="mt-3 mt-md-0 mb-3 mb-md-0">
         <b-form-select v-model="status" :options="statusOptions"></b-form-select>
       </b-col>
-      <b-col cols="12" md="3" class="text-md-right mt-3 mt-md-0">
-        <b-button variant="success" @click="$store.dispatch('goToPage', '/feedback-customer-new')"
-          >Add New Feedback</b-button
-        >
+      <b-col cols="0" md="1"></b-col>
+      <b-col cols="8" md="2" class="mt-2">Numbers of item per page</b-col>
+      <b-col cols="4" md="1">
+        <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
+      </b-col>
+      <b-col cols="12" md="2" class="text-md-right mt-3 mt-md-0">
+        <b-button
+          variant="success"
+          @click="$store.dispatch('goToPage', '/feedback-customer-new')"
+        >Add New Feedback</b-button>
       </b-col>
     </b-row>
 
@@ -35,18 +38,18 @@
       @row-clicked="showFeedback"
     >
       <template v-slot:cell(status)="data">
-        <b-badge v-if="data.value === 'Closed'" variant="success"
-          ><p style="margin: 5px">{{ data.value }}</p></b-badge
-        >
-        <b-badge v-if="data.value === 'Open'" variant="danger"
-          ><p style="margin: 5px">{{ data.value }}</p></b-badge
-        >
-        <b-badge v-if="data.value === 'Receive'" variant="warning"
-          ><p style="margin: 5px">{{ data.value }}</p></b-badge
-        >
-        <b-badge v-if="data.value === 'OnProgress'" variant="primary"
-          ><p style="margin: 5px">{{ data.value }}</p></b-badge
-        >
+        <b-badge v-if="data.value === 'Closed'" variant="success">
+          <p style="margin: 5px">{{ data.value }}</p>
+        </b-badge>
+        <b-badge v-if="data.value === 'Open'" variant="danger">
+          <p style="margin: 5px">{{ data.value }}</p>
+        </b-badge>
+        <b-badge v-if="data.value === 'Receive'" variant="warning">
+          <p style="margin: 5px">{{ data.value }}</p>
+        </b-badge>
+        <b-badge v-if="data.value === 'OnProgress'" variant="primary">
+          <p style="margin: 5px">{{ data.value }}</p>
+        </b-badge>
       </template>
     </b-table>
 
@@ -70,12 +73,12 @@ export default {
       dept: null,
       status: null,
       feedbackFields: [
-        "complaint_id",
+        { key: "complaint_id", sortable: true },
         { key: "date", sortable: true },
-        "sender",
-        "department",
-        "subject / Complaint",
-        { key: "status", label: "Status" }
+        { key: "sender", sortable: true },
+        { key: "department", sortable: true },
+        { key: "subject / Complaint", sortable: true },
+        { key: "status", label: "Status", sortable: true }
       ],
       feedbacks: [
         {
@@ -91,7 +94,10 @@ export default {
   },
   methods: {
     showFeedback(row) {
-      this.$store.dispatch("goToPage", `/feedback-customer/${row.complaint_id}`);
+      this.$store.dispatch(
+        "goToPage",
+        `/feedback-customer/${row.complaint_id}`
+      );
     }
   },
   computed: {

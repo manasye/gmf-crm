@@ -25,7 +25,7 @@ export default new Router({
       name: 'projectcustomerdetail',
       component: () =>
         import(
-          /* webpackChunkName: "projectcustomerdeetail" */
+          /* webpackChunkName: "projectcustomerdetail" */
           './views/Customer/ProjectDetail.vue'
         )
     },
@@ -34,7 +34,7 @@ export default new Router({
       name: 'projectcustomerfeedback',
       component: () =>
         import(
-          /* webpackChunkName: "projectcustomerdeetail" */
+          /* webpackChunkName: "projectcustomerfeedback" */
           './views/Customer/ProjectFeedback.vue'
         )
     },
@@ -75,6 +75,14 @@ export default new Router({
         import(/* webpackChunkName: "feedbackcustomer" */ './views/Customer/Feedback.vue')
     },
     {
+      path: '/feedback-customer-nonproject',
+      name: 'your feedback customer nonproj',
+      component: () =>
+        import(
+          /* webpackChunkName: "feedbackcustomernonproject" */ './views/Customer/NonProjectFeedback.vue'
+        )
+    },
+    {
       path: '/feedback-customer-new',
       name: 'your feedback customer new',
       component: () =>
@@ -84,12 +92,30 @@ export default new Router({
         )
     },
     {
+      path: '/feedback-customer-new-nonproject',
+      name: 'your feedback customer new nonproj',
+      component: () =>
+        import(
+          /* webpackChunkName: "feedbackcustomernewnonproject" */
+          './views/Customer/NonProjectFeedbackNew.vue'
+        )
+    },
+    {
       path: '/feedback-customer/:id',
       name: 'your feedback customer detail',
       component: () =>
         import(
-          /* webpackChunkName: "feedbackcustomernew" */
+          /* webpackChunkName: "feedbackcustomerdetail" */
           './views/Customer/FeedbackDetail.vue'
+        )
+    },
+    {
+      path: '/feedback-customer-nonproject/:id',
+      name: 'your feedback customer detail nonproj',
+      component: () =>
+        import(
+          /* webpackChunkName: "feedbackcustomerdetailnonproject" */
+          './views/Customer/NonProjectFeedbackDetail.vue'
         )
     }
 
