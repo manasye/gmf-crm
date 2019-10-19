@@ -15,11 +15,11 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th v-for="field in informationFields" :key="field">{{field}}</th>
+            <th v-for="field in informationFields" :key="field">{{ field }}</th>
           </tr>
         </thead>
         <tbody>
-          <template v-for="(info,idx) in infos">
+          <template v-for="(info, idx) in infos">
             <tr
               data-toggle="collapse"
               :key="info.id"
@@ -32,11 +32,11 @@
                   <span class="dot" v-if="info.new"></span>
                 </div>
               </td>
-              <td width="15%">{{info.type}}</td>
-              <td>{{info.subject}}</td>
-              <td>{{info.time}}</td>
+              <td width="15%">{{ info.type }}</td>
+              <td>{{ info.subject }}</td>
+              <td>{{ info.time }}</td>
               <td width="5%">
-                <font-awesome-icon :icon="info.plus ? 'angle-down': 'angle-up'" />
+                <font-awesome-icon :icon="info.plus ? 'angle-down' : 'angle-up'" />
               </td>
             </tr>
             <tr :key="info.id + 'collapse'" v-if="!info.plus">

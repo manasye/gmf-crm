@@ -15,7 +15,8 @@
         <b-button
           variant="success"
           @click="$store.dispatch('goToPage', '/feedback-customer-new-nonproject')"
-        >Add New Feedback</b-button>
+          >Add New Feedback</b-button
+        >
       </b-col>
     </b-row>
 
@@ -79,10 +80,7 @@ export default {
   components: { StarRating },
   methods: {
     showFeedback(row) {
-      this.$store.dispatch(
-        "goToPage",
-        `/feedback-customer-nonproject/${row.feedback_id}`
-      );
+      this.$store.dispatch("goToPage", `/feedback-customer-nonproject/${row.feedback_id}`);
     }
   },
   computed: {
@@ -93,5 +91,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

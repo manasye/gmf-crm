@@ -46,6 +46,14 @@
           :increment="0.5"
           v-if="rate.value"
         ></star-rating>
+
+        <b-button
+          variant="primary"
+          size="sm"
+          v-else
+          @click="$store.dispatch('goToPage', `/project-customer/${rate.item.project_id}/feedback`)"
+          >Review</b-button
+        >
       </template>
     </b-table>
 
@@ -99,6 +107,16 @@ export default {
           status: "Open",
           project_type: "Base Maintenance",
           rating: "2"
+        },
+        {
+          project_id: "b",
+          project_name: "b",
+          start_date: "a",
+          finish_date: "a",
+          location: "a",
+          status: "Open",
+          project_type: "Base Maintenance",
+          rating: ""
         }
       ]
     };

@@ -8,7 +8,6 @@
       <star-rating
         v-model="rating"
         :show-rating="false"
-        class="performance-star"
         :star-size="35"
         :increment="0.5"
       ></star-rating>
@@ -16,7 +15,9 @@
         class="performance-result mt-2 font-weight-bold"
         v-if="rating"
         :class="generateResultRating(rating)[1]"
-      >{{ generateResultRating(rating)[0] }}</p>
+      >
+        {{ generateResultRating(rating)[0] }}
+      </p>
       <p class="mb-2 mt-4">Description</p>
       <b-form-textarea v-model="description" placeholder rows="3" max-rows="6"></b-form-textarea>
       <b-button variant="success" class="mt-4 mb-2">SUBMIT</b-button>

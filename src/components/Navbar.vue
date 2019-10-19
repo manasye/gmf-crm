@@ -15,28 +15,31 @@
               :href="nav.route"
               class="navbar-item"
               :class="{
-              'navbar-item-active': activeRoutes.toLowerCase().includes(nav.name.toLowerCase())
-            }"
+                'navbar-item-active': activeRoutes.toLowerCase().includes(nav.name.toLowerCase())
+              }"
             >
               <font-awesome-icon :icon="nav.icon" />
-              &nbsp;{{ nav.name }}
+              {{ nav.name }}
             </b-nav-item>
 
             <b-nav-item-dropdown
               v-else
               :class="{
-              'navbar-dropdown-item-active': activeRoutes.toLowerCase().includes(nav.name.toLowerCase())
-            }"
+                'navbar-dropdown-item-active': activeRoutes
+                  .toLowerCase()
+                  .includes(nav.name.toLowerCase())
+              }"
             >
               <template v-slot:button-content>
                 <font-awesome-icon :icon="nav.icon" />
-                &nbsp;{{ nav.name }}
+                {{ nav.name }}
               </template>
               <b-dropdown-item
                 v-for="children in nav.childrens"
                 :href="children.route"
                 :key="children.name"
-              >{{children.name}}</b-dropdown-item>
+                >{{ children.name }}</b-dropdown-item
+              >
             </b-nav-item-dropdown>
           </div>
         </b-navbar-nav>
@@ -78,30 +81,59 @@
 export default {
   data() {
     return {
+      // navItems: [
+      //   { name: "Project", route: "/#/project-customer", icon: "tasks" },
+      //   {
+      //     name: "Information",
+      //     route: "/#/information-customer",
+      //     icon: "info-circle"
+      //   },
+      //   { name: "Profile", route: "/#/profile-customer", icon: "users" },
+      //   { name: "GMF Services", route: "/#/services-customer", icon: "tools" },
+      //   {
+      //     name: "Your Feedback",
+      //     route: "/#/feedback-customer",
+      //     icon: "comment-dots",
+      //     childrens: [
+      //       {
+      //         name: "Complaint",
+      //         route: "/#/feedback-customer"
+      //       },
+      //       {
+      //         name: "Non-project Feedback",
+      //         route: "/#/feedback-customer-nonproject"
+      //       }
+      //     ]
+      //   }
+      // ],
       navItems: [
+        { name: "Customer", route: "/#/customer", icon: "users" },
         { name: "Project", route: "/#/project-customer", icon: "tasks" },
+        { name: "Message", route: "/#/messages", icon: "comment-dots" },
         {
-          name: "Information",
+          name: "Complaint",
+          route: "/#/complaint",
+          icon: "comment-slash",
+          childrens: [
+            { name: "Complaint List", route: "/#/complaint-list" },
+            { name: "Complaint Trend", route: "/#/complaint-trend" }
+          ]
+        },
+        {
+          name: "Feedback",
+          route: "/#/feedback",
+          icon: "retweet",
+          childrens: [
+            { name: "Feedback List", route: "/#/feedback-list" },
+            { name: "Feedback Trend", route: "/#/feedback-trend" }
+          ]
+        },
+        {
+          name: "Info",
           route: "/#/information-customer",
           icon: "info-circle"
         },
-        { name: "Profile", route: "/#/profile-customer", icon: "users" },
-        { name: "GMF Services", route: "/#/services-customer", icon: "tools" },
-        {
-          name: "Your Feedback",
-          route: "/#/feedback-customer",
-          icon: "comment-dots",
-          childrens: [
-            {
-              name: "Complaint",
-              route: "/#/feedback-customer"
-            },
-            {
-              name: "Non-project Feedback",
-              route: "/#/feedback-customer-nonproject"
-            }
-          ]
-        }
+        { name: "Services", route: "/#/services-customer", icon: "tools" }
       ]
     };
   },
@@ -127,7 +159,6 @@ export default {
 }
 .navbar-item a {
   color: rgba(255, 255, 255, 0.6) !important;
-  margin-right: 11px;
 }
 .navbar-item:hover a {
   color: white !important;
@@ -159,6 +190,11 @@ export default {
 }
 .navbar-dropdown-item-active a {
   color: white !important;
+}
+@media (max-width: 1024px) and (min-width: 701px) {
+  .nav-item {
+    font-size: 10px;
+  }
 }
 @media (max-width: 700px) {
   .navbar-nav .dropdown-menu {

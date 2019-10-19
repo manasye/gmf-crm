@@ -1,7 +1,6 @@
-<template
-  >
-  <b-container fluid class="container-app">
-    <Header title="COMPLAINT LIST"></Header>
+<template>
+  <b-container fluid class="container-app"
+    ><Header title="COMPLAINT LIST"></Header>
 
     <b-row class="mt-0 mt-md-4">
       <b-col cols="6" md="2">
@@ -19,10 +18,9 @@
         <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
       </b-col>
       <b-col cols="12" md="2" class="text-md-right mt-3 mt-md-0">
-        <b-button
-          variant="success"
-          @click="$store.dispatch('goToPage', '/feedback-customer-new')"
-        >Add New Feedback</b-button>
+        <b-button variant="success" @click="$store.dispatch('goToPage', '/feedback-customer-new')"
+          >Add New Feedback</b-button
+        >
       </b-col>
     </b-row>
 
@@ -94,10 +92,7 @@ export default {
   },
   methods: {
     showFeedback(row) {
-      this.$store.dispatch(
-        "goToPage",
-        `/feedback-customer/${row.complaint_id}`
-      );
+      this.$store.dispatch("goToPage", `/feedback-customer/${row.complaint_id}`);
     }
   },
   computed: {

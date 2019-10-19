@@ -14,7 +14,8 @@
               v-model="serviceSelected"
               :value="idx"
               class="checkbox"
-            >{{ service.name }}</b-form-checkbox>
+              >{{ service.name }}</b-form-checkbox
+            >
           </b-col>
         </b-row>
       </b-form-checkbox-group>

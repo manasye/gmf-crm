@@ -1,17 +1,24 @@
 <template>
   <div>
     <b-row v-for="(service, idx) in services" :key="service.title" no-gutters class="mb-md-4">
-      <b-col cols="12" md="7" :order-md="idx % 2 === 0 ? '1':'2'">
+      <b-col cols="12" md="7" :order-md="idx % 2 === 0 ? '1' : '2'">
         <b-carousel controls indicators background="#ababab">
           <b-carousel-slide v-for="img in service.thumbnail" :img-src="img" :key="img">
-            <h1>{{service.title.split(" ").slice(0, -1).join(" ")}}</h1>
-            <h2>{{service.title.split(" ")[service.title.split(" ").length - 1]}}</h2>
+            <h1>
+              {{
+                service.title
+                  .split(" ")
+                  .slice(0, -1)
+                  .join(" ")
+              }}
+            </h1>
+            <h2>{{ service.title.split(" ")[service.title.split(" ").length - 1] }}</h2>
             <b-button variant="primary" class="mt-4">Explore</b-button>
           </b-carousel-slide>
         </b-carousel>
       </b-col>
-      
-      <b-col cols="12" md="5" :order-md="idx % 2 !== 0 ? '1':'2'">
+
+      <b-col cols="12" md="5" :order-md="idx % 2 !== 0 ? '1' : '2'">
         <div class="detail-service">
           <b-row class="mb-5">
             <b-col cols="6" v-for="image in service.images" :key="image">
@@ -19,7 +26,7 @@
             </b-col>
           </b-row>
           <hr />
-          <p>{{service.detail}}</p>
+          <p>{{ service.detail }}</p>
           <hr />
         </div>
       </b-col>
@@ -91,4 +98,3 @@ hr {
   text-align: left;
 }
 </style>
-

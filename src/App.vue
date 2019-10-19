@@ -4,7 +4,7 @@
       <navbar></navbar>
     </div>
     <router-view />
-    <chat v-if="$route.name !== 'login'"></chat>
+    <chat v-if="$route.name !== 'login' && !activeRoute.toLowerCase().includes('admin')"></chat>
     <modal name="modal" :adaptive="true" width="90%" height="auto" :maxWidth="700">
       <img src="https://www.urbansplash.co.uk/images/placeholder-16-9.jpg" alt />
     </modal>
@@ -27,6 +27,11 @@ export default {
   components: {
     Navbar,
     Chat
+  },
+  computed: {
+    activeRoute() {
+      return this.$route.name || "";
+    }
   }
 };
 </script>
@@ -43,7 +48,6 @@ export default {
 }
 body {
   font-family: "circularstd", sans-serif !important;
-  width: 100vw;
   overflow-x: hidden;
   /* min-height: 100.1vh; */
 }
@@ -70,6 +74,11 @@ img {
   max-width: 100%;
 }
 @media (max-width: 700px) {
+  html,
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
   .container-app {
     padding: 20px 10px !important;
   }

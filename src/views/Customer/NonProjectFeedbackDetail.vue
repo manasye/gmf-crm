@@ -27,9 +27,11 @@
     <div class="detail-info">
       <h4 class="mb-3">Subject</h4>
       <p class="font-weight-bold mb-1">Description</p>
-      <p
-        class="mb-0"
-      >Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos perferendis enim aspernatur minus. Nihil mollitia ducimus, illum cumque ut minima, maiores quibusdam quis distinctio adipisci sapiente aperiam, doloremque est temporibus!</p>
+      <p class="mb-0">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos perferendis enim aspernatur
+        minus. Nihil mollitia ducimus, illum cumque ut minima, maiores quibusdam quis distinctio
+        adipisci sapiente aperiam, doloremque est temporibus!
+      </p>
     </div>
   </b-container>
 </template>
