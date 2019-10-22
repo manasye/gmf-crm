@@ -106,7 +106,13 @@ export default new Router({
       path: "/customer",
       name: "customers admin",
       component: () =>
-        import(/* webpackChunkName: "customers admin" */ "./views/Admin/Customer.vue")
+        import(/* webpackChunkName: "customersadmin" */ "./views/Admin/Customer.vue")
+    },
+    {
+      path: "/customer/:id/:type",
+      name: "customers admin detail",
+      component: () =>
+        import(/* webpackChunkName: "customersadmindetail" */ "./views/Admin/CustomerDetail.vue")
     }
   ]
 });

@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     showCustomer(row) {
-      this.$store.dispatch("goToPage", `/customer/${row.project_id}`);
+      this.$store.dispatch("goToPage", `/customer/${row.company_name}/Overview`);
     },
     getBadgesVariant(val) {
       if (val === "inactive") return "warning";

@@ -20,9 +20,12 @@ import {
   faAngleUp,
   faCommentSlash,
   faRetweet,
-  faPen
+  faPen,
+  faEye,
+  faEyeSlash
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { convertSnakeCaseToText } from "@/utility/func.js";
 
 // require styles
 import "bootstrap/dist/css/bootstrap.css";
@@ -38,7 +41,15 @@ library.add(faAngleDown);
 library.add(faAngleUp);
 library.add(faCommentSlash);
 library.add(faRetweet);
-library.add(faPen)
+library.add(faPen);
+library.add(faEye);
+library.add(faEyeSlash);
+
+Vue.mixin({
+  methods: {
+    convertSnakeCaseToText
+  }
+});
 
 Vue.use(BootstrapVue);
 Vue.use(Chat);
