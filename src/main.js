@@ -22,7 +22,9 @@ import {
   faRetweet,
   faPen,
   faEye,
-  faEyeSlash
+  faEyeSlash,
+  faCalendar,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { convertSnakeCaseToText } from "@/utility/func.js";
@@ -44,6 +46,8 @@ library.add(faRetweet);
 library.add(faPen);
 library.add(faEye);
 library.add(faEyeSlash);
+library.add(faCalendar);
+library.add(faTrash);
 
 Vue.mixin({
   methods: {

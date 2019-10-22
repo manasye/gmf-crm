@@ -44,7 +44,7 @@
         <font-awesome-icon
           icon="pen"
           style="cursor: pointer"
-          @click="editStatus(data.item)"
+          @click.stop="editStatus(data.item)"
         ></font-awesome-icon>
       </template>
     </b-table>

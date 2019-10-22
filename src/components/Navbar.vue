@@ -105,7 +105,7 @@ export default {
       //       }
       //     ]
       //   }
-      // ],
+      // ]
       navItems: [
         { name: "Customer", route: "/#/customer", icon: "users" },
         { name: "Project", route: "/#/project-customer", icon: "tasks" },

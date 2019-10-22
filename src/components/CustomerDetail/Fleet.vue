@@ -20,11 +20,11 @@
       ></b-col>
       <b-col cols="6" style="margin-top: 20px; padding-left: 50px">
         <div class="mb-2">
-          <b-badge style="background-color: #b8daff;">&nbsp;&nbsp;&nbsp;</b-badge> &nbsp;
+          <b-badge style="background-color: #7abaff">&nbsp;&nbsp;&nbsp;</b-badge> &nbsp;
           &nbsp;Suitable with future capability
         </div>
         <div>
-          <b-badge style="background-color: #ffeeba">&nbsp;&nbsp;&nbsp;</b-badge> &nbsp;
+          <b-badge style="background-color: #ffdf7e">&nbsp;&nbsp;&nbsp;</b-badge> &nbsp;
           &nbsp;Suitable with current capability
         </div>
       </b-col>

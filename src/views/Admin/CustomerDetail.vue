@@ -25,7 +25,6 @@ import Revenue from "@/components/CustomerDetail/Revenue";
 export default {
   mounted() {
     this.tabActive = this.$route.params.type;
-    console.log(convertSnakeCaseToText("company_name"));
   },
   data() {
     return {

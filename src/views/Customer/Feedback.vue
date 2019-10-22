@@ -36,16 +36,7 @@
       @row-clicked="showFeedback"
     >
       <template v-slot:cell(status)="data">
-        <b-badge v-if="data.value === 'Closed'" variant="success">
-          <p style="margin: 5px">{{ data.value }}</p>
-        </b-badge>
-        <b-badge v-if="data.value === 'Open'" variant="danger">
-          <p style="margin: 5px">{{ data.value }}</p>
-        </b-badge>
-        <b-badge v-if="data.value === 'Receive'" variant="warning">
-          <p style="margin: 5px">{{ data.value }}</p>
-        </b-badge>
-        <b-badge v-if="data.value === 'OnProgress'" variant="primary">
+        <b-badge :variant="getVariantBadge(data.value)">
           <p style="margin: 5px">{{ data.value }}</p>
         </b-badge>
       </template>
@@ -85,7 +76,7 @@ export default {
           sender: "a",
           department: "a",
           "subject / Complaint": "aa",
-          status: "Open"
+          status: "Receive"
         }
       ]
     };
@@ -93,6 +84,18 @@ export default {
   methods: {
     showFeedback(row) {
       this.$store.dispatch("goToPage", `/feedback-customer/${row.complaint_id}`);
+    },
+    getVariantBadge(status) {
+      switch (status) {
+        case "Closed":
+          return "success";
+        case "Open":
+          return "danger";
+        case "Receive":
+          return "warning";
+        default:
+          return "primary";
+      }
     }
   },
   computed: {

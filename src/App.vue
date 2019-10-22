@@ -70,6 +70,10 @@ h2 {
   background-color: #016299 !important;
   border-color: #016299 !important;
 }
+.badge-warning {
+  color: white !important;
+}
+
 img {
   max-width: 100%;
 }
