@@ -24,7 +24,9 @@ import {
   faEye,
   faEyeSlash,
   faCalendar,
-  faTrash
+  faTrash,
+  faPlusCircle,
+
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { convertSnakeCaseToText } from "@/utility/func.js";
@@ -48,6 +50,7 @@ library.add(faEye);
 library.add(faEyeSlash);
 library.add(faCalendar);
 library.add(faTrash);
+library.add(faPlusCircle);
 
 Vue.mixin({
   methods: {

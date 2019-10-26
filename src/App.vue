@@ -4,7 +4,7 @@
       <navbar></navbar>
     </div>
     <router-view />
-    <chat v-if="$route.name !== 'login' && !activeRoute.toLowerCase().includes('admin')"></chat>
+    <chat v-if="role === 'customer'"></chat>
     <modal name="modal" :adaptive="true" width="90%" height="auto" :maxWidth="700">
       <img src="https://www.urbansplash.co.uk/images/placeholder-16-9.jpg" alt />
     </modal>
@@ -31,6 +31,9 @@ export default {
   computed: {
     activeRoute() {
       return this.$route.name || "";
+    },
+    role() {
+      return localStorage.getItem("role");
     }
   }
 };
@@ -60,6 +63,7 @@ h2 {
 }
 .container-app {
   padding: 30px !important;
+  margin-top: 65px;
 }
 .page-item.active .page-link,
 .btn-success {

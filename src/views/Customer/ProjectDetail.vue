@@ -48,7 +48,7 @@ export default {
       breadcrumbs: [
         {
           text: "Project List",
-          href: "/#/project-customer"
+          href: localStorage.getItem("role") === "admin" ? "/#/project" : "/#/project-customer"
         },
         {
           text: this.$route.params.id,

@@ -18,86 +18,86 @@ export default new Router({
       path: "/project-customer",
       name: "project",
       component: () =>
-        import(/* webpackChunkName: "projectcustomer" */ "./views/Customer/Projects.vue")
+        import(/* webpackChunkName: "project-customer" */ "./views/Customer/Projects.vue")
     },
     {
       path: "/project-customer/:id",
       name: "projectdetail",
       component: () =>
-        import(/* webpackChunkName: "projectcustomerdetail" */
+        import(/* webpackChunkName: "project-customer-detail" */
         "./views/Customer/ProjectDetail.vue")
     },
     {
       path: "/project-customer/:id/feedback",
       name: "projectfeedback",
       component: () =>
-        import(/* webpackChunkName: "projectcustomerfeedback" */
+        import(/* webpackChunkName: "project-customer-feedback" */
         "./views/Customer/ProjectFeedback.vue")
     },
     {
       path: "/information-customer",
       name: "informationcustomer",
       component: () =>
-        import(/* webpackChunkName: "informationcustomer" */
+        import(/* webpackChunkName: "information-customer" */
         "./views/Customer/Information.vue")
     },
     {
       path: "/information-customer/:id",
       name: "informationcustomerdetail",
       component: () =>
-        import(/* webpackChunkName: "informationcustomerdetail" */
+        import(/* webpackChunkName: "information-custome-rdetail" */
         "./views/Customer/InformationDetail.vue")
     },
     {
       path: "/profile-customer",
       name: "profilecustomer",
       component: () =>
-        import(/* webpackChunkName: "profilecustomer" */ "./views/Customer/Profile.vue")
+        import(/* webpackChunkName: "profile-customer" */ "./views/Customer/Profile.vue")
     },
     {
       path: "/services-customer",
       name: "GMF Services customer",
       component: () =>
-        import(/* webpackChunkName: "servicescustomer" */ "./views/Customer/Service.vue")
+        import(/* webpackChunkName: "services-customer" */ "./views/Customer/Service.vue")
     },
     {
       path: "/feedback-customer",
-      name: "your feedback customer",
+      name: "your feedback",
       component: () =>
-        import(/* webpackChunkName: "feedbackcustomer" */ "./views/Customer/Feedback.vue")
+        import(/* webpackChunkName: "feedback-customer" */ "./views/Customer/Feedback.vue")
     },
     {
       path: "/feedback-customer-nonproject",
       name: "your feedback customer nonproj",
       component: () =>
-        import(/* webpackChunkName: "feedbackcustomernonproject" */ "./views/Customer/NonProjectFeedback.vue")
+        import(/* webpackChunkName: "feedback-customer-non-project" */ "./views/Customer/NonProjectFeedback.vue")
     },
     {
       path: "/feedback-customer-new",
       name: "your feedback customer new",
       component: () =>
-        import(/* webpackChunkName: "feedbackcustomernew" */
+        import(/* webpackChunkName: "feedback-customer-new" */
         "./views/Customer/FeedbackNew.vue")
     },
     {
       path: "/feedback-customer-new-nonproject",
       name: "your feedback customer new nonproj",
       component: () =>
-        import(/* webpackChunkName: "feedbackcustomernewnonproject" */
+        import(/* webpackChunkName: "feedback-customer-new-non-project" */
         "./views/Customer/NonProjectFeedbackNew.vue")
     },
     {
       path: "/feedback-customer/:id",
       name: "your feedback customer detail",
       component: () =>
-        import(/* webpackChunkName: "feedbackcustomerdetail" */
+        import(/* webpackChunkName: "feedback-customer-detail" */
         "./views/Customer/FeedbackDetail.vue")
     },
     {
       path: "/feedback-customer-nonproject/:id",
       name: "your feedback customer detail nonproj",
       component: () =>
-        import(/* webpackChunkName: "feedbackcustomerdetailnonproject" */
+        import(/* webpackChunkName: "feedback-customer-detail-non-project" */
         "./views/Customer/NonProjectFeedbackDetail.vue")
     },
 
@@ -106,13 +106,23 @@ export default new Router({
       path: "/customer",
       name: "customers admin",
       component: () =>
-        import(/* webpackChunkName: "customersadmin" */ "./views/Admin/Customer.vue")
+        import(/* webpackChunkName: "customers-admin" */ "./views/Admin/Customer.vue")
     },
     {
       path: "/customer/:id/:type",
       name: "customers admin detail",
       component: () =>
-        import(/* webpackChunkName: "customersadmindetail" */ "./views/Admin/CustomerDetail.vue")
+        import(/* webpackChunkName: "customers-admin-detail" */ "./views/Admin/CustomerDetail.vue")
+    },
+    {
+      path: "/project",
+      name: "project",
+      component: () => import(/* webpackChunkName: "project-admin" */ "./views/Admin/Projects.vue")
+    },
+    {
+      path: "/messages",
+      name: "messages",
+      component: () => import(/* webpackChunkName: "message" */ "./views/Admin/Message.vue")
     }
   ]
 });

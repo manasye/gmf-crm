@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar toggleable="md" type="dark" class="navbar">
+    <b-navbar toggleable="md" type="dark" class="navbar" fixed="top">
       <b-navbar-brand href="/#/project-customer">
         <img src="../assets/img/logo-white.png" alt class="logo-img" />
       </b-navbar-brand>
@@ -49,8 +49,17 @@
             <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
           </b-nav-form>
 
-          <b-nav-item>
+          <b-nav-item v-if="this.role === 'user'">
             <img src="../assets/img/help.png" class="navbar-img" alt @click="startWalkthrough" />
+          </b-nav-item>
+
+          <b-nav-item v-else>
+            <img
+              src="../assets/img/calendar.png"
+              class="navbar-img"
+              alt
+              @click="startWalkthrough"
+            />
           </b-nav-item>
 
           <b-nav-item-dropdown right class="user-navbar">
@@ -79,36 +88,37 @@
 
 <script>
 export default {
-  data() {
-    return {
-      // navItems: [
-      //   { name: "Project", route: "/#/project-customer", icon: "tasks" },
-      //   {
-      //     name: "Information",
-      //     route: "/#/information-customer",
-      //     icon: "info-circle"
-      //   },
-      //   { name: "Profile", route: "/#/profile-customer", icon: "users" },
-      //   { name: "GMF Services", route: "/#/services-customer", icon: "tools" },
-      //   {
-      //     name: "Your Feedback",
-      //     route: "/#/feedback-customer",
-      //     icon: "comment-dots",
-      //     childrens: [
-      //       {
-      //         name: "Complaint",
-      //         route: "/#/feedback-customer"
-      //       },
-      //       {
-      //         name: "Non-project Feedback",
-      //         route: "/#/feedback-customer-nonproject"
-      //       }
-      //     ]
-      //   }
-      // ]
-      navItems: [
-        { name: "Customer", route: "/#/customer", icon: "users" },
+  mounted() {
+    if (this.role === "user") {
+      this.navItems = [
         { name: "Project", route: "/#/project-customer", icon: "tasks" },
+        {
+          name: "Information",
+          route: "/#/information-customer",
+          icon: "info-circle"
+        },
+        { name: "Profile", route: "/#/profile-customer", icon: "users" },
+        { name: "GMF Services", route: "/#/services-customer", icon: "tools" },
+        {
+          name: "Your Feedback",
+          route: "/#/feedback-customer",
+          icon: "comment-dots",
+          childrens: [
+            {
+              name: "Complaint",
+              route: "/#/feedback-customer"
+            },
+            {
+              name: "Non-project Feedback",
+              route: "/#/feedback-customer-nonproject"
+            }
+          ]
+        }
+      ];
+    } else {
+      this.navItems = [
+        { name: "Customer", route: "/#/customer", icon: "users" },
+        { name: "Project", route: "/#/project", icon: "tasks" },
         { name: "Message", route: "/#/messages", icon: "comment-dots" },
         {
           name: "Complaint",
@@ -134,7 +144,13 @@ export default {
           icon: "info-circle"
         },
         { name: "Services", route: "/#/services-customer", icon: "tools" }
-      ]
+      ];
+    }
+  },
+
+  data() {
+    return {
+      navItems: null
     };
   },
   methods: {
@@ -145,6 +161,9 @@ export default {
   computed: {
     activeRoutes() {
       return this.$route.name || "";
+    },
+    role() {
+      return localStorage.getItem("role");
     }
   }
 };
