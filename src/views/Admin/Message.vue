@@ -53,7 +53,7 @@
 
         <b-col cols="8">
           <b-row no-gutters style="margin: 10px 0">
-            <b-col cols="12" class="pl-3 pr-3 mb-3">
+            <b-col cols="12" class="pl-3 pr-3 mb-2">
               <b-row no-gutters>
                 <b-col cols="1">
                   <img
@@ -62,7 +62,7 @@
                   />
                 </b-col>
                 <b-col cols="9"
-                  ><p class="mb-0 ml-3">Admin</p>
+                  ><p class="mt-1 mb-0 ml-3">Admin</p>
                   <p class="mb-0 ml-3" style="color: #949699">aa</p></b-col
                 >
                 <b-col cols="2" style="text-align: right; margin-top: 10px"

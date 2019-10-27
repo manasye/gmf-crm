@@ -87,10 +87,10 @@ export default new Router({
         "./views/Customer/NonProjectFeedbackNew.vue")
     },
     {
-      path: "/feedback-customer/:id",
-      name: "your feedback customer detail",
+      path: "/feedback/:id",
+      name: "your feedback detail",
       component: () =>
-        import(/* webpackChunkName: "feedback-customer-detail" */
+        import(/* webpackChunkName: "feedback-detail" */
         "./views/Customer/FeedbackDetail.vue")
     },
     {
@@ -123,6 +123,41 @@ export default new Router({
       path: "/messages",
       name: "messages",
       component: () => import(/* webpackChunkName: "message" */ "./views/Admin/Message.vue")
+    },
+    {
+      path: "/complaint-list",
+      name: "complaint list",
+      component: () =>
+        import(/* webpackChunkName: "complaint list" */ "./views/Admin/Complaint.vue")
+    },
+    {
+      path: "/complaint-trend",
+      name: "complaint trend",
+      component: () =>
+        import(/* webpackChunkName: "complaint trend" */ "./views/Admin/ComplaintTrend.vue")
+    },
+    {
+      path: "/complaint/:id",
+      name: "complaint detail",
+      component: () =>
+        import(/* webpackChunkName: "complaint detail" */ "./views/Admin/ComplaintDetail.vue")
+    },
+    {
+      path: "/feedback-list",
+      name: "feedback list",
+      component: () => import(/* webpackChunkName: "feedback list" */ "./views/Admin/Feedback.vue")
+    },
+    {
+      path: "/feedback-admin/:id",
+      name: "feedback admin detail",
+      component: () =>
+        import(/* webpackChunkName: "feedback admin detail" */ "./views/Admin/FeedbackDetail.vue")
+    },
+    {
+      path: "/feedback-trend",
+      name: "feedback trend",
+      component: () =>
+        import(/* webpackChunkName: "feedback trend" */ "./views/Admin/FeedbackTrend.vue")
     }
   ]
 });

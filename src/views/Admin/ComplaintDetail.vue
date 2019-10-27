@@ -18,7 +18,7 @@
           <p class="mb-1">Status</p>
           <p class="mb-0" style="font-size: .6rem">
             <b-badge :variant="getVariantBadge('open')" style="font-size: .75rem">OPEN</b-badge
-            >&nbsp;
+            >&nbsp;&nbsp;*click to change status
           </p>
         </b-col>
       </b-row>

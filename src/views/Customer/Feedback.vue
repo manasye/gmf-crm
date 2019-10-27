@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     showFeedback(row) {
-      this.$store.dispatch("goToPage", `/feedback-customer/${row.complaint_id}`);
+      this.$store.dispatch("goToPage", `/feedback/${row.complaint_id}`);
     },
     getVariantBadge(status) {
       switch (status) {

@@ -122,7 +122,7 @@ export default {
         { name: "Message", route: "/#/messages", icon: "comment-dots" },
         {
           name: "Complaint",
-          route: "/#/complaint",
+          route: "/#/complaint-list",
           icon: "comment-slash",
           childrens: [
             { name: "Complaint List", route: "/#/complaint-list" },
