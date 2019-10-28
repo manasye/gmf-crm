@@ -128,36 +128,65 @@ export default new Router({
       path: "/complaint-list",
       name: "complaint list",
       component: () =>
-        import(/* webpackChunkName: "complaint list" */ "./views/Admin/Complaint.vue")
+        import(/* webpackChunkName: "complaint-list" */ "./views/Admin/Complaint.vue")
     },
     {
       path: "/complaint-trend",
       name: "complaint trend",
       component: () =>
-        import(/* webpackChunkName: "complaint trend" */ "./views/Admin/ComplaintTrend.vue")
+        import(/* webpackChunkName: "complaint-trend" */ "./views/Admin/ComplaintTrend.vue")
     },
     {
       path: "/complaint/:id",
       name: "complaint detail",
       component: () =>
-        import(/* webpackChunkName: "complaint detail" */ "./views/Admin/ComplaintDetail.vue")
+        import(/* webpackChunkName: "complaint-detail" */ "./views/Admin/ComplaintDetail.vue")
     },
     {
       path: "/feedback-list",
       name: "feedback list",
-      component: () => import(/* webpackChunkName: "feedback list" */ "./views/Admin/Feedback.vue")
+      component: () => import(/* webpackChunkName: "feedback-list" */ "./views/Admin/Feedback.vue")
     },
     {
       path: "/feedback-admin/:id",
       name: "feedback admin detail",
       component: () =>
-        import(/* webpackChunkName: "feedback admin detail" */ "./views/Admin/FeedbackDetail.vue")
+        import(/* webpackChunkName: "feedback-admin-detail" */ "./views/Admin/FeedbackDetail.vue")
     },
     {
       path: "/feedback-trend",
       name: "feedback trend",
       component: () =>
-        import(/* webpackChunkName: "feedback trend" */ "./views/Admin/FeedbackTrend.vue")
+        import(/* webpackChunkName: "feedback-trend" */ "./views/Admin/FeedbackTrend.vue")
+    },
+    {
+      path: "/information-newsletter",
+      name: "information newsletter",
+      component: () =>
+        import(/* webpackChunkName: "information-newsletter" */ "./views/Admin/Newsletter.vue")
+    },
+    {
+      path: "/information-holiday-card",
+      name: "information holiday card",
+      component: () =>
+        import(/* webpackChunkName: "information-holiday-card" */ "./views/Admin/HolidayCard.vue")
+    },
+    {
+      path: "/information-holiday-card/:id",
+      name: "information holiday card detail",
+      component: () =>
+        import(/* webpackChunkName: "information-holiday-card-detail" */ "./views/Admin/HolidayDetail.vue")
+    },
+    {
+      path: "/information-birthday-card",
+      name: "information birthday card",
+      component: () =>
+        import(/* webpackChunkName: "information-birthday-card" */ "./views/Admin/BirthdayCard.vue")
+    },
+    {
+      path: "/services",
+      name: "services",
+      component: () => import(/* webpackChunkName: "services" */ "./views/Admin/Services.vue")
     }
   ]
 });

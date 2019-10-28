@@ -89,6 +89,8 @@
 <script>
 export default {
   mounted() {
+    console.log(this.$route.name);
+
     if (this.role === "user") {
       this.navItems = [
         { name: "Project", route: "/#/project-customer", icon: "tasks" },
@@ -140,10 +142,15 @@ export default {
         },
         {
           name: "Info",
-          route: "/#/information-customer",
-          icon: "info-circle"
+          route: "/#/information-newsletter",
+          icon: "info-circle",
+          childrens: [
+            { name: "Newsletter", route: "/#/information-newsletter" },
+            { name: "Holiday Card", route: "/#/information-holiday-card" },
+            { name: "Birthday Card", route: "/#/information-birthday-card" }
+          ]
         },
-        { name: "Services", route: "/#/services-customer", icon: "tools" }
+        { name: "Services", route: "/#/services", icon: "tools" }
       ];
     }
   },
