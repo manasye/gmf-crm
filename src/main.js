@@ -25,8 +25,7 @@ import {
   faEyeSlash,
   faCalendar,
   faTrash,
-  faPlusCircle,
-
+  faPlusCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { convertSnakeCaseToText } from "@/utility/func.js";
@@ -61,6 +60,7 @@ Vue.mixin({
 Vue.use(BootstrapVue);
 Vue.use(Chat);
 Vue.use(VModal);
+Vue.use(require("vue-moment"));
 
 Vue.component("Header", Header);
 Vue.component("font-awesome-icon", FontAwesomeIcon);

@@ -53,14 +53,17 @@
             <img src="../assets/img/help.png" class="navbar-img" alt @click="startWalkthrough" />
           </b-nav-item>
 
-          <b-nav-item v-else>
-            <img
-              src="../assets/img/calendar.png"
-              class="navbar-img"
-              alt
-              @click="startWalkthrough"
-            />
-          </b-nav-item>
+          <b-nav-item-dropdown v-else right>
+            <template v-slot:button-content>
+              <img src="../assets/img/calendar.png" class="navbar-img" alt @click="startWalkthrough"
+            /></template>
+            <div>
+              <datepicker :inline="true" v-model="selectedDate" :highlighted="highlighted" />
+              <div class="p-2">
+                <p class="mb-0">{{ selectedDate | moment("DD MMMM YYYY") }}</p>
+              </div>
+            </div>
+          </b-nav-item-dropdown>
 
           <b-nav-item-dropdown right class="user-navbar">
             <template v-slot:button-content>
@@ -77,7 +80,7 @@
                 class="navbar-img-expand mb-3"
               />
               <p class="mb-2 text-center">John Henderson</p>
-              <b-button variant="primary" size="sm" class="d-block mx-auto">LOG OUT</b-button>
+              <b-button variant="primary" size="sm" class="d-block mx-auto mb-3">LOG OUT</b-button>
             </div>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -87,10 +90,10 @@
 </template>
 
 <script>
+import Datepicker from "vuejs-datepicker";
+
 export default {
   mounted() {
-    console.log(this.$route.name);
-
     if (this.role === "user") {
       this.navItems = [
         { name: "Project", route: "/#/project-customer", icon: "tasks" },
@@ -100,7 +103,7 @@ export default {
           icon: "info-circle"
         },
         { name: "Profile", route: "/#/profile-customer", icon: "users" },
-        { name: "GMF Services", route: "/#/services-customer", icon: "tools" },
+        { name: "GMF Services", route: "/#/services", icon: "tools" },
         {
           name: "Your Feedback",
           route: "/#/feedback-customer",
@@ -154,10 +157,18 @@ export default {
       ];
     }
   },
-
   data() {
     return {
-      navItems: null
+      navItems: null,
+      selectedDate: null,
+      highlighted: {
+        customPredictor: function(date) {
+          // highlights every day of a month which is a multiple of 4
+          if (date.getDate() % 4 === 0) {
+            return true;
+          }
+        }
+      }
     };
   },
   methods: {
@@ -172,7 +183,8 @@ export default {
     role() {
       return localStorage.getItem("role");
     }
-  }
+  },
+  components: { Datepicker }
 };
 </script>
 
@@ -229,5 +241,8 @@ export default {
   .nav-search input {
     margin: 7px 0;
   }
+}
+.dropdown-menu {
+  padding: 0 !important;
 }
 </style>

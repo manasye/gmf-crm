@@ -55,8 +55,8 @@ export default new Router({
         import(/* webpackChunkName: "profile-customer" */ "./views/Customer/Profile.vue")
     },
     {
-      path: "/services-customer",
-      name: "GMF Services customer",
+      path: "/services",
+      name: "GMF Services",
       component: () =>
         import(/* webpackChunkName: "services-customer" */ "./views/Customer/Service.vue")
     },
@@ -185,8 +185,8 @@ export default new Router({
     },
     {
       path: "/services",
-      name: "services",
-      component: () => import(/* webpackChunkName: "services" */ "./views/Admin/Services.vue")
+      name: "GMF services",
+      component: () => import(/* webpackChunkName: "services" */ "./views/Customer/Service.vue")
     }
   ]
 });

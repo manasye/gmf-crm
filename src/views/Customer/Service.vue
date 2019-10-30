@@ -1,6 +1,21 @@
 <template>
-  <div>
-    <b-row v-for="(service, idx) in services" :key="service.title" no-gutters class="mb-md-4">
+  <div style="margin-top: 65px">
+    <div class="add-service">
+      <b-row>
+        <b-col cols="6"><p class="mb-0 mt-1">GMF Services</p></b-col>
+        <b-col cols="6" style="text-align: right">
+          <b-button variant="success" size="sm">Add New Service</b-button>
+        </b-col>
+      </b-row>
+    </div>
+
+    <b-row
+      v-for="(service, idx) in services"
+      :key="service.title"
+      no-gutters
+      class="mb-md-4 service-card-wrapper"
+      style=" "
+    >
       <b-col cols="12" md="7" :order-md="idx % 2 === 0 ? '1' : '2'">
         <b-carousel controls indicators background="#ababab">
           <b-carousel-slide v-for="img in service.thumbnail" :img-src="img" :key="img">
@@ -13,7 +28,9 @@
               }}
             </h1>
             <h2>{{ service.title.split(" ")[service.title.split(" ").length - 1] }}</h2>
-            <b-button variant="primary" class="mt-4">Explore</b-button>
+            <b-button variant="primary" size="sm" class="mt-4">Explore</b-button>
+            <br />
+            <b-button variant="success" size="sm" class="mt-3">Edit</b-button>
           </b-carousel-slide>
         </b-carousel>
       </b-col>
@@ -88,6 +105,13 @@ export default {
 }
 hr {
   border-top: 1px dotted #016299;
+}
+.add-service {
+  padding: 15px 30px 12px;
+}
+.service-card-wrapper {
+  border-bottom: 1px dotted #95999c;
+  border-top: 1px dotted #95999c;
 }
 </style>
 
