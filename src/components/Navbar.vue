@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="md" type="dark" class="navbar" fixed="top">
-      <b-navbar-brand href="/#/project-customer">
+      <b-navbar-brand :href="this.role === 'user' ? '/#/project-customer' : '/#/customer'">
         <img src="../assets/img/logo-white.png" alt class="logo-img" />
       </b-navbar-brand>
 
@@ -9,7 +9,7 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <div v-for="nav in navItems" :key="nav.name">
+          <div v-for="nav in navItems" :key="nav.name" :data-intro="nav.intro">
             <b-nav-item
               v-if="!nav.childrens"
               :href="nav.route"
@@ -49,13 +49,18 @@
             <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
           </b-nav-form>
 
-          <b-nav-item v-if="this.role === 'user'">
-            <img src="../assets/img/help.png" class="navbar-img" alt @click="startWalkthrough" />
+          <b-nav-item v-if="this.role !== 'user'">
+            <img
+              src="../assets/img/help.png"
+              class="navbar-img"
+              alt
+              @click="showModal = !showModal"
+            />
           </b-nav-item>
 
           <b-nav-item-dropdown v-else right>
             <template v-slot:button-content>
-              <img src="../assets/img/calendar.png" class="navbar-img" alt @click="startWalkthrough"
+              <img src="../assets/img/calendar.png" class="navbar-img" alt
             /></template>
             <div>
               <datepicker :inline="true" v-model="selectedDate" :highlighted="highlighted" />
@@ -86,6 +91,30 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+
+    <b-modal v-model="showModal" centered title="Explore CRM Digital Marketing"
+      >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad amet consequatur debitis dolorem
+      eaque illo impedit iure mollitia numquam quis rem sed similique suscipit totam, voluptatibus.
+      Blanditiis ipsum libero tenetur.
+
+      <template v-slot:modal-footer="{ ok, cancel, hide }">
+        <b-button size="sm" variant="secondary" @click="showModal = false">
+          Skip
+        </b-button>
+        <b-button
+          size="sm"
+          variant="primary"
+          @click="
+            () => {
+              startWalkthrough();
+              showModal = false;
+            }
+          "
+        >
+          Explore
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -94,20 +123,27 @@ import Datepicker from "vuejs-datepicker";
 
 export default {
   mounted() {
-    if (this.role === "user") {
+    if (this.role !== "user") {
       this.navItems = [
-        { name: "Project", route: "/#/project-customer", icon: "tasks" },
+        {
+          name: "Project",
+          route: "/#/project-customer",
+          icon: "tasks",
+          intro: "PROJECTS <br/> akoakosakoas"
+        },
         {
           name: "Information",
           route: "/#/information-customer",
-          icon: "info-circle"
+          icon: "info-circle",
+          intro: "lorem"
         },
-        { name: "Profile", route: "/#/profile-customer", icon: "users" },
-        { name: "GMF Services", route: "/#/services", icon: "tools" },
+        { name: "Profile", route: "/#/profile-customer", icon: "users", intro: "lorem" },
+        { name: "GMF Services", route: "/#/services", icon: "tools", intro: "lorem" },
         {
           name: "Your Feedback",
           route: "/#/feedback-customer",
           icon: "comment-dots",
+          intro: "lorem",
           childrens: [
             {
               name: "Complaint",
@@ -159,6 +195,7 @@ export default {
   },
   data() {
     return {
+      showModal: false,
       navItems: null,
       selectedDate: null,
       highlighted: {
@@ -174,6 +211,14 @@ export default {
   methods: {
     startWalkthrough() {
       this.$store.commit("changeWalkthrough", true);
+      const introJS = require("intro.js");
+      introJS
+        .introJs()
+        .setOption("doneLabel", "Next page")
+        .start()
+        .oncomplete(function() {
+          window.location.href = "/#/project-customer/a";
+        });
     }
   },
   computed: {

@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header :title="$route.params.id" :breadcrumbs="breadcrumbs"></Header>
+    <Header :title="$route.params.id" :breadcrumbs="breadcrumbs" data-intro="aa"></Header>
     <div class="detail-header">
       <b-row>
         <b-col cols="4" md="2" v-for="i in 6" class="mb-md-0" :class="{ 'mb-3': i === 1 }" :key="i">
@@ -43,6 +43,12 @@ const options = {
 };
 
 export default {
+  mounted() {
+    if (this.$store.getters.walkthrough) {
+      const introJS = require("intro.js");
+      introJS.introJs().start();
+    }
+  },
   data() {
     return {
       breadcrumbs: [

@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import VModal from "vue-js-modal";
+import VueIntro from "vue-introjs";
 
 import BootstrapVue from "bootstrap-vue";
 import Chat from "vue-beautiful-chat";
@@ -33,6 +34,8 @@ import { convertSnakeCaseToText } from "@/utility/func.js";
 // require styles
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import "intro.js/introjs.css";
+
 
 library.add(faTools);
 library.add(faInfoCircle);
@@ -61,6 +64,7 @@ Vue.use(BootstrapVue);
 Vue.use(Chat);
 Vue.use(VModal);
 Vue.use(require("vue-moment"));
+Vue.use(VueIntro);
 
 Vue.component("Header", Header);
 Vue.component("font-awesome-icon", FontAwesomeIcon);

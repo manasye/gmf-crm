@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="PROJECT LIST"></Header>
+    <Header title="PROJECT LIST" data-intro="PRoject"></Header>
 
     <b-row>
       <b-col cols="6" md="3">
