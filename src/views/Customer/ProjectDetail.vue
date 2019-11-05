@@ -46,7 +46,13 @@ export default {
   mounted() {
     if (this.$store.getters.walkthrough) {
       const introJS = require("intro.js");
-      introJS.introJs().start();
+      introJS
+        .introJs()
+        .start()
+        .oncomplete(() => {
+          console.log("hi");
+          this.$store.commit("changeWalkthrough", false);
+        });
     }
   },
   data() {

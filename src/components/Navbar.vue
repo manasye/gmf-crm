@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="md" type="dark" class="navbar" fixed="top">
-      <b-navbar-brand :href="this.role === 'user' ? '/#/project-customer' : '/#/customer'">
+      <b-navbar-brand :href="this.role === 'Customer' ? '/#/project-customer' : '/#/customer'">
         <img src="../assets/img/logo-white.png" alt class="logo-img" />
       </b-navbar-brand>
 
@@ -49,7 +49,7 @@
             <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
           </b-nav-form>
 
-          <b-nav-item v-if="this.role !== 'user'">
+          <b-nav-item v-if="this.role === 'Customer'">
             <img
               src="../assets/img/help.png"
               class="navbar-img"
@@ -85,7 +85,9 @@
                 class="navbar-img-expand mb-3"
               />
               <p class="mb-2 text-center">John Henderson</p>
-              <b-button variant="primary" size="sm" class="d-block mx-auto mb-3">LOG OUT</b-button>
+              <b-button variant="primary" size="sm" class="d-block mx-auto mb-3" @click="logout"
+                >LOG OUT</b-button
+              >
             </div>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -120,10 +122,11 @@
 
 <script>
 import Datepicker from "vuejs-datepicker";
+import axios from "axios";
 
 export default {
   mounted() {
-    if (this.role !== "user") {
+    if (this.role === "Customer") {
       this.navItems = [
         {
           name: "Project",
@@ -156,7 +159,7 @@ export default {
           ]
         }
       ];
-    } else {
+    } else if (this.role === "Admin" || this.role === "Guest") {
       this.navItems = [
         { name: "Customer", route: "/#/customer", icon: "users" },
         { name: "Project", route: "/#/project", icon: "tasks" },
@@ -191,6 +194,8 @@ export default {
         },
         { name: "Services", route: "/#/services", icon: "tools" }
       ];
+    } else {
+      this.$store.dispatch("goToPage", "/#/login");
     }
   },
   data() {
@@ -219,6 +224,14 @@ export default {
         .oncomplete(function() {
           window.location.href = "/#/project-customer/a";
         });
+    },
+    logout() {
+      axios
+        .get("/logout")
+        .then(() => {
+          this.$store.dispatch("goToPage", "/login");
+        })
+        .catch(() => {});
     }
   },
   computed: {

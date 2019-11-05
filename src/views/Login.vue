@@ -17,20 +17,27 @@
       <b-row align-v="center" class="row-login">
         <div class="r-container">
           <label for="username">Username</label>
-          <b-form-input id="username"></b-form-input>
+          <b-form-input id="username" v-model="username"></b-form-input>
           <label for="password" class="mt-4">Password</label>
-          <b-form-input id="password" type="password" class="mb-4"></b-form-input>
+          <b-form-input
+            id="password"
+            type="password"
+            class="mb-4"
+            v-model="password"
+          ></b-form-input>
 
-          <b-row>
-            <b-col cols="6">
-              <b-form-checkbox v-model="remember" class="mb-4 mb-md-5">Remember Me</b-form-checkbox>
-            </b-col>
-            <b-col cols="6" style="text-align: right">
-              <p @click="console.log('hi')">Forgot Password ?</p>
-            </b-col>
-          </b-row>
+          <!--          <b-row>-->
+          <!--            <b-col cols="6">-->
+          <!--              <b-form-checkbox v-model="remember" class="mb-4 mb-md-3">Remember Me</b-form-checkbox>-->
+          <!--            </b-col>-->
+          <!--            <b-col cols="6" style="text-align: right">-->
+          <!--              <p @click="console.log('hi')">Forgot Password ?</p>-->
+          <!--            </b-col>-->
+          <!--          </b-row>-->
 
-          <b-button variant="primary" size="lg" style="width: 100%" @click="login">LOGIN</b-button>
+          <b-button variant="primary" size="lg" style="width: 100%" @click="login" class="mt-3"
+            >LOGIN</b-button
+          >
 
           <img src="../assets/img/logo.png" alt class="d-block d-md-none mt-4" />
         </div>
@@ -40,15 +47,29 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      remember: false
+      remember: false,
+      username: null,
+      password: null
     };
   },
   methods: {
     login() {
-      this.$store.dispatch("goToPage", "/project-customer");
+      const dataLogin = { username: this.username, password: this.password };
+
+      axios
+        .post("/auth", dataLogin)
+        .then(res => {
+          const role = res.data.data_user.role;
+          localStorage.setItem("role", role);
+          const route = role === "Customer" ? "/project-customer" : "/customer";
+          this.$store.dispatch("goToPage", route);
+        })
+        .catch(() => {});
     }
   }
 };

@@ -14,3 +14,7 @@ export const convertSnakeCaseToText = text => {
   });
   return result.substring(1);
 };
+
+export const getRole = () => {
+  return localStorage.getItem("role");
+};

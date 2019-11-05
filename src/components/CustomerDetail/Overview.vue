@@ -85,7 +85,19 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  mounted() {
+    if (!this.$store.getters.walkthrough) {
+      axios
+        .get("/company/read")
+        .then(res => {
+          this.customers = res.data.data;
+        })
+        .catch(() => {});
+    }
+  },
   data() {
     return {
       details: { company: "Garuda" },

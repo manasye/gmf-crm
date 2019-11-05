@@ -5,6 +5,7 @@ import store from "./store";
 import "./registerServiceWorker";
 import VModal from "vue-js-modal";
 import VueIntro from "vue-introjs";
+import axios from "axios";
 
 import BootstrapVue from "bootstrap-vue";
 import Chat from "vue-beautiful-chat";
@@ -29,13 +30,12 @@ import {
   faPlusCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { convertSnakeCaseToText } from "@/utility/func.js";
+import { convertSnakeCaseToText, getRole } from "@/utility/func.js";
 
 // require styles
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import "intro.js/introjs.css";
-
 
 library.add(faTools);
 library.add(faInfoCircle);
@@ -54,9 +54,13 @@ library.add(faCalendar);
 library.add(faTrash);
 library.add(faPlusCircle);
 
+axios.defaults.baseURL = "http://172.16.40.180:8080/api";
+axios.defaults.withCredentials = true;
+
 Vue.mixin({
   methods: {
-    convertSnakeCaseToText
+    convertSnakeCaseToText,
+    getRole
   }
 });
 
