@@ -47,8 +47,19 @@
 
 <script>
 import { perPageOptions } from "@/utility/globalVar.js";
+import axios from "axios";
 
 export default {
+  mounted() {
+    if (!this.$store.getters.walkthrough) {
+      axios
+        .get(`/complaint/read/${this.$route.params.id}`)
+        .then(({ data }) => {
+          this.complaints = data.data;
+        })
+        .catch(() => {});
+    }
+  },
   data() {
     return {
       sendersOptions: [],
@@ -64,8 +75,8 @@ export default {
         { key: "complaint_id", sortable: true },
         { key: "date", sortable: true },
         { key: "sender", sortable: true },
-        { key: "department", sortable: true },
-        { key: "subject / Complaint", sortable: true },
+        { key: "service", sortable: true },
+        { key: "subject", sortable: true },
         { key: "status", label: "Status", sortable: true }
       ],
       complaints: [

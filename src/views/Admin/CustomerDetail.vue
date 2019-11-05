@@ -8,7 +8,7 @@
         v-for="tab in tabs"
         :key="tab.title"
         @click="$store.dispatch('goToPage', `/customer/${$route.params.id}/${tab.route}`)"
-        ><component :is="tab.component" :company="$route.params.id"></component
+        ><component :is="tab.component" :id="$route.params.id"></component
       ></b-tab>
     </b-tabs>
   </b-container>

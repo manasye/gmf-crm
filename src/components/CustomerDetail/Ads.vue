@@ -9,11 +9,15 @@
         <a :href="data.value">{{ data.value }}</a>
       </template>
       <template v-slot:cell(action)="data">
-        <b-button size="sm" variant="success">Remove from active ads</b-button>
+        <b-button size="sm" variant="success" @click="removeFromActive(data.item)"
+          >Remove from active ads</b-button
+        >
       </template>
     </b-table>
 
-    <b-button variant="success" size="sm" class="float-right">Create New Ad</b-button>
+    <b-button variant="success" size="sm" class="float-right" @click="showModalAds = true"
+      >Create New Ad</b-button
+    >
     <h5>Ads List</h5>
 
     <b-table style="margin-top: 20px;" striped hover :items="adList" responsive>
@@ -24,7 +28,10 @@
         <a :href="data.value">{{ data.value }}</a>
       </template>
       <template v-slot:cell(action)="data">
-        <b-button size="sm" variant="success">Add to active ads</b-button> &nbsp;&nbsp;
+        <b-button size="sm" variant="success" @click="addToActive(data.item)"
+          >Add to active ads</b-button
+        >
+        &nbsp;&nbsp;
         <font-awesome-icon
           style="cursor: pointer;"
           icon="pen"
@@ -38,38 +45,109 @@
         ></font-awesome-icon>
       </template>
     </b-table>
+
+    <b-modal v-model="showModalAds" centered title="Manage Ads" @ok="submitAd">
+      <b-row>
+        <b-col cols="4"> <label class="mt-2">Subject</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.subject"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Image</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.image"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Permalink</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.permalink"></b-form-input>
+        </b-col>
+      </b-row>
+    </b-modal>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  mounted() {
+    if (!this.$store.getters.walkthrough) {
+      this.getAdList();
+      this.getActiveAdList();
+    }
+  },
   data() {
     return {
-      activeAds: [
-        {
-          subject: "lorem ",
-          image:
-            "https://carepharmaceuticals.com.au/wp-content/uploads/sites/19/2018/02/placeholder-600x400.png",
-          permalink:
-            "https://carepharmaceuticals.com.au/wp-content/uploads/sites/19/2018/02/placeholder-600x400.png",
-          action: "a"
-        }
-      ],
-      adList: [
-        {
-          ad_name: "a",
-          image:
-            "https://carepharmaceuticals.com.au/wp-content/uploads/sites/19/2018/02/placeholder-600x400.png",
-          permalink:
-            "https://carepharmaceuticals.com.au/wp-content/uploads/sites/19/2018/02/placeholder-600x400.png",
-          action: "a"
-        }
-      ]
+      activeAds: [],
+      adList: [],
+      showModalAds: false,
+      editedData: {
+        subject: "",
+        image: "",
+        permalink: ""
+      }
     };
   },
   methods: {
-    editAd(item) {},
-    removeAd(item) {}
+    addToActive(item) {
+      axios
+        .get(`/companyads/add/${item.ads_id}/${this.$route.params.id}`)
+        .then(() => {
+          this.getActiveAdList();
+        })
+        .catch(() => {});
+    },
+    editAd(item) {
+      this.editedData = item;
+      this.showModalAds = true;
+    },
+    removeFromActive(item) {
+      axios
+        .get(`/companyads/remove/${item.ads_id}/${this.$route.params.id}`)
+        .then(() => {
+          this.getActiveAdList();
+        })
+        .catch(() => {});
+    },
+    removeAd(item) {
+      axios
+        .get(`/ads/delete/${item.ads_id}`)
+        .then(() => {
+          this.getAdList();
+        })
+        .catch(() => {});
+    },
+    submitAd() {
+      axios
+        .post("/ads/create", this.editedData)
+        .then(() => {
+          this.getAdList();
+        })
+        .catch(() => {});
+    },
+    getAdList() {
+      axios
+        .get("/ads/read")
+        .then(({ data }) => {
+          this.adList = data.data.map(el => {
+            let o = Object.assign({}, el);
+            o.action = "a";
+            return o;
+          });
+        })
+        .catch(() => {});
+    },
+    getActiveAdList() {
+      axios
+        .get(`/ads/read/${this.$route.params.id}`)
+        .then(({ data }) => {
+          this.activeAds = data.data.map(el => {
+            let o = Object.assign({}, el);
+            o.action = "a";
+            return o;
+          });
+        })
+        .catch(() => {});
+    }
   }
 };
 </script>

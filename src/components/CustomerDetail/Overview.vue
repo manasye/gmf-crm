@@ -9,7 +9,7 @@
       />
       <div v-for="(value, name) in details" :key="name" class="mb-2">
         <p style="color: #949699">{{ convertSnakeCaseToText(name) }}</p>
-        <p>{{ value }}</p>
+        <p>{{ value || "-" }}</p>
       </div>
     </b-col>
     <b-col cols="9">
@@ -91,10 +91,15 @@ export default {
   mounted() {
     if (!this.$store.getters.walkthrough) {
       axios
-        .get("/company/read")
+        .get("/company/edit/" + this.$route.params.id)
         .then(res => {
-          this.customers = res.data.data;
+          this.details = res.data.data[0];
         })
+        .catch(() => {});
+
+      axios
+        .get(`/company/read/${this.$route.params.id}`)
+        .then(res => {})
         .catch(() => {});
     }
   },
@@ -159,7 +164,8 @@ export default {
     editPerson(person) {},
     editTech(tech) {},
     editCp(cp) {}
-  }
+  },
+  props: ["id"]
 };
 </script>
 

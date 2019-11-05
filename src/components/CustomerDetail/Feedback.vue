@@ -53,8 +53,20 @@
 <script>
 import { perPageOptions } from "@/utility/globalVar.js";
 import StarRating from "vue-star-rating";
+import axios from "axios";
 
 export default {
+  mounted() {
+    if (!this.$store.getters.walkthrough) {
+      axios
+        .get(`/feedbackproject/read/${this.$route.params.id}`)
+        .then(({ data }) => {
+          this.feedbacks = data.data;
+        })
+        .catch(() => {});
+    }
+  },
+
   data() {
     return {
       sendersOptions: [],
@@ -67,7 +79,7 @@ export default {
       project: null,
       status: null,
       feedbackFields: [
-        { key: "feedback_id", sortable: true },
+        { key: "feedback_project_id", label: "Id", sortable: true },
         { key: "date", sortable: true },
         { key: "sender", sortable: true },
         { key: "location", sortable: true },
