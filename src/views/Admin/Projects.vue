@@ -39,7 +39,7 @@
         <b-badge v-if="data.value === 'Closed'" variant="primary">
           <p style="margin: 5px">{{ data.value }}</p>
         </b-badge>
-        <b-badge v-if="data.value === 'Ongoing'" variant="secondary">
+        <b-badge v-if="data.value === 'On Going'" variant="secondary">
           <p style="margin: 5px">{{ data.value }}</p>
         </b-badge>
       </template>
@@ -50,7 +50,7 @@
           :show-rating="false"
           :star-size="25"
           :increment="0.5"
-          v-if="rate.value"
+          v-if="!isNaN(+rate.value)"
         ></star-rating>
       </template>
     </b-table>
@@ -67,8 +67,17 @@
 <script>
 import StarRating from "vue-star-rating";
 import { perPageOptions } from "@/utility/globalVar.js";
+import axios from "axios";
 
 export default {
+  mounted() {
+    axios
+      .get("/project/read")
+      .then(res => {
+        this.projects = res.data.data;
+      })
+      .catch(() => {});
+  },
   data() {
     return {
       selectedStatus: null,
@@ -82,26 +91,15 @@ export default {
       perPage: "10",
       projectFields: [
         { key: "company", sortable: true },
-        { key: "project", sortable: true },
-        { key: "est_start_date", sortable: true },
-        { key: "est_finish_date", sortable: true },
+        { key: "name", label: "Project", sortable: true },
+        { key: "start", label: "est_start_date", sortable: true },
+        { key: "finish", label: "est_finish_date", sortable: true },
         { key: "project_type", sortable: true },
         { key: "status", sortable: true },
-        { key: "qty", sortable: true },
+        { key: "quantity", sortable: true },
         { key: "rating", sortable: true }
       ],
-      projects: [
-        {
-          company: "a",
-          project: "b",
-          est_start_date: "a",
-          est_finish_date: "a",
-          project_type: "Base Maintenance",
-          status: "Ongoing",
-          qty: "a",
-          rating: "2"
-        }
-      ]
+      projects: []
     };
   },
   components: { StarRating },
@@ -112,7 +110,7 @@ export default {
   },
   methods: {
     showProjectDetail(row) {
-      this.$store.dispatch("goToPage", `/project-customer/${row.project}`);
+      this.$store.dispatch("goToPage", `/project-customer/${row.project_id}`);
     }
   }
 };

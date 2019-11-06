@@ -66,6 +66,7 @@ export default {
         .then(res => {
           const role = res.data.data_user.role;
           localStorage.setItem("role", role);
+          localStorage.setItem("username", res.data.data_user.username);
           const route = role === "Customer" ? "/project-customer" : "/customer";
           this.$store.dispatch("goToPage", route);
         })

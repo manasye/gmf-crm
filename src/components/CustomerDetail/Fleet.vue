@@ -7,7 +7,7 @@
         <h5>{{ selected }}</h5></b-col
       >
       <b-col cols="6" style="text-align: right">
-        <b-button variant="success" size="sm">EDIT</b-button>
+        <b-button variant="success" size="sm" v-if="isAdmin()">EDIT</b-button>
       </b-col>
       <b-col cols="6">
         <b-table

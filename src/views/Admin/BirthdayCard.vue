@@ -14,7 +14,7 @@
               </p></b-col
             >
             <b-col cols="2" style="text-align: right">
-              <b-button variant="success" size="sm">Edit</b-button>
+              <b-button variant="success" size="sm" v-if="isAdmin()">Edit</b-button>
             </b-col>
           </b-row>
 
@@ -26,7 +26,7 @@
                 alt=""
                 class="d-block"
               />
-              <b-button variant="success" size="sm" class="mt-3">Change</b-button>
+              <b-button variant="success" size="sm" class="mt-3" v-if="isAdmin()">Change</b-button>
             </b-col>
             <b-col cols="6">
               <p class="mb-2 mt-4">Preview</p>
@@ -41,7 +41,7 @@
         </div>
       </b-col>
 
-      <b-col cols="4">
+      <b-col cols="4" v-if="isAdmin()">
         <b-button variant="success" size="sm">Send</b-button>
         <p style="font-size: .8rem" class="mt-3 ">
           *Birthday card will be sent automatically according to the customer's birthday. The

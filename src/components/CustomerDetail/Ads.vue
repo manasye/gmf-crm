@@ -9,13 +9,18 @@
         <a :href="data.value">{{ data.value }}</a>
       </template>
       <template v-slot:cell(action)="data">
-        <b-button size="sm" variant="success" @click="removeFromActive(data.item)"
+        <b-button size="sm" variant="success" @click="removeFromActive(data.item)" v-if="isAdmin()"
           >Remove from active ads</b-button
         >
       </template>
     </b-table>
 
-    <b-button variant="success" size="sm" class="float-right" @click="showModalAds = true"
+    <b-button
+      variant="success"
+      size="sm"
+      class="float-right"
+      @click="showModalAds = true"
+      v-if="isAdmin()"
       >Create New Ad</b-button
     >
     <h5>Ads List</h5>
@@ -28,7 +33,7 @@
         <a :href="data.value">{{ data.value }}</a>
       </template>
       <template v-slot:cell(action)="data">
-        <b-button size="sm" variant="success" @click="addToActive(data.item)"
+        <b-button size="sm" variant="success" @click="addToActive(data.item)" v-if="isAdmin()"
           >Add to active ads</b-button
         >
         &nbsp;&nbsp;
@@ -67,6 +72,7 @@
 
 <script>
 import axios from "axios";
+import { isAdmin } from "../../utility/func";
 
 export default {
   mounted() {
@@ -126,11 +132,11 @@ export default {
     },
     getAdList() {
       axios
-        .get("/ads/read")
+        .get(`/ads/readinactive/${this.$route.params.id}`)
         .then(({ data }) => {
           this.adList = data.data.map(el => {
             let o = Object.assign({}, el);
-            o.action = "a";
+            if (isAdmin()) o.action = "a";
             return o;
           });
         })
@@ -142,7 +148,7 @@ export default {
         .then(({ data }) => {
           this.activeAds = data.data.map(el => {
             let o = Object.assign({}, el);
-            o.action = "a";
+            if (isAdmin()) o.action = "a";
             return o;
           });
         })

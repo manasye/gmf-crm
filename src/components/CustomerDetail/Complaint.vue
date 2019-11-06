@@ -104,7 +104,9 @@ export default {
           return "primary";
       }
     },
-    showComplaint() {}
+    showComplaint(row) {
+      this.$store.dispatch("goToPage", `/complaint/${row.complaint_id}`);
+    }
   },
   computed: {
     rows() {

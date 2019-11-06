@@ -56,15 +56,45 @@
 
 <script>
 import { perPageOptions } from "@/utility/globalVar.js";
+import axios from "axios";
 
 export default {
+  mounted() {
+    axios
+      .get("/complaint/read")
+      .then(res => {
+        this.complaints = res.data.data;
+      })
+      .catch(() => {});
+  },
   data() {
     return {
       selectedStatus: null,
       selectedSender: null,
       selectedCompany: null,
       selectedDept: null,
-      statusOptions: [],
+      statusOptions: [
+        {
+          value: null,
+          text: "Select status"
+        },
+        {
+          value: "Open",
+          text: "Open"
+        },
+        {
+          value: "Receive",
+          text: "Receive"
+        },
+        {
+          value: "On Progress",
+          text: "On Progress"
+        },
+        {
+          value: "Closed",
+          text: "Closed"
+        }
+      ],
       senderOptions: [],
       companyOptions: [],
       deptOptions: [],
@@ -80,17 +110,7 @@ export default {
         { key: "subject", sortable: true },
         { key: "status", sortable: true }
       ],
-      complaints: [
-        {
-          complaint_id: "CND",
-          date: "23/7/19",
-          company: "a",
-          sender: "a",
-          service: "a",
-          subject: "aa",
-          status: "Receive"
-        }
-      ]
+      complaints: []
     };
   },
   methods: {

@@ -4,7 +4,7 @@
       <navbar></navbar>
     </div>
     <router-view />
-    <chat v-if="role === 'customer'"></chat>
+    <chat v-if="role === 'Customer'"></chat>
     <modal name="modal" :adaptive="true" width="90%" height="auto" :maxWidth="700">
       <img src="https://www.urbansplash.co.uk/images/placeholder-16-9.jpg" alt />
     </modal>

@@ -5,24 +5,24 @@
       <b-row>
         <b-col cols="4" md="2" class="mb-3 mb-md-0">
           <p class="mb-1">Company</p>
-          <p class="mb-0 font-weight-bold">John</p>
+          <p class="mb-0 font-weight-bold">{{ details.company || "" }}</p>
         </b-col>
         <b-col cols="4" md="2" class="mb-3 mb-md-0">
           <p class="mb-1">Sender</p>
-          <p class="mb-0 font-weight-bold">John</p>
+          <p class="mb-0 font-weight-bold">{{ details.sender || "" }}</p>
         </b-col>
         <b-col cols="8" md="3" class="mb-3 mb-md-0">
           <p class="mb-1">Feedback Submitted</p>
-          <p class="mb-0 font-weight-bold">20 May 2019</p>
+          <p class="mb-0 font-weight-bold">{{ details.date || "" }}</p>
         </b-col>
         <b-col cols="4" md="2" class="mb-md-0">
           <p class="mb-1">Department</p>
-          <p class="mb-0 font-weight-bold">Base Maintenance</p>
+          <p class="mb-0 font-weight-bold">{{ details.project_type || "" }}</p>
         </b-col>
         <b-col cols="4" md="2" class="mb-md-0">
           <p class="mb-1 mb-md-0">Rating</p>
           <star-rating
-            :rating="rating"
+            :rating="details.rating || ''"
             read-only
             :show-rating="false"
             :star-size="25"
@@ -42,9 +42,7 @@
       </div>
       <p class="font-weight-bold mb-1">Remark</p>
       <p class="mb-0">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos perferendis enim aspernatur
-        minus. Nihil mollitia ducimus, illum cumque ut minima, maiores quibusdam quis distinctio
-        adipisci sapiente aperiam, doloremque est temporibus!
+       {{details.remark}}
       </p>
     </div>
   </b-container>
@@ -52,8 +50,17 @@
 
 <script>
 import StarRating from "vue-star-rating";
+import axios from "axios";
 
 export default {
+  mounted() {
+    axios
+      .get(`/feedbackproject/edit/${this.$route.params.id}`)
+      .then(res => {
+        this.details = res.data.data[0];
+      })
+      .catch(() => {});
+  },
   data() {
     return {
       breadcrumbs: [
@@ -66,7 +73,8 @@ export default {
           active: true
         }
       ],
-      rating: 5
+      rating: 5,
+      details: {}
     };
   },
   components: {

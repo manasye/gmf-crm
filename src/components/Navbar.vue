@@ -84,7 +84,7 @@
                 alt
                 class="navbar-img-expand mb-3"
               />
-              <p class="mb-2 text-center">John Henderson</p>
+              <p class="mb-2 text-center">{{ username }}</p>
               <b-button variant="primary" size="sm" class="d-block mx-auto mb-3" @click="logout"
                 >LOG OUT</b-button
               >
@@ -240,6 +240,9 @@ export default {
     },
     role() {
       return localStorage.getItem("role");
+    },
+    username() {
+      return localStorage.getItem("username");
     }
   },
   components: { Datepicker }

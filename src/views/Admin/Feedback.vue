@@ -59,8 +59,17 @@
 <script>
 import { perPageOptions } from "@/utility/globalVar.js";
 import StarRating from "vue-star-rating";
+import axios from "axios";
 
 export default {
+  mounted() {
+    axios
+      .get("/feedbackproject/read")
+      .then(res => {
+        this.feedbacks = res.data.data;
+      })
+      .catch(() => {});
+  },
   data() {
     return {
       selectedProject: null,
@@ -73,30 +82,20 @@ export default {
       perPageOptions,
       perPage: "10",
       feedbackFields: [
-        { key: "feedback_id", sortable: true },
+        { key: "feedback_project_id", label: "Feedback ID", sortable: true },
         { key: "date", sortable: true },
         { key: "company", sortable: true },
         { key: "sender", sortable: true },
-        { key: "project_types", sortable: true },
+        { key: "project_type", sortable: true },
         { key: "subject", sortable: true },
         { key: "rating", sortable: true }
       ],
-      feedbacks: [
-        {
-          feedback_id: "CND",
-          date: "23/7/19",
-          company: "23/7/19",
-          sender: "a",
-          project_types: "a",
-          subject: "aa",
-          rating: "5"
-        }
-      ]
+      feedbacks: []
     };
   },
   methods: {
     showFeedback(row) {
-      this.$store.dispatch("goToPage", `/feedback-admin/${row.feedback_id}`);
+      this.$store.dispatch("goToPage", `/feedback-admin/${row.feedback_project_id}`);
     },
     getVariantBadge(status) {
       switch (status) {

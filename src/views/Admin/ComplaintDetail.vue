@@ -6,19 +6,30 @@
         <b-col
           cols="4"
           md="2"
-          v-for="(h, i) in headers"
+          v-for="(value, key, i) in headers"
           class="mb-md-0"
           :class="{ 'mb-3': i === 1 }"
           :key="i"
         >
-          <p class="mb-1">{{ h.key }}</p>
-          <p class="mb-0 font-weight-bold">{{ h.value }}</p>
+          <p class="mb-1">{{ convertSnakeCaseToText(key) }}</p>
+          <p class="mb-0 font-weight-bold">{{ value || "-" }}</p>
         </b-col>
         <b-col cols="4" md="3" class="mb-md-0">
           <p class="mb-1">Status</p>
-          <p class="mb-0" style="font-size: .6rem">
-            <b-badge :variant="getVariantBadge('open')" style="font-size: .75rem">OPEN</b-badge
+          <p class="mb-0" style="font-size: .6rem" v-if="isAdmin()">
+            <b-badge
+              :variant="getVariantBadge(complaintDetail.status)"
+              style="font-size: .75rem; text-transform: uppercase"
+              @click="showModal = true"
+              >{{ complaintDetail.status }}</b-badge
             >&nbsp;&nbsp;*click to change status
+          </p>
+          <p class="mb-0" style="font-size: .6rem" v-else>
+            <b-badge
+              :variant="getVariantBadge(complaintDetail.status)"
+              style="font-size: .75rem; text-transform: uppercase"
+              >{{ complaintDetail.status }}</b-badge
+            >
           </p>
         </b-col>
       </b-row>
@@ -60,13 +71,30 @@
         max-rows="6"
         class="mb-4"
       ></b-form-textarea>
-      <b-button variant="success" @click="showReplyTextArea = !showReplyTextArea">REPLY</b-button>
+      <b-button variant="success" @click="showReplyTextArea = !showReplyTextArea" v-if="isAdmin()"
+        >REPLY</b-button
+      >
+
+      <b-modal v-model="showModal" centered title="Edit Status" @ok="changeStatus">
+        <b-row>
+          <b-col cols="4"> <label class="mt-2">Status</label></b-col>
+          <b-col cols="8" class="mb-3">
+            <b-form-select
+              v-model="complaintDetail.status"
+              :options="statusOptions"
+            ></b-form-select> </b-col></b-row
+      ></b-modal>
     </div>
   </b-container>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  mounted() {
+    this.getDetail();
+  },
   data() {
     return {
       breadcrumbs: [
@@ -81,22 +109,35 @@ export default {
       ],
       showReplyTextArea: false,
       replyText: null,
-      headers: [
+      headers: {
+        company: "",
+        sender: "",
+        complaint_submitted: "",
+        complaint_closed: ""
+      },
+      showModal: false,
+      status: null,
+      complaintDetail: null,
+      statusOptions: [
         {
-          key: "Sender",
-          value: "John Henderson"
+          value: null,
+          text: "Select status"
         },
         {
-          key: "Sender",
-          value: "John Henderson"
+          value: "Open",
+          text: "Open"
         },
         {
-          key: "Sender",
-          value: "John Henderson"
+          value: "Receive",
+          text: "Receive"
         },
         {
-          key: "Sender",
-          value: "John Henderson"
+          value: "On Progress",
+          text: "On Progress"
+        },
+        {
+          value: "Closed",
+          text: "Closed"
         }
       ]
     };
@@ -113,6 +154,27 @@ export default {
         default:
           return "primary";
       }
+    },
+    changeStatus() {
+      axios
+        .post("/complaint/update", this.complaintDetail)
+        .then(res => {
+          this.getDetail();
+        })
+        .catch(() => {});
+    },
+    getDetail() {
+      axios
+        .get(`/complaint/edit/${this.$route.params.id}`)
+        .then(res => {
+          const data = res.data.data[0];
+          this.complaintDetail = data;
+          this.headers.company = data.company_id;
+          this.headers.sender = data.sender;
+          this.headers.complaint_submitted = data.date;
+          this.headers.complaint_closed = data.closed;
+        })
+        .catch(() => {});
     }
   }
 };

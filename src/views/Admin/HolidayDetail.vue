@@ -14,7 +14,7 @@
               </p></b-col
             >
             <b-col cols="2" style="text-align: right">
-              <b-button variant="success" size="sm">Edit</b-button>
+              <b-button variant="success" size="sm" v-if="isAdmin()">Edit</b-button>
             </b-col>
           </b-row>
 
@@ -28,7 +28,7 @@
         </div>
       </b-col>
 
-      <b-col cols="4">
+      <b-col cols="4" v-if="isAdmin()">
         <p class="mb-2">Send Date</p>
         <datepicker v-model="sendDate"></datepicker>
         <b-button variant="success" size="sm" class="mt-4">Send</b-button>

@@ -1,6 +1,6 @@
 <template>
   <div style="margin-top: 65px">
-    <div class="add-service">
+    <div class="add-service" v-if="isAdmin()">
       <b-row>
         <b-col cols="6"><p class="mb-0 mt-1">GMF Services</p></b-col>
         <b-col cols="6" style="text-align: right">
@@ -30,7 +30,7 @@
             <h2>{{ service.title.split(" ")[service.title.split(" ").length - 1] }}</h2>
             <b-button variant="primary" size="sm" class="mt-4">Explore</b-button>
             <br />
-            <b-button variant="success" size="sm" class="mt-3">Edit</b-button>
+            <b-button variant="success" size="sm" class="mt-3" v-if="isAdmin()">Edit</b-button>
           </b-carousel-slide>
         </b-carousel>
       </b-col>

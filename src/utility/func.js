@@ -18,3 +18,7 @@ export const convertSnakeCaseToText = text => {
 export const getRole = () => {
   return localStorage.getItem("role");
 };
+
+export const isAdmin = () => {
+  return localStorage.getItem("role") === "Admin";
+};

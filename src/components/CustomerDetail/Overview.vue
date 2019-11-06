@@ -17,6 +17,7 @@
         variant="success"
         class="float-right"
         size="sm"
+        v-if="adminRole"
         @click="
           () => {
             showModalUser = true;
@@ -45,6 +46,7 @@
         </template>
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
+            v-if="adminRole"
             icon="pen"
             style="cursor: pointer"
             @click="editPerson(data.item)"
@@ -56,6 +58,7 @@
         variant="success"
         class="float-right"
         size="sm"
+        v-if="adminRole"
         @click="
           () => {
             showModalUser = true;
@@ -84,6 +87,7 @@
         </template>
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
+            v-if="adminRole"
             icon="pen"
             style="cursor: pointer"
             @click="editTech(data.item)"
@@ -95,6 +99,7 @@
         variant="success"
         class="float-right"
         size="sm"
+        v-if="adminRole"
         @click="
           () => {
             showModalUser = true;
@@ -107,6 +112,7 @@
       <b-table style="margin-top: 20px;" striped hover responsive :items="cps" :fields="cpField">
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
+            v-if="adminRole"
             icon="pen"
             style="cursor: pointer"
             @click="editCp(data.item)"
@@ -115,7 +121,7 @@
       </b-table>
     </b-col>
 
-    <b-modal v-model="showModalUser" centered>
+    <b-modal v-model="showModalUser" centered title="Manage Account">
       <b-row>
         <b-col cols="4"> <label class="mt-2">Name</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -295,7 +301,12 @@ export default {
         .catch(() => {});
     }
   },
-  props: ["id"]
+  props: ["id"],
+  computed: {
+    adminRole() {
+      return localStorage.getItem("role") === "Admin";
+    }
+  }
 };
 </script>
 

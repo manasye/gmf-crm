@@ -5,18 +5,22 @@
     <b-row>
       <b-col cols="8">
         <div class="card-wrapper">
-          <h5>SUBJECT</h5>
+          <p class="mb-2">Subject</p>
           <b-form-input v-model="subject" placeholder="Enter your subject"></b-form-input>
-          <b-row class="mt-2">
-            <b-col cols="10">
-              <p style="font-size: .8rem" class="mb-0 ">
-                Permalink : <a :href="permalink">{{ permalink }}</a>
-              </p></b-col
-            >
-            <b-col cols="2" style="text-align: right">
-              <b-button variant="success" size="sm">Edit</b-button>
-            </b-col>
-          </b-row>
+
+          <p class="mt-3 mb-2">Permalink</p>
+          <b-form-input v-model="permalink" placeholder="Enter your subject"></b-form-input>
+
+          <!--          <b-row class="mt-2">-->
+          <!--            <b-col cols="10">-->
+          <!--              <p style="font-size: .8rem" class="mb-0 ">-->
+          <!--                Permalink : <a :href="permalink">{{ permalink }}</a>-->
+          <!--              </p></b-col-->
+          <!--            >-->
+          <!--            <b-col cols="2" style="text-align: right">-->
+          <!--              <b-button variant="success" size="sm" v-if="isAdmin()">Edit</b-button>-->
+          <!--            </b-col>-->
+          <!--          </b-row>-->
 
           <p class="mb-2 mt-4">Preview</p>
           <img
@@ -27,10 +31,10 @@
         </div>
       </b-col>
 
-      <b-col cols="4">
-        <b-button variant="success" size="sm">Edit</b-button>
-        <br />
-        <b-button variant="success" size="sm" class="mt-4">Send</b-button>
+      <b-col cols="4" v-if="isAdmin()">
+        <!--        <b-button variant="success" size="sm " class="mb-4">Edit</b-button>-->
+        <!--        <br />-->
+        <b-button variant="success" size="sm" @click="sendNews">Send</b-button>
         <p style="font-size: .8rem" class="mt-3 ">
           *The newsletter will be sent immediately to customer's CRM application and email.
         </p>
@@ -40,13 +44,26 @@
 </template>
 
 <script>
+import axios from "axios";
+import swal from "sweetalert";
+
 export default {
   data() {
     return {
-      subject: null,
-      permalink: "https://drive.google.com/drive/folders/1vUr3tz9HMMkTOgoO0mb6SOMjWSZuilvg",
+      subject: "",
+      permalink: "",
       sendDate: null
     };
+  },
+  methods: {
+    sendNews() {
+      axios
+        .post("/newsletter/update", { subject: this.subject, permalink: this.permalink })
+        .then(res => {
+          swal("Success", "Newsletter successfully sent", "success");
+        })
+        .catch(() => {});
+    }
   }
 };
 </script>

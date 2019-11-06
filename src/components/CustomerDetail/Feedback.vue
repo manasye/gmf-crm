@@ -86,23 +86,16 @@ export default {
         { key: "project_type", sortable: true },
         { key: "rating", sortable: true }
       ],
-      feedbacks: [
-        {
-          feedback_id: "CND",
-          date: "23/7/19",
-          sender: "a",
-          location: "lorem",
-          project_type: "a",
-          rating: 1
-        }
-      ]
+      feedbacks: []
     };
   },
   components: {
     StarRating
   },
   methods: {
-    showFeedback() {}
+    showFeedback(row) {
+      this.$store.dispatch("goToPage", `/feedback-admin/${row.feedback_project_id}`);
+    }
   },
   computed: {
     rows() {

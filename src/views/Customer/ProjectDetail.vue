@@ -1,11 +1,18 @@
 <template>
   <b-container fluid class="container-app">
-    <Header :title="$route.params.id" :breadcrumbs="breadcrumbs" data-intro="aa"></Header>
+    <Header :title="title" :breadcrumbs="breadcrumbs" data-intro="aa"></Header>
     <div class="detail-header">
       <b-row>
-        <b-col cols="4" md="2" v-for="i in 6" class="mb-md-0" :class="{ 'mb-3': i === 1 }" :key="i">
-          <p>Company</p>
-          <p class="mb-0 font-weight-bold">VIETNAM AIRLINES</p>
+        <b-col
+          cols="4"
+          md="2"
+          v-for="(value, name, i) in header"
+          class="mb-md-0"
+          :class="{ 'mb-3': i === 1 }"
+          :key="name"
+        >
+          <p>{{ convertSnakeCaseToText(name) }}</p>
+          <p class="mb-0 font-weight-bold">{{ value || "-" }}</p>
         </b-col>
       </b-row>
     </div>
@@ -33,6 +40,7 @@
 
 <script>
 import Doughnut from "@/components/DoughnutChart.vue";
+import axios from "axios";
 
 const options = {
   responsive: true,
@@ -50,23 +58,39 @@ export default {
         .introJs()
         .start()
         .oncomplete(() => {
-          console.log("hi");
           this.$store.commit("changeWalkthrough", false);
         });
+    } else {
+      axios
+        .get(`/project/edit/${this.$route.params.id}`)
+        .then(res => {
+          const data = res.data.data[0];
+          this.title = data.name;
+          this.breadcrumbs = [
+            {
+              text: "Project List",
+              href: localStorage.getItem("role") === "admin" ? "/#/project" : "/#/project-customer"
+            },
+            {
+              text: data.name,
+              active: true
+            }
+          ];
+          this.header = {
+            company: "",
+            est_start_date: data.start,
+            est_finish_date: data.finish,
+            location: "",
+            quantity: data.quantity,
+            project_type: data.project_type
+          };
+        })
+        .catch(() => {});
     }
   },
   data() {
     return {
-      breadcrumbs: [
-        {
-          text: "Project List",
-          href: localStorage.getItem("role") === "admin" ? "/#/project" : "/#/project-customer"
-        },
-        {
-          text: this.$route.params.id,
-          active: true
-        }
-      ],
+      breadcrumbs: [],
       options,
       chartData: {
         labels: ["skill1"],
@@ -76,6 +100,15 @@ export default {
             data: [1]
           }
         ]
+      },
+      title: "",
+      header: {
+        company: "",
+        est_start_date: "",
+        est_finish_date: "",
+        location: "",
+        type: "",
+        project_type: ""
       }
     };
   },
