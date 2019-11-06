@@ -50,6 +50,16 @@
 import axios from "axios";
 
 export default {
+  mounted() {
+    console.log("hei");
+    const role = localStorage.getItem("role");
+    if (role) {
+      console.log("hei2");
+      const route = role === "Customer" ? "/project-customer" : "/customer";
+      this.$store.dispatch("goToPage", route);
+    }
+  },
+
   data() {
     return {
       remember: false,
