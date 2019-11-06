@@ -13,7 +13,18 @@
       </div>
     </b-col>
     <b-col cols="9">
-      <b-button variant="success" class="float-right" size="sm">ADD NEW ACCOUNT</b-button>
+      <b-button
+        variant="success"
+        class="float-right"
+        size="sm"
+        @click="
+          () => {
+            showModalUser = true;
+            editedData.customer_role = 'Key Person';
+          }
+        "
+        >ADD NEW ACCOUNT</b-button
+      >
       <h5>KEY PERSON</h5>
       <b-table
         style="margin-top: 20px;"
@@ -41,7 +52,18 @@
         ></template>
       </b-table>
 
-      <b-button variant="success" class="float-right" size="sm">ADD NEW ACCOUNT</b-button>
+      <b-button
+        variant="success"
+        class="float-right"
+        size="sm"
+        @click="
+          () => {
+            showModalUser = true;
+            editedData.customer_role = 'Technical Representative';
+          }
+        "
+        >ADD NEW ACCOUNT</b-button
+      >
       <h5>TECHNICAL REPRESENTATIVE</h5>
       <b-table
         style="margin-top: 20px;"
@@ -52,8 +74,8 @@
         :fields="personField"
         class="mb-5"
       >
-        <template v-slot:cell(password)="data"
-          >{{ displayPass(data.value, data.item.show_pass) }} &nbsp;
+        <template v-slot:cell(pass_raw)="data"
+          >{{ displayPass(data, data.item.show_pass) }} &nbsp;
           <font-awesome-icon
             :icon="data.item.show_pass ? 'eye' : 'eye-slash'"
             style="cursor: pointer"
@@ -69,7 +91,18 @@
         ></template>
       </b-table>
 
-      <b-button variant="success" class="float-right" size="sm">ADD NEW GMF CP</b-button>
+      <b-button
+        variant="success"
+        class="float-right"
+        size="sm"
+        @click="
+          () => {
+            showModalUser = true;
+            editedData.customer_role = 'GMF Contact Person';
+          }
+        "
+        >ADD NEW GMF CP</b-button
+      >
       <h5>GMF CONTACT PERSON</h5>
       <b-table style="margin-top: 20px;" striped hover responsive :items="cps" :fields="cpField">
         <template v-slot:cell(edit)="data">
@@ -81,6 +114,43 @@
         ></template>
       </b-table>
     </b-col>
+
+    <b-modal v-model="showModalUser" centered>
+      <b-row>
+        <b-col cols="4"> <label class="mt-2">Name</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.name"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Position</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.position"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Religion</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.religion"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Birthday</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.birthday"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Email</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.customer_role"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Username</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.username"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Password</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.pass_raw"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Status</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-select v-model="editedData.status" :options="statusOptions"></b-form-select
+        ></b-col>
+      </b-row>
+    </b-modal>
   </b-row>
 </template>
 
@@ -97,10 +167,7 @@ export default {
         })
         .catch(() => {});
 
-      axios
-        .get(`/company/read/${this.$route.params.id}`)
-        .then(res => {})
-        .catch(() => {});
+      this.getUser();
     }
   },
   data() {
@@ -113,7 +180,7 @@ export default {
         "birthday",
         "email",
         "username",
-        "password",
+        { key: "pass_raw", label: "Password" },
         { key: "Edit", label: "" }
       ],
       persons: [
@@ -124,7 +191,7 @@ export default {
           birthday: "a",
           email: "a",
           username: "a",
-          password: "abasbaw",
+          pass_raw: "abasbaw",
           show_pass: false,
           edit: ""
         }
@@ -137,7 +204,7 @@ export default {
           birthday: "a",
           email: "a",
           username: "a",
-          password: "aaaa",
+          pass_raw: "aaaa",
           show_pass: false,
           edit: ""
         }
@@ -151,6 +218,37 @@ export default {
           email: "a",
           edit: ""
         }
+      ],
+      editedData: {
+        name: "",
+        position: "",
+        religion: "",
+        birthday: "",
+        email: "",
+        customer_role: "",
+        username: "",
+        pass_raw: "",
+        role: "",
+        status: ""
+      },
+      showModalUser: false,
+      statusOptions: [
+        {
+          value: null,
+          text: "Select status"
+        },
+        {
+          value: "Active",
+          text: "Active"
+        },
+        {
+          value: "Inactive",
+          text: "Inactive"
+        },
+        {
+          value: "Obsolete",
+          text: "Obsolete"
+        }
       ]
     };
   },
@@ -163,7 +261,39 @@ export default {
     },
     editPerson(person) {},
     editTech(tech) {},
-    editCp(cp) {}
+    editCp(cp) {},
+    getUser() {
+      axios
+        .get(`/company/read/${this.$route.params.id}`)
+        .then(res => {
+          const users = res.data.data;
+          this.persons = users
+            .filter(u => u.customer_role === "Key Person")
+            .map(el => {
+              let o = Object.assign({}, el);
+              o.show_pass = false;
+              o.edit = "";
+              return o;
+            });
+          this.techs = users
+            .filter(u => u.customer_role === "Technical Representative")
+            .map(el => {
+              let o = Object.assign({}, el);
+              o.show_pass = false;
+              o.edit = "";
+              return o;
+            });
+          this.cps = users
+            .filter(u => u.customer_role === "GMF Contact Person")
+            .map(el => {
+              let o = Object.assign({}, el);
+              o.show_pass = false;
+              o.edit = "";
+              return o;
+            });
+        })
+        .catch(() => {});
+    }
   },
   props: ["id"]
 };
