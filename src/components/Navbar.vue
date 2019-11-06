@@ -126,80 +126,76 @@ import axios from "axios";
 
 export default {
   mounted() {
-    if (!this.role) {
-      window.location.href = "/#/login";
+    if (this.role === "Customer") {
+      this.navItems = [
+        {
+          name: "Project",
+          route: "/#/project-customer",
+          icon: "tasks",
+          intro: "PROJECTS <br/> akoakosakoas"
+        },
+        {
+          name: "Information",
+          route: "/#/information-customer",
+          icon: "info-circle",
+          intro: "lorem"
+        },
+        { name: "Profile", route: "/#/profile-customer", icon: "users", intro: "lorem" },
+        { name: "GMF Services", route: "/#/services", icon: "tools", intro: "lorem" },
+        {
+          name: "Your Feedback",
+          route: "/#/feedback-customer",
+          icon: "comment-dots",
+          intro: "lorem",
+          childrens: [
+            {
+              name: "Complaint",
+              route: "/#/feedback-customer"
+            },
+            {
+              name: "Non-project Feedback",
+              route: "/#/feedback-customer-nonproject"
+            }
+          ]
+        }
+      ];
+    } else if (this.role === "Admin" || this.role === "Guest") {
+      this.navItems = [
+        { name: "Customer", route: "/#/customer", icon: "users" },
+        { name: "Project", route: "/#/project", icon: "tasks" },
+        { name: "Message", route: "/#/messages", icon: "comment-dots" },
+        {
+          name: "Complaint",
+          route: "/#/complaint-list",
+          icon: "comment-slash",
+          childrens: [
+            { name: "Complaint List", route: "/#/complaint-list" },
+            { name: "Complaint Trend", route: "/#/complaint-trend" }
+          ]
+        },
+        {
+          name: "Feedback",
+          route: "/#/feedback",
+          icon: "retweet",
+          childrens: [
+            { name: "Feedback List", route: "/#/feedback-list" },
+            { name: "Feedback Trend", route: "/#/feedback-trend" }
+          ]
+        },
+        {
+          name: "Info",
+          route: "/#/information-newsletter",
+          icon: "info-circle",
+          childrens: [
+            { name: "Newsletter", route: "/#/information-newsletter" },
+            { name: "Holiday Card", route: "/#/information-holiday-card" },
+            { name: "Birthday Card", route: "/#/information-birthday-card" }
+          ]
+        },
+        { name: "Services", route: "/#/services", icon: "tools" }
+      ];
     } else {
-      if (this.role === "Customer") {
-        this.navItems = [
-          {
-            name: "Project",
-            route: "/#/project-customer",
-            icon: "tasks",
-            intro: "PROJECTS <br/> akoakosakoas"
-          },
-          {
-            name: "Information",
-            route: "/#/information-customer",
-            icon: "info-circle",
-            intro: "lorem"
-          },
-          { name: "Profile", route: "/#/profile-customer", icon: "users", intro: "lorem" },
-          { name: "GMF Services", route: "/#/services", icon: "tools", intro: "lorem" },
-          {
-            name: "Your Feedback",
-            route: "/#/feedback-customer",
-            icon: "comment-dots",
-            intro: "lorem",
-            childrens: [
-              {
-                name: "Complaint",
-                route: "/#/feedback-customer"
-              },
-              {
-                name: "Non-project Feedback",
-                route: "/#/feedback-customer-nonproject"
-              }
-            ]
-          }
-        ];
-      } else if (this.role === "Admin" || this.role === "Guest") {
-        this.navItems = [
-          { name: "Customer", route: "/#/customer", icon: "users" },
-          { name: "Project", route: "/#/project", icon: "tasks" },
-          { name: "Message", route: "/#/messages", icon: "comment-dots" },
-          {
-            name: "Complaint",
-            route: "/#/complaint-list",
-            icon: "comment-slash",
-            childrens: [
-              { name: "Complaint List", route: "/#/complaint-list" },
-              { name: "Complaint Trend", route: "/#/complaint-trend" }
-            ]
-          },
-          {
-            name: "Feedback",
-            route: "/#/feedback",
-            icon: "retweet",
-            childrens: [
-              { name: "Feedback List", route: "/#/feedback-list" },
-              { name: "Feedback Trend", route: "/#/feedback-trend" }
-            ]
-          },
-          {
-            name: "Info",
-            route: "/#/information-newsletter",
-            icon: "info-circle",
-            childrens: [
-              { name: "Newsletter", route: "/#/information-newsletter" },
-              { name: "Holiday Card", route: "/#/information-holiday-card" },
-              { name: "Birthday Card", route: "/#/information-birthday-card" }
-            ]
-          },
-          { name: "Services", route: "/#/services", icon: "tools" }
-        ];
-      } else {
-        this.$store.dispatch("goToPage", "/#/login");
-      }
+      this.$store.dispatch("goToPage", "/login");
     }
   },
   data() {

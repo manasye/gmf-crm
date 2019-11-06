@@ -7,7 +7,7 @@ export default new Router({
   routes: [
     {
       path: "/",
-      redirect: "/project-customer"
+      redirect: "/login"
     },
     {
       path: "/login",

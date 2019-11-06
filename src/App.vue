@@ -20,6 +20,9 @@ export default {
   mounted() {
     // this.$modal.show("modal");
     // console.log(this.$store.getters.walkthrough);
+    if (!this.role) {
+      this.$store.dispatch("goToPage", "/login");
+    }
   },
   data() {
     return {};
