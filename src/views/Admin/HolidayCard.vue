@@ -23,6 +23,7 @@
       hover
       :items="cards"
       :per-page="perPage"
+      :fields="cardField"
       :current-page="currentPage"
       responsive
       @row-clicked="showCard"
@@ -43,8 +44,17 @@
 
 <script>
 import { perPageOptions } from "@/utility/globalVar.js";
+import axios from "axios";
 
 export default {
+  mounted() {
+    axios
+      .get("/religion/read")
+      .then(res => {
+        this.cards = res.data.data;
+      })
+      .catch(() => {});
+  },
   data() {
     return {
       selectedReligion: null,
@@ -52,14 +62,14 @@ export default {
       currentPage: 1,
       perPageOptions,
       perPage: "10",
-      cards: [
-        {
-          send_date: "a",
-          religion: "Islam",
-          subject: "lorem",
-          permalink: "https://drive.google.com/drive/folders/1RDUTyUPok3uOFb4w83nlM8DSjpk4Kfnh"
-        }
-      ]
+      cardField: [
+        { key: "subject", sortable: true },
+        { key: "image", sortable: true },
+        { key: "religion", sortable: true },
+        { key: "date", sortable: true },
+        { key: "permalink", sortable: true }
+      ],
+      cards: []
     };
   },
   methods: {
