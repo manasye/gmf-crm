@@ -169,7 +169,7 @@ export default {
         .then(res => {
           const data = res.data.data[0];
           this.complaintDetail = data;
-          this.headers.company = data.company_id;
+          this.headers.company = data.company_name;
           this.headers.sender = data.sender;
           this.headers.complaint_submitted = data.date;
           this.headers.complaint_closed = data.closed;

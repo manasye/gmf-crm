@@ -30,7 +30,13 @@ import {
   faPlusCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { convertSnakeCaseToText, getRole, isAdmin, getUsername } from "@/utility/func.js";
+import {
+  shortenText,
+  convertSnakeCaseToText,
+  getRole,
+  isAdmin,
+  getUsername
+} from "@/utility/func.js";
 
 // require styles
 import "bootstrap/dist/css/bootstrap.css";
@@ -59,6 +65,7 @@ axios.defaults.withCredentials = true;
 
 Vue.mixin({
   methods: {
+    shortenText,
     convertSnakeCaseToText,
     getRole,
     isAdmin,

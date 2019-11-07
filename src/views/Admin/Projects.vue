@@ -90,7 +90,7 @@ export default {
       perPageOptions,
       perPage: "10",
       projectFields: [
-        { key: "company", sortable: true },
+        { key: "company_name", label: "Company", sortable: true },
         { key: "name", label: "Project", sortable: true },
         { key: "start", label: "Est Start Date", sortable: true },
         { key: "finish", label: "Est Finish Date", sortable: true },

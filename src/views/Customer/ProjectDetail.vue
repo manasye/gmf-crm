@@ -11,7 +11,7 @@
           :class="{ 'mb-3': i === 1 }"
           :key="name"
         >
-          <p>{{ convertSnakeCaseToText(name) }}</p>
+          <p class="mb-2">{{ convertSnakeCaseToText(name) }}</p>
           <p class="mb-0 font-weight-bold">{{ value || "-" }}</p>
         </b-col>
       </b-row>
@@ -41,6 +41,7 @@
 <script>
 import Doughnut from "@/components/DoughnutChart.vue";
 import axios from "axios";
+import { isAdmin } from "../../utility/func";
 
 const options = {
   responsive: true,
@@ -69,7 +70,7 @@ export default {
           this.breadcrumbs = [
             {
               text: "Project List",
-              href: localStorage.getItem("role") === "admin" ? "/#/project" : "/#/project-customer"
+              href: isAdmin() ? "/#/project" : "/#/project-customer"
             },
             {
               text: data.name,
@@ -77,7 +78,7 @@ export default {
             }
           ];
           this.header = {
-            company: "",
+            company: data.company_name,
             est_start_date: data.start,
             est_finish_date: data.finish,
             location: "",

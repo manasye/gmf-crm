@@ -45,6 +45,9 @@
           v-if="rate.value"
         ></star-rating>
       </template>
+      <template v-slot:cell(remark)="data">
+        {{ shortenText(data.value, 20) }}
+      </template>
     </b-table>
 
     <b-pagination
@@ -87,7 +90,7 @@ export default {
         { key: "company", sortable: true },
         { key: "sender", sortable: true },
         { key: "project_type", sortable: true },
-        { key: "subject", sortable: true },
+        { key: "remark", label: "Subject", sortable: true },
         { key: "rating", sortable: true }
       ],
       feedbacks: []

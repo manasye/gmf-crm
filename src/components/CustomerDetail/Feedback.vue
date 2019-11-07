@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5>Complaint List</h5>
+    <h5 style="font-weight: bold">FEEDBACK LIST</h5>
     <b-row class="mt-4">
       <b-col cols="6" md="2">
         <b-form-select v-model="sender" :options="sendersOptions"></b-form-select>

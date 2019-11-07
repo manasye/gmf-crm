@@ -14,7 +14,7 @@
       </b-row>
     </b-col>
     <b-col cols="12" md="5">
-      <b-row align-v="center" class="row-login">
+      <b-row align-v="center" class="row-login" @keyup.enter="login">
         <div class="r-container">
           <label for="username">Username</label>
           <b-form-input id="username" v-model="username"></b-form-input>
@@ -26,14 +26,14 @@
             v-model="password"
           ></b-form-input>
 
-          <!--          <b-row>-->
-          <!--            <b-col cols="6">-->
-          <!--              <b-form-checkbox v-model="remember" class="mb-4 mb-md-3">Remember Me</b-form-checkbox>-->
-          <!--            </b-col>-->
-          <!--            <b-col cols="6" style="text-align: right">-->
-          <!--              <p @click="console.log('hi')">Forgot Password ?</p>-->
-          <!--            </b-col>-->
-          <!--          </b-row>-->
+          <b-row>
+            <b-col cols="6">
+              <b-form-checkbox v-model="remember" class="mb-4 mb-md-3">Remember Me</b-form-checkbox>
+            </b-col>
+            <!--                      <b-col cols="6" style="text-align: right">-->
+            <!--                        <p @click="console.log('hi')">Forgot Password ?</p>-->
+            <!--                      </b-col>-->
+          </b-row>
 
           <b-button variant="primary" size="lg" style="width: 100%" @click="login" class="mt-3"
             >LOGIN</b-button

@@ -104,7 +104,7 @@ export default {
       complaintFields: [
         { key: "complaint_id", sortable: true },
         { key: "date", sortable: true },
-        { key: "company", sortable: true },
+        { key: "company_name", label: "Company", sortable: true },
         { key: "sender", sortable: true },
         { key: "service", sortable: true },
         { key: "subject", sortable: true },

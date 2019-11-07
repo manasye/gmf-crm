@@ -24,7 +24,7 @@ export default {
     axios
       .get("/login")
       .then(res => {
-        if (res.data.auth) {
+        if (!res.data.auth) {
           this.$store.dispatch("goToPage", "/login");
         }
       })

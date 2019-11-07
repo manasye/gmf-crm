@@ -126,7 +126,6 @@ import axios from "axios";
 
 export default {
   mounted() {
-
     if (this.getRole() === "Customer") {
       this.navItems = [
         {
@@ -195,8 +194,6 @@ export default {
         },
         { name: "Services", route: "/#/services", icon: "tools" }
       ];
-    } else {
-      this.$store.dispatch("goToPage", "/login");
     }
   },
   data() {
