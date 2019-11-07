@@ -18,10 +18,10 @@
         ><b-form-select v-model="perPage" :options="perPageOptions"></b-form-select
       ></b-col>
       <b-col cols="8"></b-col>
-      <b-col cols="2" class="mt-3 text-right" v-if="adminRole"
+      <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
         ><b-button variant="success">Customer Form</b-button></b-col
       >
-      <b-col cols="2" class="mt-3 text-right" v-if="adminRole"
+      <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
         ><b-button variant="success">Add New Customer</b-button></b-col
       >
     </b-row>
@@ -225,9 +225,6 @@ export default {
   computed: {
     rows() {
       return this.customers.length;
-    },
-    adminRole() {
-      return localStorage.getItem("role") === "Admin";
     }
   }
 };

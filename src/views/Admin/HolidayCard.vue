@@ -6,7 +6,9 @@
       <b-col cols="2">
         <b-form-select v-model="selectedReligion" :options="religionOptions"></b-form-select>
       </b-col>
-      <b-col cols="4"></b-col>
+      <b-col cols="4">
+        <b-button variant="success" @click="showModal = true">Add New Holiday Card</b-button>
+      </b-col>
       <b-col cols="6" style="text-align: right">
         <b-row>
           <b-col cols="10" class="d-none d-md-block">
@@ -39,6 +41,30 @@
       :per-page="perPage"
       align="right"
     ></b-pagination>
+
+    <b-modal centered v-model="showModal" @ok="addCard">
+      <b-row>
+        <b-col cols="4"> <label class="mt-2">Subject</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.subject"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Image</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.image"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Date</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.date"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Religion</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.religion"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Permalink</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.permalink"></b-form-input> </b-col
+      ></b-row>
+    </b-modal>
   </b-container>
 </template>
 
@@ -48,12 +74,7 @@ import axios from "axios";
 
 export default {
   mounted() {
-    axios
-      .get("/religion/read")
-      .then(res => {
-        this.cards = res.data.data;
-      })
-      .catch(() => {});
+    this.getCards();
   },
   data() {
     return {
@@ -69,12 +90,36 @@ export default {
         { key: "date", sortable: true },
         { key: "permalink", sortable: true }
       ],
-      cards: []
+      cards: [],
+      showModal: false,
+      editedData: {
+        subject: "",
+        image: "",
+        date: "",
+        religion: "",
+        permalink: ""
+      }
     };
   },
   methods: {
     showCard(row) {
-      this.$store.dispatch("goToPage", `/information-holiday-card/${row.religion}`);
+      this.$store.dispatch("goToPage", `/information-holiday-card/${row.religion_card_id}`);
+    },
+    addCard() {
+      axios
+        .post("/religion/create")
+        .then(res => {
+          this.getCards();
+        })
+        .catch(() => {});
+    },
+    getCards() {
+      axios
+        .get("/religion/read")
+        .then(res => {
+          this.cards = res.data.data;
+        })
+        .catch(() => {});
     }
   },
   computed: {

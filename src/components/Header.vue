@@ -5,7 +5,7 @@
         <b-breadcrumb :items="breadcrumbs" v-if="breadcrumbs.length > 0"></b-breadcrumb>
         <h2>{{ title }}</h2>
       </b-col>
-      <b-col cols="12" md="6" order="1" order-md="2" v-if="this.role === 'Customer'">
+      <b-col cols="12" md="6" order="1" order-md="2" v-if="getRole() === 'Customer'">
         <div class="support">
           <p>SUPPORT</p>
           <img src="../assets/img/call.png" alt /> +62 21 550 8609, M-F 8 AM - 4 PM WIB
@@ -23,11 +23,6 @@ export default {
     title: {},
     breadcrumbs: {
       default: () => []
-    }
-  },
-  computed: {
-    role() {
-      return localStorage.getItem("role");
     }
   }
 };

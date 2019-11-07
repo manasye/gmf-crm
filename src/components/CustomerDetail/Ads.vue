@@ -1,7 +1,17 @@
 <template>
   <div>
     <h5>Active Ads</h5>
-    <b-table style="margin-top: 20px;" striped hover :items="activeAds" responsive class="mb-5">
+    <p class="mb-4" v-if="activeAds.length === 0">No active ads found</p>
+
+    <b-table
+      style="margin-top: 20px;"
+      striped
+      hover
+      :items="activeAds"
+      responsive
+      class="mb-5"
+      v-if="activeAds.length > 0"
+    >
       <template v-slot:cell(image)="data">
         <img :src="data.value" alt="" />
       </template>

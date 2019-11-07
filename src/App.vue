@@ -4,7 +4,7 @@
       <navbar></navbar>
     </div>
     <router-view />
-    <chat v-if="role === 'Customer'"></chat>
+    <chat v-if="getRole() === 'Customer'"></chat>
     <modal name="modal" :adaptive="true" width="90%" height="auto" :maxWidth="700">
       <img src="https://www.urbansplash.co.uk/images/placeholder-16-9.jpg" alt />
     </modal>
@@ -14,15 +14,21 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import Chat from "@/components/Chat.vue";
+import axios from "axios";
 
 export default {
   name: "app",
   mounted() {
     // this.$modal.show("modal");
     // console.log(this.$store.getters.walkthrough);
-    if (!this.role) {
-      this.$store.dispatch("goToPage", "/login");
-    }
+    axios
+      .get("/login")
+      .then(res => {
+        if (res.data.auth) {
+          this.$store.dispatch("goToPage", "/login");
+        }
+      })
+      .catch(() => {});
   },
   data() {
     return {};
@@ -34,9 +40,6 @@ export default {
   computed: {
     activeRoute() {
       return this.$route.name || "";
-    },
-    role() {
-      return localStorage.getItem("role");
     }
   }
 };

@@ -17,11 +17,12 @@
         variant="success"
         class="float-right"
         size="sm"
-        v-if="adminRole"
+        v-if="isAdmin()"
         @click="
           () => {
             showModalUser = true;
             editedData.customer_role = 'Key Person';
+            newUserMode = true;
           }
         "
         >ADD NEW ACCOUNT</b-button
@@ -36,7 +37,7 @@
         :fields="personField"
         class="mb-5"
       >
-        <template v-slot:cell(password)="data"
+        <template v-slot:cell(pass_raw)="data"
           >{{ displayPass(data.value, data.item.show_pass) }} &nbsp;
           <font-awesome-icon
             :icon="data.item.show_pass ? 'eye' : 'eye-slash'"
@@ -46,7 +47,7 @@
         </template>
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
-            v-if="adminRole"
+            v-if="isAdmin()"
             icon="pen"
             style="cursor: pointer"
             @click="editPerson(data.item)"
@@ -58,11 +59,12 @@
         variant="success"
         class="float-right"
         size="sm"
-        v-if="adminRole"
+        v-if="isAdmin()"
         @click="
           () => {
             showModalUser = true;
             editedData.customer_role = 'Technical Representative';
+            newUserMode = true;
           }
         "
         >ADD NEW ACCOUNT</b-button
@@ -78,7 +80,7 @@
         class="mb-5"
       >
         <template v-slot:cell(pass_raw)="data"
-          >{{ displayPass(data, data.item.show_pass) }} &nbsp;
+          >{{ displayPass(data.value, data.item.show_pass) }} &nbsp;
           <font-awesome-icon
             :icon="data.item.show_pass ? 'eye' : 'eye-slash'"
             style="cursor: pointer"
@@ -87,10 +89,10 @@
         </template>
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
-            v-if="adminRole"
+            v-if="isAdmin()"
             icon="pen"
             style="cursor: pointer"
-            @click="editTech(data.item)"
+            @click="editPerson(data.item)"
           ></font-awesome-icon
         ></template>
       </b-table>
@@ -99,11 +101,12 @@
         variant="success"
         class="float-right"
         size="sm"
-        v-if="adminRole"
+        v-if="isAdmin()"
         @click="
           () => {
-            showModalUser = true;
+            showModalCp = true;
             editedData.customer_role = 'GMF Contact Person';
+            newCpMode = true;
           }
         "
         >ADD NEW GMF CP</b-button
@@ -112,7 +115,7 @@
       <b-table style="margin-top: 20px;" striped hover responsive :items="cps" :fields="cpField">
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
-            v-if="adminRole"
+            v-if="isAdmin()"
             icon="pen"
             style="cursor: pointer"
             @click="editCp(data.item)"
@@ -121,7 +124,7 @@
       </b-table>
     </b-col>
 
-    <b-modal v-model="showModalUser" centered title="Manage Account">
+    <b-modal v-model="showModalUser" centered title="Manage Account" @ok="postUser">
       <b-row>
         <b-col cols="4"> <label class="mt-2">Name</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -141,6 +144,10 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Email</label></b-col>
         <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.email"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Customer Role</label></b-col>
+        <b-col cols="8" class="mb-3">
           <b-form-input v-model="editedData.customer_role"></b-form-input>
         </b-col>
         <b-col cols="4"> <label class="mt-2">Username</label></b-col>
@@ -155,6 +162,27 @@
         <b-col cols="8" class="mb-3">
           <b-form-select v-model="editedData.status" :options="statusOptions"></b-form-select
         ></b-col>
+      </b-row>
+    </b-modal>
+
+    <b-modal v-model="showModalCp" centered title="Manage CP" @ok="postCp">
+      <b-row>
+        <b-col cols="4"> <label class="mt-2">Name</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedCp.name"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Phone</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedCp.phone"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Position</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedCp.position"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Email</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedCp.email"></b-form-input>
+        </b-col>
       </b-row>
     </b-modal>
   </b-row>
@@ -174,6 +202,7 @@ export default {
         .catch(() => {});
 
       this.getUser();
+      this.getCp();
     }
   },
   data() {
@@ -189,42 +218,10 @@ export default {
         { key: "pass_raw", label: "Password" },
         { key: "Edit", label: "" }
       ],
-      persons: [
-        {
-          name: "a",
-          position: "a",
-          religion: "a",
-          birthday: "a",
-          email: "a",
-          username: "a",
-          pass_raw: "abasbaw",
-          show_pass: false,
-          edit: ""
-        }
-      ],
-      techs: [
-        {
-          name: "a",
-          position: "a",
-          religion: "a",
-          birthday: "a",
-          email: "a",
-          username: "a",
-          pass_raw: "aaaa",
-          show_pass: false,
-          edit: ""
-        }
-      ],
-      cpField: ["name", "position", "phone_number", "email", { key: "Edit", label: "" }],
-      cps: [
-        {
-          name: "a",
-          position: "a",
-          phone_number: "a",
-          email: "a",
-          edit: ""
-        }
-      ],
+      persons: [],
+      techs: [],
+      cpField: ["name", "position", "phone", "email", { key: "Edit", label: "" }],
+      cps: [],
       editedData: {
         name: "",
         position: "",
@@ -236,6 +233,15 @@ export default {
         pass_raw: "",
         role: "",
         status: ""
+      },
+      editedCp: {
+        gmf_cp_id: 8,
+        name: "Dewi",
+        position: "Staff Marketing",
+        phone: "081273829182",
+        email: "deni@gmail.com",
+        cp_company_id: 3,
+        company_id: 1
       },
       showModalUser: false,
       statusOptions: [
@@ -255,7 +261,10 @@ export default {
           value: "Obsolete",
           text: "Obsolete"
         }
-      ]
+      ],
+      showModalCp: false,
+      newUserMode: false,
+      newCpMode: false
     };
   },
   methods: {
@@ -265,9 +274,16 @@ export default {
       }
       return pass;
     },
-    editPerson(person) {},
-    editTech(tech) {},
-    editCp(cp) {},
+    editPerson(person) {
+      this.editedData = person;
+      this.showModalUser = true;
+      this.newUserMode = false;
+    },
+    editCp(cp) {
+      this.editedCp = cp;
+      this.showModalCp = true;
+      this.newCpMode = false;
+    },
     getUser() {
       axios
         .get(`/company/read/${this.$route.params.id}`)
@@ -282,15 +298,7 @@ export default {
               return o;
             });
           this.techs = users
-            .filter(u => u.customer_role === "Technical Representative")
-            .map(el => {
-              let o = Object.assign({}, el);
-              o.show_pass = false;
-              o.edit = "";
-              return o;
-            });
-          this.cps = users
-            .filter(u => u.customer_role === "GMF Contact Person")
+            .filter(u => u.customer_role === "Tech")
             .map(el => {
               let o = Object.assign({}, el);
               o.show_pass = false;
@@ -299,14 +307,44 @@ export default {
             });
         })
         .catch(() => {});
+    },
+    getCp() {
+      axios
+        .get(`/cp/read/${this.$route.params.id}`)
+        .then(res => {
+          this.cps = res.data.data.map(el => {
+            let o = Object.assign({}, el);
+            o.show_pass = false;
+            o.edit = "";
+            return o;
+          });
+        })
+        .catch(() => {});
+    },
+    postUser() {
+      const url = this.newUserMode ? "/user/create" : "/user/update";
+      axios
+        .post(url, {
+          ...this.editedData,
+          id: this.editedData.user_id,
+          password: this.editedData.pass_raw
+        })
+        .then(res => {
+          this.getUser();
+        })
+        .catch(() => {});
+    },
+    postCp() {
+      const url = this.newCpMode ? "/cp/create" : "/cp/update";
+      axios
+        .post(url, { ...this.editedCp, id: this.editedCp.gmf_cp_id })
+        .then(res => {
+          this.getCp();
+        })
+        .catch(() => {});
     }
   },
-  props: ["id"],
-  computed: {
-    adminRole() {
-      return localStorage.getItem("role") === "Admin";
-    }
-  }
+  props: ["id"]
 };
 </script>
 

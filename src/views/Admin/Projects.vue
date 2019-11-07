@@ -92,8 +92,8 @@ export default {
       projectFields: [
         { key: "company", sortable: true },
         { key: "name", label: "Project", sortable: true },
-        { key: "start", label: "est_start_date", sortable: true },
-        { key: "finish", label: "est_finish_date", sortable: true },
+        { key: "start", label: "Est Start Date", sortable: true },
+        { key: "finish", label: "Est Finish Date", sortable: true },
         { key: "project_type", sortable: true },
         { key: "status", sortable: true },
         { key: "quantity", sortable: true },

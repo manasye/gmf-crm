@@ -27,3 +27,7 @@ export const departments = [
   { name: "Ground Support", value: "a" },
   { name: "Facility / IT / Other Services", value: "a" }
 ];
+
+export const religions = [];
+
+// export const

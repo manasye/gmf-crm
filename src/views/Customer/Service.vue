@@ -4,30 +4,30 @@
       <b-row>
         <b-col cols="6"><p class="mb-0 mt-1">GMF Services</p></b-col>
         <b-col cols="6" style="text-align: right">
-          <b-button variant="success" size="sm">Add New Service</b-button>
+          <b-button variant="success" size="sm" @click="showModal = true">Add New Service</b-button>
         </b-col>
       </b-row>
     </div>
 
     <b-row
       v-for="(service, idx) in services"
-      :key="service.title"
+      :key="service.name"
       no-gutters
       class="mb-md-4 service-card-wrapper"
       style=" "
     >
       <b-col cols="12" md="7" :order-md="idx % 2 === 0 ? '1' : '2'">
         <b-carousel controls indicators background="#ababab">
-          <b-carousel-slide v-for="img in service.thumbnail" :img-src="img" :key="img">
+          <b-carousel-slide :img-src="service.large_image" :key="service.large_image">
             <h1>
               {{
-                service.title
+                service.name
                   .split(" ")
                   .slice(0, -1)
                   .join(" ")
               }}
             </h1>
-            <h2>{{ service.title.split(" ")[service.title.split(" ").length - 1] }}</h2>
+            <h2>{{ service.name.split(" ")[service.name.split(" ").length - 1] }}</h2>
             <b-button variant="primary" size="sm" class="mt-4">Explore</b-button>
             <br />
             <b-button variant="success" size="sm" class="mt-3" v-if="isAdmin()">Edit</b-button>
@@ -38,8 +38,11 @@
       <b-col cols="12" md="5" :order-md="idx % 2 !== 0 ? '1' : '2'">
         <div class="detail-service">
           <b-row class="mb-5">
-            <b-col cols="6" v-for="image in service.images" :key="image">
-              <img :src="image" alt />
+            <b-col cols="6">
+              <img :src="service.small_image1" alt />
+            </b-col>
+            <b-col cols="6">
+              <img :src="service.small_image2" alt />
             </b-col>
           </b-row>
           <hr />
@@ -48,43 +51,53 @@
         </div>
       </b-col>
     </b-row>
+
+    <b-modal v-model="showModal" centered v-if="showModal">
+      <b-row>
+        <b-col cols="4"> <label class="mt-2">Name</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.name"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Detail</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-textarea v-model="editedData.detail" rows="3"></b-form-textarea>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Large Image</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.name"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">First Small Image</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.name"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Second Small Image</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.name"></b-form-input> </b-col
+      ></b-row>
+    </b-modal>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  mounted() {
+    axios
+      .get("/service/read")
+      .then(res => {
+        this.services = res.data.data;
+      })
+      .catch(() => {});
+  },
   data() {
     return {
-      services: [
-        {
-          title: "Engineering Services",
-          route: "",
-          thumbnail: [
-            "https://www.urbansplash.co.uk/images/placeholder-16-9.jpg",
-            "https://www.urbansplash.co.uk/images/placeholder-16-9.jpg"
-          ],
-          images: [
-            "https://www.urbansplash.co.uk/images/placeholder-16-9.jpg",
-            "https://www.urbansplash.co.uk/images/placeholder-16-9.jpg"
-          ],
-          detail:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit quo, quia culpa minus, earum repellendus corrupti ratione quas aperiam at mollitia amet molestiae non porro perspiciatis eveniet optio assumenda consectetur."
-        },
-        {
-          title: "Engineering Services",
-          route: "",
-          thumbnail: [
-            "https://www.urbansplash.co.uk/images/placeholder-16-9.jpg",
-            "https://www.urbansplash.co.uk/images/placeholder-16-9.jpg"
-          ],
-          images: [
-            "https://www.urbansplash.co.uk/images/placeholder-16-9.jpg",
-            "https://www.urbansplash.co.uk/images/placeholder-16-9.jpg"
-          ],
-          detail:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit quo, quia culpa minus, earum repellendus corrupti ratione quas aperiam at mollitia amet molestiae non porro perspiciatis eveniet optio assumenda consectetur."
-        }
-      ]
+      services: [],
+      showModal: false,
+      editedData: {
+        name: "",
+        detail: ""
+      }
     };
   }
 };

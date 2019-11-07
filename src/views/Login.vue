@@ -51,11 +51,15 @@ import axios from "axios";
 
 export default {
   mounted() {
-    const role = localStorage.getItem("role");
-    if (role) {
-      const route = role === "Customer" ? "/project-customer" : "/customer";
-      this.$store.dispatch("goToPage", route);
-    }
+    axios
+      .get("/login")
+      .then(res => {
+        if (res.data.auth) {
+          const route = this.getRole() === "Customer" ? "/project-customer" : "/customer";
+          this.$store.dispatch("goToPage", route);
+        }
+      })
+      .catch(() => {});
   },
 
   data() {
@@ -75,6 +79,9 @@ export default {
           const role = res.data.data_user.role;
           localStorage.setItem("role", role);
           localStorage.setItem("username", res.data.data_user.username);
+          localStorage.setItem("company_id", res.data.detail_user.company_id);
+          localStorage.setItem("user_id", res.data.detail_user.user_id);
+          console.log(res.data);
           const route = role === "Customer" ? "/project-customer" : "/customer";
           this.$store.dispatch("goToPage", route);
         })

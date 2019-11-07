@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="md" type="dark" class="navbar" fixed="top">
-      <b-navbar-brand :href="this.role === 'Customer' ? '/#/project-customer' : '/#/customer'">
+      <b-navbar-brand :href="getRole() === 'Customer' ? '/#/project-customer' : '/#/customer'">
         <img src="../assets/img/logo-white.png" alt class="logo-img" />
       </b-navbar-brand>
 
@@ -49,7 +49,7 @@
             <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
           </b-nav-form>
 
-          <b-nav-item v-if="this.role === 'Customer'">
+          <b-nav-item v-if="getRole() === 'Customer'">
             <img
               src="../assets/img/help.png"
               class="navbar-img"
@@ -84,7 +84,7 @@
                 alt
                 class="navbar-img-expand mb-3"
               />
-              <p class="mb-2 text-center">{{ username }}</p>
+              <p class="mb-2 text-center">{{ getUsername() }}</p>
               <b-button variant="primary" size="sm" class="d-block mx-auto mb-3" @click="logout"
                 >LOG OUT</b-button
               >
@@ -126,7 +126,8 @@ import axios from "axios";
 
 export default {
   mounted() {
-    if (this.role === "Customer") {
+
+    if (this.getRole() === "Customer") {
       this.navItems = [
         {
           name: "Project",
@@ -159,7 +160,7 @@ export default {
           ]
         }
       ];
-    } else if (this.role === "Admin" || this.role === "Guest") {
+    } else if (this.getRole() === "Admin" || this.getRole() === "Guest") {
       this.navItems = [
         { name: "Customer", route: "/#/customer", icon: "users" },
         { name: "Project", route: "/#/project", icon: "tasks" },
@@ -238,12 +239,6 @@ export default {
   computed: {
     activeRoutes() {
       return this.$route.name || "";
-    },
-    role() {
-      return localStorage.getItem("role");
-    },
-    username() {
-      return localStorage.getItem("username");
     }
   },
   components: { Datepicker }

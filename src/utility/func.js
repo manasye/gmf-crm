@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const shortenText = (text, limit) => {
   if (text.length > limit) {
     return text.slice(0, limit) + "...";
@@ -21,4 +23,12 @@ export const getRole = () => {
 
 export const isAdmin = () => {
   return localStorage.getItem("role") === "Admin";
+};
+
+export const getUsername = () => {
+  return localStorage.getItem("username");
+};
+
+export const getCompanyId = () => {
+  return localStorage.getItem("company_id");
 };

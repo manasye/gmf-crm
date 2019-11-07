@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header :title="$route.params.id" :breadcrumbs="breadcrumbs"></Header>
+    <Header :title="title" :breadcrumbs="breadcrumbs"></Header>
 
     <b-row>
       <b-col cols="8">
@@ -10,11 +10,13 @@
           <b-row class="mt-2">
             <b-col cols="10">
               <p style="font-size: .8rem" class="mb-0 ">
-                Permalink : <a :href="permalink">{{ permalink }}</a>
+                Permalink : <a :href="detail.permalink">{{ detail.permalink }}</a>
               </p></b-col
             >
             <b-col cols="2" style="text-align: right">
-              <b-button variant="success" size="sm" v-if="isAdmin()">Edit</b-button>
+              <b-button variant="success" size="sm" v-if="isAdmin()" @click="showEdit = true"
+                >Edit</b-button
+              >
             </b-col>
           </b-row>
 
@@ -38,32 +40,63 @@
         </p>
       </b-col>
     </b-row>
+
+    <b-modal v-model="showEdit" centered size="lg" @ok="editCard" v-if="showEdit">
+      <b-row>
+        <b-col cols="3"> <label class="mt-2">Permalink</label></b-col>
+        <b-col cols="9" class="mb-3">
+          <b-form-input v-model="detail.permalink"></b-form-input> </b-col
+      ></b-row>
+    </b-modal>
   </b-container>
 </template>
 
 <script>
 import Datepicker from "vuejs-datepicker";
+import axios from "axios";
 
 export default {
+  mounted() {
+    axios
+      .get(`/religion/edit/${this.$route.params.id}`)
+      .then(res => {
+        const data = res.data.data[0];
+        this.title = data.subject;
+        this.subject = data.subject;
+        this.detail = data;
+        this.breadcrumbs = [
+          {
+            text: "Holiday Card",
+            href: "/#/information-holiday-card"
+          },
+          {
+            text: data.subject,
+            active: true
+          }
+        ];
+      })
+      .catch(() => {});
+  },
   data() {
     return {
-      breadcrumbs: [
-        {
-          text: "Holiday Card",
-          href: "/#/information-holiday-card"
-        },
-        {
-          text: this.$route.params.id,
-          active: true
-        }
-      ],
+      breadcrumbs: [],
       subject: null,
-      permalink: "https://drive.google.com/drive/folders/1vUr3tz9HMMkTOgoO0mb6SOMjWSZuilvg",
-      sendDate: null
+      sendDate: null,
+      title: null,
+      showEdit: false,
+      detail: {}
     };
   },
   components: {
     Datepicker
+  },
+  methods: {
+    editCard() {
+      axios
+        .post("/religion/update", this.detail)
+        .then(res => {})
+        .catch(() => {});
+    }
   }
 };
 </script>
