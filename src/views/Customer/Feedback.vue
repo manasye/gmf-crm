@@ -4,13 +4,13 @@
 
     <b-row class="mt-0 mt-md-4">
       <b-col cols="6" md="2">
-        <b-form-select v-model="sender" :options="sendersOptions"></b-form-select>
+        <b-form-select v-model="selectVal.sender" :options="sendersOptions"></b-form-select>
       </b-col>
       <b-col cols="6" md="2">
-        <b-form-select v-model="dept" :options="deptOptions"></b-form-select>
+        <b-form-select v-model="selectVal.service" :options="deptOptions"></b-form-select>
       </b-col>
       <b-col cols="6" md="2" class="mt-3 mt-md-0 mb-3 mb-md-0">
-        <b-form-select v-model="status" :options="statusOptions"></b-form-select>
+        <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
       </b-col>
       <b-col cols="0" md="1"></b-col>
       <b-col cols="8" md="2" class="mt-2">Numbers of item per page</b-col>
@@ -28,12 +28,13 @@
       style="margin-top: 20px;"
       striped
       hover
-      :items="feedbacks"
+      :items="filteredItems"
       :fields="feedbackFields"
       :per-page="perPage"
       :current-page="currentPage"
       responsive
       @row-clicked="showFeedback"
+      show-empty
     >
       <template v-slot:cell(status)="data">
         <b-badge :variant="getVariantBadge(data.value)">
@@ -47,7 +48,7 @@
 </template>
 
 <script>
-import { perPageOptions } from "@/utility/globalVar.js";
+import { perPageOptions, departments, statusComplaints } from "@/utility/globalVar.js";
 import axios from "axios";
 
 export default {
@@ -61,15 +62,24 @@ export default {
   },
   data() {
     return {
-      sendersOptions: [],
-      deptOptions: [],
-      statusOptions: [],
+      sendersOptions: [
+        {
+          value: null,
+          text: "All Senders"
+        }
+      ],
+      deptOptions: [
+        {
+          value: null,
+          text: "All Services"
+        },
+        ...departments
+      ],
+      statusOptions: statusComplaints,
       perPageOptions,
       perPage: "10",
       currentPage: 1,
-      sender: null,
-      dept: null,
-      status: null,
+      selectVal: { sender: null, service: null, status: null },
       feedbackFields: [
         { key: "complaint_id", sortable: true },
         { key: "date", sortable: true },
@@ -101,6 +111,18 @@ export default {
   computed: {
     rows() {
       return this.feedbacks.length;
+    },
+    filteredItems() {
+      return this.feedbacks.filter(item => {
+        let keep = true;
+        this.fieldKeys.forEach(key => {
+          keep = keep && (!this.selectVal[key] || item[key] === this.selectVal[key]);
+        });
+        return keep;
+      });
+    },
+    fieldKeys() {
+      return Object.keys(this.feedbacks[0]);
     }
   }
 };

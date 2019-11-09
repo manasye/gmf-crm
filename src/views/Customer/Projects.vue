@@ -3,8 +3,14 @@
     <Header title="PROJECT LIST" data-intro="PRoject"></Header>
 
     <b-row>
-      <b-col cols="6" md="3">
-        <b-form-select v-model="selectedStatus" :options="statusOptions"></b-form-select>
+      <b-col cols="6" md="2" class="mb-3 mb-md-0">
+        <b-form-select v-model="selectVal.location" :options="locationOptions"></b-form-select>
+      </b-col>
+      <b-col cols="6" md="2">
+        <b-form-select v-model="selectVal.project_type" :options="typeOptions"></b-form-select>
+      </b-col>
+      <b-col cols="6" md="2">
+        <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
       </b-col>
       <b-col cols="6" md="3">
         <b-row>
@@ -22,12 +28,13 @@
       style="margin-top: 20px;"
       striped
       hover
-      :items="projects"
+      :items="filteredItems"
       :fields="projectFields"
       :per-page="perPage"
       :current-page="currentPage"
       responsive
       @row-clicked="showProjectDetail"
+      show-empty
     >
       <template v-slot:cell(status)="data">
         <b-badge v-if="data.value === 'Closed'" variant="danger">
@@ -66,7 +73,7 @@
 
 <script>
 import StarRating from "vue-star-rating";
-import { perPageOptions } from "@/utility/globalVar.js";
+import { perPageOptions, statusProjects, departments } from "@/utility/globalVar.js";
 import axios from "axios";
 
 export default {
@@ -81,32 +88,36 @@ export default {
   },
   data() {
     return {
-      statusOptions: [
+      statusOptions: statusProjects,
+      typeOptions: [
         {
           value: null,
-          text: "All Status"
+          text: "All Project Types"
         },
+        ...departments
+      ],
+      locationOptions: [
         {
-          value: "a",
-          text: "Closed"
-        },
-        {
-          value: "a",
-          text: "Open"
+          value: null,
+          text: "All Locations"
         }
       ],
-      selectedStatus: null,
+      selectVal: {
+        location: null,
+        project_type: null,
+        status: null
+      },
       perPageOptions,
       perPage: "10",
       currentPage: 1,
       projectFields: [
-        "project_id",
-        "name",
-        { key: "start", label: "Start Date", sortable: true },
-        { key: "finish", label: "Finish Date", sortable: true },
-        "location",
+        { key: "project_id", sortable: true },
+        { key: "name", sortable: true },
+        { key: "start", label: "Est Start Date", sortable: true },
+        { key: "finish", label: "Est Finish Date", sortable: true },
+        { key: "project_type", sortable: true },
         { key: "status", label: "Status" },
-        "project_type",
+        { key: "quantity", label: "Qty", sortable: true },
         { key: "rating", label: "Rating", sortable: true }
       ],
       projects: []
@@ -118,6 +129,18 @@ export default {
   computed: {
     rows() {
       return this.projects.length;
+    },
+    filteredItems() {
+      return this.projects.filter(item => {
+        let keep = true;
+        this.fieldKeys.forEach(key => {
+          keep = keep && (!this.selectVal[key] || item[key] === this.selectVal[key]);
+        });
+        return keep;
+      });
+    },
+    fieldKeys() {
+      return Object.keys(this.projects[0]);
     }
   },
   methods: {

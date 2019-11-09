@@ -6,18 +6,21 @@
         <b-col
           cols="4"
           md="2"
-          v-for="(h, i) in headers"
+          v-for="(value, key, i) in headers"
           class="mb-md-0"
           :class="{ 'mb-3': i === 1 }"
-          :key="i"
+          :key="key"
         >
-          <p class="mb-1">{{ h.key }}</p>
-          <p class="mb-0 font-weight-bold">{{ h.value }}</p>
+          <p class="mb-1">{{ convertSnakeCaseToText(key) }}</p>
+          <p class="mb-0 font-weight-bold">{{ value }}</p>
         </b-col>
         <b-col cols="4" md="3" class="mb-md-0">
           <p class="mb-1">Status</p>
           <p class="mb-0" style="font-size: .6rem">
-            <b-badge :variant="getVariantBadge('open')" style="font-size: .75rem">OPEN</b-badge
+            <b-badge
+              :variant="getVariantBadge(detail.status)"
+              style="font-size: .75rem; text-transform: uppercase"
+              >{{ detail.status }}</b-badge
             >&nbsp;
           </p>
         </b-col>
@@ -25,12 +28,10 @@
     </div>
     <div class="detail-info">
       <div class="detail mt-3 mt-md-0">
-        <h5 class="title">JUDUL</h5>
-        <p class="dept">Department &nbsp; &nbsp; Base Maintenance</p>
+        <h5 class="title">{{ detail.subject }}</h5>
+        <p class="dept">Department &nbsp; &nbsp; {{ detail.service }}</p>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis adipisci suscipit
-          sapiente quas ipsam nulla exercitationem necessitatibus. Tenetur totam nisi porro saepe
-          modi ullam ex quibusdam error! Est, laboriosam nemo.
+          {{ detail.complaint }}
         </p>
       </div>
       <div class="file mt-4 mb-4">
@@ -66,7 +67,21 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  mounted() {
+    axios
+      .get(`/complaint/edit/${this.$route.params.id}`)
+      .then(res => {
+        const data = res.data.data[0];
+        this.headers.sender = data.sender;
+        this.headers.complaint_submitted = data.date;
+        this.headers.complaint_closed = data.closed;
+        this.detail = data;
+      })
+      .catch(() => {});
+  },
   data() {
     return {
       breadcrumbs: [
@@ -81,24 +96,12 @@ export default {
       ],
       showReplyTextArea: false,
       replyText: null,
-      headers: [
-        {
-          key: "Sender",
-          value: "John Henderson"
-        },
-        {
-          key: "Sender",
-          value: "John Henderson"
-        },
-        {
-          key: "Sender",
-          value: "John Henderson"
-        },
-        {
-          key: "Sender",
-          value: "John Henderson"
-        }
-      ]
+      detail: null,
+      headers: {
+        sender: "",
+        complaint_submitted: "",
+        complaint_closed: ""
+      }
     };
   },
   methods: {

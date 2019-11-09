@@ -4,7 +4,7 @@
 
     <b-row class="mt-0 mt-md-4">
       <b-col cols="6" md="2" class="mb-3 mb-md-0">
-        <b-form-select v-model="sender" :options="sendersOptions"></b-form-select>
+        <b-form-select v-model="selectVal.sender" :options="sendersOptions"></b-form-select>
       </b-col>
       <b-col cols="0" md="5"></b-col>
       <b-col cols="8" md="2" class="mt-2">Numbers of item per page</b-col>
@@ -24,12 +24,13 @@
       style="margin-top: 20px;"
       striped
       hover
-      :items="feedbacks"
+      :items="filteredItems"
       :fields="feedbackFields"
       :per-page="perPage"
       :current-page="currentPage"
       responsive
       @row-clicked="showFeedback"
+      show-empty
     >
       <template v-slot:cell(remark)="data">
         {{ shortenText(data.value, 30) }}
@@ -58,7 +59,7 @@ import axios from "axios";
 export default {
   mounted() {
     axios
-      .get(`/feedbackproject/read/${this.getCompanyId()}`)
+      .get(`/feedbacknonproject/read/${this.getCompanyId()}`)
       .then(res => {
         this.feedbacks = res.data.data;
       })
@@ -66,16 +67,21 @@ export default {
   },
   data() {
     return {
-      sendersOptions: [],
-      sender: null,
+      sendersOptions: [
+        {
+          value: null,
+          text: "All Senders"
+        }
+      ],
+      selectVal: { sender: null },
       perPageOptions,
       perPage: "10",
       currentPage: 1,
       feedbackFields: [
-        { key: "feedback_project_id", label: "Feedback ID", sortable: true },
+        { key: "feedback_nonproject_id", label: "Feedback ID", sortable: true },
         { key: "date", sortable: true },
         { key: "sender", sortable: true },
-        { key: "remark", label: "Subject", sortable: true },
+        { key: "subject", label: "Subject", sortable: true },
         { key: "rating", sortable: true }
       ],
       feedbacks: []
@@ -84,12 +90,27 @@ export default {
   components: { StarRating },
   methods: {
     showFeedback(row) {
-      this.$store.dispatch("goToPage", `/feedback-customer-nonproject/${row.feedback_project_id}`);
+      this.$store.dispatch(
+        "goToPage",
+        `/feedback-customer-nonproject/${row.feedback_nonproject_id}`
+      );
     }
   },
   computed: {
     rows() {
       return this.feedbacks.length;
+    },
+    filteredItems() {
+      return this.feedbacks.filter(item => {
+        let keep = true;
+        this.fieldKeys.forEach(key => {
+          keep = keep && (!this.selectVal[key] || item[key] === this.selectVal[key]);
+        });
+        return keep;
+      });
+    },
+    fieldKeys() {
+      return Object.keys(this.feedbacks[0]);
     }
   }
 };
