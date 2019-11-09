@@ -34,6 +34,7 @@
       :current-page="currentPage"
       responsive
       @row-clicked="showFeedback"
+      show-empty
     >
       <template v-slot:cell(rating)="rate">
         <star-rating

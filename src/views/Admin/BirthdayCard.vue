@@ -45,7 +45,7 @@
       </b-col>
 
       <b-col cols="4" v-if="isAdmin()">
-        <b-button variant="success" size="sm">Send</b-button>
+        <b-button variant="success" size="sm" @ok="postBirthday">Send</b-button>
         <p style="font-size: .8rem" class="mt-3 ">
           *Birthday card will be sent automatically according to the customer's birthday. The
           customer's name will be taken from the name when registering customer's account.
@@ -56,12 +56,27 @@
 </template>
 
 <script>
+import axios from "axios";
+import swal from "sweetalert";
+
 export default {
   data() {
     return {
       subject: "",
       permalink: ""
-      };
+    };
+  },
+  methods: {
+    postBirthday() {
+      axios
+        .post("/birthday/create", { subject: this.subject, permalink: this.permalink })
+        .then(() => {
+          swal("Success", "Birthday card will be sent", "success");
+        })
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
+    }
   }
 };
 </script>

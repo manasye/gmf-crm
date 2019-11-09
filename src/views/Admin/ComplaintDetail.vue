@@ -90,6 +90,7 @@
 
 <script>
 import axios from "axios";
+import swal from "sweetalert";
 
 export default {
   mounted() {
@@ -161,7 +162,9 @@ export default {
         .then(res => {
           this.getDetail();
         })
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     },
     getDetail() {
       axios

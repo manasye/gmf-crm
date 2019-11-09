@@ -36,6 +36,7 @@
       :current-page="currentPage"
       responsive
       @row-clicked="showCustomer"
+      show-empty
     >
       <template v-slot:cell(status)="data">
         <b-badge :variant="getBadgesVariant(data.value)" style="margin-right: 30px">
@@ -86,7 +87,7 @@
         ></b-col>
         <b-col cols="4"> <label class="mt-2">Est Date</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.est_date"></b-form-input>
+          <b-form-input v-model="editedData.est_date" type="number"></b-form-input>
         </b-col>
         <b-col cols="4"> <label class="mt-2">Customer Type</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -106,15 +107,15 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Fleet Size</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.fleet_size"></b-form-input>
+          <b-form-input v-model="editedData.fleet_size" type="number"></b-form-input>
         </b-col>
         <b-col cols="4"> <label class="mt-2">Destination</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.destination"></b-form-input>
+          <b-form-input v-model="editedData.destination" type="number"></b-form-input>
         </b-col>
         <b-col cols="4"> <label class="mt-2">Customer Since</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.customer_since"></b-form-input>
+          <b-form-input v-model="editedData.customer_since" type="number"></b-form-input>
         </b-col>
       </b-row>
     </b-modal>

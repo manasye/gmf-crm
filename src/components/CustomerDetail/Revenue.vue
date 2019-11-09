@@ -13,12 +13,12 @@
         /></b-col>
       </b-row>
 
-      <b-table class="mt-4" striped hover :items="revenues"></b-table>
+      <b-table class="mt-4" striped hover :items="revenues" show-empty></b-table>
     </b-col>
     <b-col cols="8">
       <b-button variant="success" size="sm" class="float-right" v-if="isAdmin()">EDIT</b-button>
       <h5>Past Marketing Activities</h5>
-      <b-table class="mt-4" striped hover :items="activites"></b-table
+      <b-table class="mt-4" striped hover :items="activites" show-empty></b-table
     ></b-col>
   </b-row>
 </template>

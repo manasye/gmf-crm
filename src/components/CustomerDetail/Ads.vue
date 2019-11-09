@@ -1,7 +1,6 @@
 <template>
   <div>
     <h5>Active Ads</h5>
-    <p class="mb-4" v-if="activeAds.length === 0">No active ads found</p>
 
     <b-table
       style="margin-top: 20px;"
@@ -10,7 +9,7 @@
       :items="activeAds"
       responsive
       class="mb-5"
-      v-if="activeAds.length > 0"
+      show-empty
     >
       <template v-slot:cell(image)="data">
         <img :src="data.value" alt="" />
@@ -35,7 +34,7 @@
     >
     <h5>Ads List</h5>
 
-    <b-table style="margin-top: 20px;" striped hover :items="adList" responsive>
+    <b-table style="margin-top: 20px;" striped hover :items="adList" responsive show-empty>
       <template v-slot:cell(image)="data">
         <img :src="data.value" alt="" />
       </template>
@@ -83,6 +82,7 @@
 <script>
 import axios from "axios";
 import { isAdmin } from "../../utility/func";
+import swal from "sweetalert";
 
 export default {
   mounted() {
@@ -110,7 +110,9 @@ export default {
         .then(() => {
           this.getActiveAdList();
         })
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     },
     editAd(item) {
       this.editedData = item;
@@ -122,7 +124,9 @@ export default {
         .then(() => {
           this.getActiveAdList();
         })
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     },
     removeAd(item) {
       axios
@@ -130,7 +134,9 @@ export default {
         .then(() => {
           this.getAdList();
         })
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     },
     submitAd() {
       axios
@@ -138,7 +144,9 @@ export default {
         .then(() => {
           this.getAdList();
         })
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     },
     getAdList() {
       axios

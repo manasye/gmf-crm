@@ -54,6 +54,7 @@
 <script>
 import Datepicker from "vuejs-datepicker";
 import axios from "axios";
+import swal from 'sweetalert'
 
 export default {
   mounted() {
@@ -95,7 +96,9 @@ export default {
       axios
         .post("/religion/update", this.detail)
         .then(res => {})
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     }
   }
 };

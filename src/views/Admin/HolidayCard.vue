@@ -29,6 +29,7 @@
       :current-page="currentPage"
       responsive
       @row-clicked="showCard"
+      show-empty
     >
       <template v-slot:cell(permalink)="data"
         ><a :href="data.value">{{ data.value }}</a></template
@@ -71,6 +72,7 @@
 <script>
 import { perPageOptions } from "@/utility/globalVar.js";
 import axios from "axios";
+import swal from "sweetalert";
 
 export default {
   mounted() {
@@ -111,7 +113,9 @@ export default {
         .then(res => {
           this.getCards();
         })
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     },
     getCards() {
       axios

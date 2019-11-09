@@ -30,6 +30,7 @@
         :items="persons"
         :fields="personField"
         class="mb-5"
+        show-empty
       >
         <template v-slot:cell(pass_raw)="data"
           >{{ displayPass(data.value, data.item.show_pass) }} &nbsp;
@@ -66,6 +67,7 @@
         :items="techs"
         :fields="personField"
         class="mb-5"
+        show-empty
       >
         <template v-slot:cell(pass_raw)="data"
           >{{ displayPass(data.value, data.item.show_pass) }} &nbsp;
@@ -89,7 +91,15 @@
         >ADD NEW GMF CP</b-button
       >
       <h5>GMF CONTACT PERSON</h5>
-      <b-table style="margin-top: 20px;" striped hover responsive :items="cps" :fields="cpField">
+      <b-table
+        style="margin-top: 20px;"
+        striped
+        hover
+        responsive
+        :items="cps"
+        :fields="cpField"
+        show-empty
+      >
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
             v-if="isAdmin()"
@@ -167,6 +177,7 @@
 
 <script>
 import axios from "axios";
+import swal from "sweetalert";
 
 const initialUser = {
   name: "",
@@ -327,7 +338,9 @@ export default {
           this.editedData = initialUser;
           this.getUser();
         })
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     },
     postCp() {
       const url = this.newCpMode ? "/cp/create" : "/cp/update";
@@ -341,7 +354,9 @@ export default {
           this.editedCp = initialCp;
           this.getCp();
         })
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     }
   },
   props: ["id"]

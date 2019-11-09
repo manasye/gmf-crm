@@ -16,6 +16,7 @@
           :fields="itemField"
           :items="items"
           class="mb-5"
+          show-empty
         ></b-table
       ></b-col>
       <b-col cols="6" style="margin-top: 20px; padding-left: 50px">

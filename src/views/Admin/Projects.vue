@@ -12,7 +12,10 @@
       <b-col cols="2">
         <b-form-select v-model="selectedStatus" :options="statusOptions"></b-form-select>
       </b-col>
-      <b-col cols="6" style="text-align: right">
+      <b-col cols="2">
+        <b-button variant="success" @click="showModal = true">Add New Project</b-button>
+      </b-col>
+      <b-col cols="4" style="text-align: right">
         <b-row>
           <b-col cols="10" class="d-none d-md-block">
             <p class="mt-2">Number of items per page</p>
@@ -34,6 +37,7 @@
       :current-page="currentPage"
       responsive
       @row-clicked="showProjectDetail"
+      show-empty
     >
       <template v-slot:cell(status)="data">
         <b-badge v-if="data.value === 'Closed'" variant="primary">
@@ -61,22 +65,59 @@
       :per-page="perPage"
       align="right"
     ></b-pagination>
+
+    <b-modal v-model="showModal" centered title="Manage Project" @ok="postProject">
+      <b-row>
+        <b-col cols="4"> <label class="mt-2">Name</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.name"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Start Date</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.start" placeholder="YYYY-MM-DD"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Finish Date</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.finish" placeholder="YYYY-MM-DD"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Project Type</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-select v-model="editedData.project_type" :options="departments"></b-form-select>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Quantity</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.quantity" type="number"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Company Name</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.company_name"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Location</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.location"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">AC Reg</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.ac_reg"></b-form-input>
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Type</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.type"></b-form-input>
+        </b-col>
+      </b-row>
+    </b-modal>
   </b-container>
 </template>
 
 <script>
 import StarRating from "vue-star-rating";
-import { perPageOptions } from "@/utility/globalVar.js";
+import { perPageOptions, departments } from "@/utility/globalVar.js";
 import axios from "axios";
+import swal from "sweetalert";
 
 export default {
   mounted() {
-    axios
-      .get("/project/read")
-      .then(res => {
-        this.projects = res.data.data;
-      })
-      .catch(() => {});
+    this.getData();
   },
   data() {
     return {
@@ -88,6 +129,7 @@ export default {
       companyOptions: [],
       currentPage: 1,
       perPageOptions,
+      departments,
       perPage: "10",
       projectFields: [
         { key: "company_name", label: "Company", sortable: true },
@@ -99,7 +141,9 @@ export default {
         { key: "quantity", sortable: true },
         { key: "rating", sortable: true }
       ],
-      projects: []
+      projects: [],
+      showModal: false,
+      editedData: {}
     };
   },
   components: { StarRating },
@@ -111,6 +155,24 @@ export default {
   methods: {
     showProjectDetail(row) {
       this.$store.dispatch("goToPage", `/project-customer/${row.project_id}`);
+    },
+    postProject() {
+      axios
+        .post("/project/create", this.editedData)
+        .then(res => {
+          this.getData();
+        })
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
+    },
+    getData() {
+      axios
+        .get("/project/read")
+        .then(res => {
+          this.projects = res.data.data;
+        })
+        .catch(() => {});
     }
   }
 };

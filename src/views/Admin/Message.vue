@@ -118,6 +118,8 @@
 </template>
 
 <script>
+import swal from "sweetalert";
+
 const chat = {
   chat_id: 1,
   user_img:

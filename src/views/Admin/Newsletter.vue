@@ -62,7 +62,9 @@ export default {
         .then(res => {
           swal("Success", "Newsletter successfully sent", "success");
         })
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     }
   }
 };
