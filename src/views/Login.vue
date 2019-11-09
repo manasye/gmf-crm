@@ -48,6 +48,7 @@
 
 <script>
 import axios from "axios";
+import swal from "sweetalert";
 
 export default {
   mounted() {
@@ -85,7 +86,9 @@ export default {
           const route = role === "Customer" ? "/project-customer" : "/customer";
           this.$store.dispatch("goToPage", route);
         })
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     }
   }
 };
