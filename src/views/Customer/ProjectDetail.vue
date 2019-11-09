@@ -81,7 +81,7 @@ export default {
             company: data.company_name,
             est_start_date: data.start,
             est_finish_date: data.finish,
-            location: "",
+            location: data.location,
             quantity: data.quantity,
             project_type: data.project_type
           };

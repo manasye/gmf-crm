@@ -100,7 +100,7 @@ export default {
       breadcrumbs: [
         {
           text: "Complaint List",
-          href: "/#/feedback-customer"
+          href: "/#/complaint-list"
         },
         {
           text: `Complaint ${this.$route.params.id}`,

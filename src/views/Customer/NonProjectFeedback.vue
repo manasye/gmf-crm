@@ -31,6 +31,9 @@
       responsive
       @row-clicked="showFeedback"
     >
+      <template v-slot:cell(remark)="data">
+        {{ shortenText(data.value, 30) }}
+      </template>
       <template v-slot:cell(rating)="rate">
         <star-rating
           :rating="+rate.value"
@@ -50,8 +53,17 @@
 <script>
 import { perPageOptions } from "@/utility/globalVar.js";
 import StarRating from "vue-star-rating";
+import axios from "axios";
 
 export default {
+  mounted() {
+    axios
+      .get(`/feedbackproject/read/${this.getCompanyId()}`)
+      .then(res => {
+        this.feedbacks = res.data.data;
+      })
+      .catch(() => {});
+  },
   data() {
     return {
       sendersOptions: [],
@@ -60,27 +72,19 @@ export default {
       perPage: "10",
       currentPage: 1,
       feedbackFields: [
-        { key: "feedback_id", sortable: true },
+        { key: "feedback_project_id", label: "Feedback ID", sortable: true },
         { key: "date", sortable: true },
         { key: "sender", sortable: true },
-        { key: "subject", sortable: true },
+        { key: "remark", label: "Subject", sortable: true },
         { key: "rating", sortable: true }
       ],
-      feedbacks: [
-        {
-          feedback_id: "CND",
-          date: "23/7/19",
-          sender: "a",
-          subject: "lorem",
-          rating: 1
-        }
-      ]
+      feedbacks: []
     };
   },
   components: { StarRating },
   methods: {
     showFeedback(row) {
-      this.$store.dispatch("goToPage", `/feedback-customer-nonproject/${row.feedback_id}`);
+      this.$store.dispatch("goToPage", `/feedback-customer-nonproject/${row.feedback_project_id}`);
     }
   },
   computed: {

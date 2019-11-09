@@ -3,14 +3,14 @@
     <Header title="CUSTOMER FEEDBACK" :breadcrumbs="breadcrumbs"></Header>
     <div class="feedback-wrapper">
       <p>What service(s) did your company use for this project?</p>
-      <b-form-checkbox-group>
+      <b-form-checkbox-group @input="changeService">
         <b-row>
           <b-col cols="6" md="3" class="mb-2" v-for="(service, idx) in services" :key="idx">
             <b-form-checkbox
               :id="service.name"
               :name="service.name"
               v-model="serviceSelected"
-              :value="idx"
+              :value="service.name"
               class="checkbox"
               >{{ service.name }}</b-form-checkbox
             ></b-col
@@ -46,7 +46,7 @@
                 class="checkbox"
                 :id="i.name + p.title"
                 :name="i.name + p.title"
-                :value="idx"
+                :value="i.value"
                 v-model="p.improvements"
               >
                 {{ i.name }}
@@ -68,24 +68,38 @@
 <script>
 import StarRating from "vue-star-rating";
 import { departments } from "@/utility/globalVar";
+import axios from "axios";
 
 export default {
+  mounted() {
+    axios
+      .get(`/project/edit/${this.$route.params.id}`)
+      .then(res => {
+        const data = res.data.data[0];
+        this.breadcrumbs = [
+          {
+            text: "Project List",
+            href: "/#/project-customer"
+          },
+          {
+            text: data.name,
+            href: `/#/project-customer/${this.$route.params.id}`
+          },
+          {
+            text: "Customer Feedback",
+            active: true
+          }
+        ];
+        this.projectType = data.project_type;
+        if (this.projectType === "Line Maintenance") {
+          this.serviceSelected = ["Outstation Line Maintenance", "Component Services"];
+        }
+      })
+      .catch(() => {});
+  },
   data() {
     return {
-      breadcrumbs: [
-        {
-          text: "Project List",
-          href: "/#/project-customer"
-        },
-        {
-          text: this.$route.params.id,
-          href: `/#/project-customer/${this.$route.params.id}`
-        },
-        {
-          text: "Customer Feedback",
-          active: true
-        }
-      ],
+      breadcrumbs: [],
       services: departments,
       serviceSelected: null,
       improvements: [
@@ -99,7 +113,8 @@ export default {
         { title: "BASE MAINTENANCE", rating: 0, improvements: [], comment: null },
         { title: "CABIN MAINTENANCE", rating: 0, improvements: [], comment: null },
         { title: "ENGINEERING SERVICES", rating: 0, improvements: [], comment: null }
-      ]
+      ],
+      projectType: ""
     };
   },
   components: {
@@ -115,6 +130,13 @@ export default {
       } else {
         return ["Enough", "text-warning"];
       }
+    },
+    changeService(services) {
+      let performances = [];
+      services.map(s => {
+        performances.push({ title: s, rating: 0, improvements: [], comment: "" });
+      });
+      this.performances = performances;
     }
   }
 };
@@ -135,6 +157,7 @@ p {
   color: #13619a;
   text-align: center;
   font-weight: bold;
+  text-transform: uppercase;
 }
 .performance-result {
   text-align: center;

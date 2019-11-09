@@ -33,7 +33,10 @@
         <b-badge v-if="data.value === 'Closed'" variant="danger">
           <p style="margin: 5px">{{ data.value }}</p>
         </b-badge>
-        <b-badge v-if="data.value === 'Open'" variant="success">
+        <b-badge v-if="data.value === 'Active'" variant="success">
+          <p style="margin: 5px">{{ data.value }}</p>
+        </b-badge>
+        <b-badge v-else variant="secondary">
           <p style="margin: 5px">{{ data.value }}</p>
         </b-badge>
       </template>
@@ -44,7 +47,7 @@
           :show-rating="false"
           :star-size="25"
           :increment="0.5"
-          v-if="rate.value"
+          v-if="rate.value && !isNaN(+rate.value)"
         ></star-rating>
 
         <b-button
@@ -64,9 +67,18 @@
 <script>
 import StarRating from "vue-star-rating";
 import { perPageOptions } from "@/utility/globalVar.js";
+import axios from "axios";
 
 export default {
   name: "ProjectCustomer",
+  mounted() {
+    axios
+      .get(`/project/read/${this.getCompanyId()}`)
+      .then(res => {
+        this.projects = res.data.data;
+      })
+      .catch(() => {});
+  },
   data() {
     return {
       statusOptions: [
@@ -89,36 +101,15 @@ export default {
       currentPage: 1,
       projectFields: [
         "project_id",
-        "project_name",
-        { key: "start_date", sortable: true },
-        { key: "finish_date", sortable: true },
+        "name",
+        { key: "start", label: "Start Date", sortable: true },
+        { key: "finish", label: "Finish Date", sortable: true },
         "location",
         { key: "status", label: "Status" },
         "project_type",
         { key: "rating", label: "Rating", sortable: true }
       ],
-      projects: [
-        {
-          project_id: "a",
-          project_name: "b",
-          start_date: "a",
-          finish_date: "a",
-          location: "a",
-          status: "Open",
-          project_type: "Base Maintenance",
-          rating: "2"
-        },
-        {
-          project_id: "b",
-          project_name: "b",
-          start_date: "a",
-          finish_date: "a",
-          location: "a",
-          status: "Open",
-          project_type: "Base Maintenance",
-          rating: ""
-        }
-      ]
+      projects: []
     };
   },
   components: {

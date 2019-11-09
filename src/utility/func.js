@@ -25,6 +25,10 @@ export const isAdmin = () => {
   return localStorage.getItem("role") === "Admin";
 };
 
+export const getUserId = () => {
+  return localStorage.getItem("user_id");
+};
+
 export const getUsername = () => {
   return localStorage.getItem("username");
 };

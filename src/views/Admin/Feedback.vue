@@ -87,7 +87,7 @@ export default {
       feedbackFields: [
         { key: "feedback_project_id", label: "Feedback ID", sortable: true },
         { key: "date", sortable: true },
-        { key: "company", sortable: true },
+        { key: "company_name", sortable: true },
         { key: "sender", sortable: true },
         { key: "project_type", sortable: true },
         { key: "remark", label: "Subject", sortable: true },

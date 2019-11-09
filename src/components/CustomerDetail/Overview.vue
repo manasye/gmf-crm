@@ -18,13 +18,7 @@
         class="float-right"
         size="sm"
         v-if="isAdmin()"
-        @click="
-          () => {
-            showModalUser = true;
-            editedData.customer_role = 'Key Person';
-            newUserMode = true;
-          }
-        "
+        @click="newUser('Key Person')"
         >ADD NEW ACCOUNT</b-button
       >
       <h5>KEY PERSON</h5>
@@ -60,13 +54,7 @@
         class="float-right"
         size="sm"
         v-if="isAdmin()"
-        @click="
-          () => {
-            showModalUser = true;
-            editedData.customer_role = 'Technical Representative';
-            newUserMode = true;
-          }
-        "
+        @click="newUser('Tech')"
         >ADD NEW ACCOUNT</b-button
       >
       <h5>TECHNICAL REPRESENTATIVE</h5>
@@ -97,18 +85,7 @@
         ></template>
       </b-table>
 
-      <b-button
-        variant="success"
-        class="float-right"
-        size="sm"
-        v-if="isAdmin()"
-        @click="
-          () => {
-            showModalCp = true;
-            editedData.customer_role = 'GMF Contact Person';
-            newCpMode = true;
-          }
-        "
+      <b-button variant="success" class="float-right" size="sm" v-if="isAdmin()" @click="newCp"
         >ADD NEW GMF CP</b-button
       >
       <h5>GMF CONTACT PERSON</h5>
@@ -191,6 +168,29 @@
 <script>
 import axios from "axios";
 
+const initialUser = {
+  name: "",
+  position: "",
+  religion: "",
+  birthday: "",
+  email: "",
+  customer_role: "",
+  username: "",
+  pass_raw: "",
+  role: "",
+  status: ""
+};
+
+const initialCp = {
+  gmf_cp_id: "",
+  name: "",
+  position: "",
+  phone: "",
+  email: "",
+  cp_company_id: "",
+  company_id: ""
+};
+
 export default {
   mounted() {
     if (!this.$store.getters.walkthrough) {
@@ -222,27 +222,8 @@ export default {
       techs: [],
       cpField: ["name", "position", "phone", "email", { key: "Edit", label: "" }],
       cps: [],
-      editedData: {
-        name: "",
-        position: "",
-        religion: "",
-        birthday: "",
-        email: "",
-        customer_role: "",
-        username: "",
-        pass_raw: "",
-        role: "",
-        status: ""
-      },
-      editedCp: {
-        gmf_cp_id: 8,
-        name: "Dewi",
-        position: "Staff Marketing",
-        phone: "081273829182",
-        email: "deni@gmail.com",
-        cp_company_id: 3,
-        company_id: 1
-      },
+      editedData: initialUser,
+      editedCp: initialCp,
       showModalUser: false,
       statusOptions: [
         {
@@ -273,6 +254,17 @@ export default {
         return "*".repeat(pass.length);
       }
       return pass;
+    },
+    newUser(role) {
+      this.editedData = initialUser;
+      this.editedData.customer_role = role;
+      this.showModalUser = true;
+      this.newUserMode = true;
+    },
+    newCp() {
+      this.editedCp = initialCp;
+      this.showModalCp = true;
+      this.newCpMode = true;
     },
     editPerson(person) {
       this.editedData = person;
@@ -327,9 +319,12 @@ export default {
         .post(url, {
           ...this.editedData,
           id: this.editedData.user_id,
-          password: this.editedData.pass_raw
+          password: this.editedData.pass_raw,
+          role: "Customer",
+          company_id: this.$route.params.id
         })
         .then(res => {
+          this.editedData = initialUser;
           this.getUser();
         })
         .catch(() => {});
@@ -337,8 +332,13 @@ export default {
     postCp() {
       const url = this.newCpMode ? "/cp/create" : "/cp/update";
       axios
-        .post(url, { ...this.editedCp, id: this.editedCp.gmf_cp_id })
+        .post(url, {
+          ...this.editedCp,
+          id: this.editedCp.gmf_cp_id,
+          company_id: this.$route.params.id
+        })
         .then(res => {
+          this.editedCp = initialCp;
           this.getCp();
         })
         .catch(() => {});

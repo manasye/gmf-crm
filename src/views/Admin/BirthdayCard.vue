@@ -7,16 +7,19 @@
         <div class="card-wrapper">
           <h5>SUBJECT</h5>
           <b-form-input v-model="subject" placeholder="Enter your subject"></b-form-input>
-          <b-row class="mt-2">
-            <b-col cols="10">
-              <p style="font-size: .8rem" class="mb-0 ">
-                Permalink : <a :href="permalink">{{ permalink }}</a>
-              </p></b-col
-            >
-            <b-col cols="2" style="text-align: right">
-              <b-button variant="success" size="sm" v-if="isAdmin()">Edit</b-button>
-            </b-col>
-          </b-row>
+          <!--          <b-row class="mt-2">-->
+          <!--            <b-col cols="10">-->
+          <!--              <p style="font-size: .8rem" class="mb-0 ">-->
+          <!--                Permalink : <a :href="permalink">{{ permalink }}</a>-->
+          <!--              </p></b-col-->
+          <!--            >-->
+          <!--            <b-col cols="2" style="text-align: right">-->
+          <!--              <b-button variant="success" size="sm" v-if="isAdmin()">Edit</b-button>-->
+          <!--            </b-col>-->
+          <!--          </b-row>-->
+
+          <p class="mt-3 mb-2">Permalink</p>
+          <b-form-input v-model="permalink" placeholder="Enter your subject"></b-form-input>
 
           <b-row>
             <b-col cols="6">
@@ -56,10 +59,9 @@
 export default {
   data() {
     return {
-      subject: null,
-      permalink: "https://drive.google.com/drive/folders/1vUr3tz9HMMkTOgoO0mb6SOMjWSZuilvg",
-      sendDate: null
-    };
+      subject: "",
+      permalink: ""
+      };
   }
 };
 </script>

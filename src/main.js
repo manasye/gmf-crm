@@ -35,7 +35,9 @@ import {
   convertSnakeCaseToText,
   getRole,
   isAdmin,
-  getUsername
+  getUsername,
+  getCompanyId,
+  getUserId
 } from "@/utility/func.js";
 
 // require styles
@@ -69,7 +71,9 @@ Vue.mixin({
     convertSnakeCaseToText,
     getRole,
     isAdmin,
-    getUsername
+    getUsername,
+    getCompanyId,
+    getUserId
   }
 });
 

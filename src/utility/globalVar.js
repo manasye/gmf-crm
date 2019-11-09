@@ -14,7 +14,7 @@ export const perPageOptions = [
 ];
 
 export const departments = [
-  { name: "Base Maintenance", value: "a" },
+  { name: "Base Maintenance", value: "" },
   { name: "Outstation Line Maintenance", value: "a" },
   { name: "Logistic & Material Maintenance", value: "a" },
   { name: "Learning / Training", value: "a" },

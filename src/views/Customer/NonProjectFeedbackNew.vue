@@ -20,13 +20,14 @@
       </p>
       <p class="mb-2 mt-4">Description</p>
       <b-form-textarea v-model="description" placeholder rows="3" max-rows="6"></b-form-textarea>
-      <b-button variant="success" class="mt-4 mb-2">SUBMIT</b-button>
+      <b-button variant="success" class="mt-4 mb-2" @click="submitProject">SUBMIT</b-button>
     </div>
   </b-container>
 </template>
 
 <script>
 import StarRating from "vue-star-rating";
+import axios from "axios";
 
 export default {
   data() {
@@ -55,6 +56,15 @@ export default {
       } else {
         return ["Enough", "text-warning"];
       }
+    },
+    submitProject() {
+      const data = { user_id: this.getUserId() };
+      axios
+        .post("/feedbackproject/create", data)
+        .then(() => {
+          swal("Success!", "You have successfully submitted a non project feedback!", "success");
+        })
+        .catch(() => {});
     }
   },
   components: {

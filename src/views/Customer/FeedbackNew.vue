@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="NEW FEEDBACK" :breadcrumbs="breadcrumbs"></Header>
+    <Header title="NEW COMPLAINT" :breadcrumbs="breadcrumbs"></Header>
     <div class="feedback-wrapper">
       <p class="mb-2">Subject / Complaint</p>
       <b-form-input v-model="subject" placeholder></b-form-input>
@@ -12,7 +12,7 @@
               :id="service.name"
               :name="service.name"
               v-model="serviceSelected"
-              :value="idx"
+              :value="service.name"
               class="checkbox"
               >{{ service.name }}</b-form-checkbox
             >
@@ -32,7 +32,7 @@
 
       <br />
       <br />
-      <b-button variant="success" class="mb-2">SUBMIT</b-button>
+      <b-button variant="success" class="mb-2" @click="submitComplaint">SUBMIT</b-button>
     </div>
   </b-container>
 </template>
@@ -40,6 +40,8 @@
 <script>
 import { departments } from "@/utility/globalVar";
 import { shortenText } from "@/utility/func.js";
+import axios from "axios";
+import swal from "sweetalert";
 
 export default {
   data() {
@@ -50,7 +52,7 @@ export default {
           href: `/#/feedback-customer`
         },
         {
-          text: "New Feedback",
+          text: "New Complaint",
           active: true
         }
       ],
@@ -68,6 +70,20 @@ export default {
       } else {
         return `${files.length} files selected`;
       }
+    },
+    submitComplaint() {
+      const data = {
+        subject: this.subject,
+        user_id: this.getUserId(),
+        complaint: this.description,
+        service: this.serviceSelected.join(",")
+      };
+      axios
+        .post("/complaint/create", data)
+        .then(() => {
+          swal("Success!", "You have successfully submitted a complaint!", "success");
+        })
+        .catch(() => {});
     }
   }
 };

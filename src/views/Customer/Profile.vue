@@ -9,13 +9,13 @@
             alt
             class="mb-4 d-block mx-auto"
           />
-          <h4 class="profile-title">GARUDA AIRLINE</h4>
+          <h4 class="profile-title">{{ companyName }}</h4>
         </b-col>
 
         <b-col cols="12" md="4" class="mt-4 mt-md-0">
           <h5>CUSTOMER ACCOUNT</h5>
           <hr align="left" />
-          <div v-for="c in customers" :key="c.username" class="mb-3">
+          <div v-for="c in customers" :key="c.user_customer_id" class="mb-3">
             <p>{{ c.name }}</p>
             <p class="username">{{ c.username }}</p>
           </div>
@@ -24,9 +24,11 @@
         <b-col cols="12" md="4" class="mt-4 mt-md-0">
           <h5>GMF CONTACT PERSON</h5>
           <hr style="width:10%" align="left" />
-          <div v-for="c in contactPersons" :key="c.username" class="mb-3">
+          <div v-for="c in contactPersons" :key="c.gmf_cp_id" class="mb-3">
             <p>{{ c.name }}</p>
-            <p class="username">{{ c.username }}</p>
+            <p class="username">{{ c.position }}</p>
+            <p class="username">{{ c.phone }}</p>
+            <p class="username">{{ c.email }}</p>
           </div>
         </b-col>
       </b-row>
@@ -35,17 +37,36 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  mounted() {
+    axios
+      .get(`/company/edit/${this.getCompanyId()}`)
+      .then(res => {
+        this.companyName = res.data.data[0].name;
+      })
+      .catch(() => {});
+
+    axios
+      .get(`/company/read/${this.getCompanyId()}`)
+      .then(res => {
+        this.customers = res.data.data;
+      })
+      .catch(() => {});
+
+    axios
+      .get(`/cp/read/${this.getCompanyId()}`)
+      .then(res => {
+        this.contactPersons = res.data.data;
+      })
+      .catch(() => {});
+  },
   data() {
     return {
-      customers: [
-        { name: "John Henderson", username: "john" },
-        { name: "John Henderson", username: "john" }
-      ],
-      contactPersons: [
-        { name: "John Henderson", username: "john" },
-        { name: "John Henderson", username: "john" }
-      ]
+      customers: [],
+      contactPersons: [],
+      companyName: ""
     };
   }
 };

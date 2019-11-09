@@ -63,7 +63,12 @@
               <img src="../assets/img/calendar.png" class="navbar-img" alt
             /></template>
             <div>
-              <datepicker :inline="true" v-model="selectedDate" :highlighted="highlighted" />
+              <datepicker
+                :inline="true"
+                v-model="selectedDate"
+                :highlighted="highlighted"
+                @changedMonth="changeMonth"
+              />
               <div class="p-2">
                 <p class="mb-0">{{ selectedDate | moment("DD MMMM YYYY") }}</p>
               </div>
@@ -202,13 +207,9 @@ export default {
       navItems: null,
       selectedDate: null,
       highlighted: {
-        customPredictor: function(date) {
-          // highlights every day of a month which is a multiple of 4
-          if (date.getDate() % 4 === 0) {
-            return true;
-          }
-        }
-      }
+        daysOfMonth: [1, 2, 3]
+      },
+      month: null
     };
   },
   methods: {
@@ -231,6 +232,9 @@ export default {
           this.$store.dispatch("goToPage", "/login");
         })
         .catch(() => {});
+    },
+    changeMonth(month) {
+      console.log(month.getMonth());
     }
   },
   computed: {

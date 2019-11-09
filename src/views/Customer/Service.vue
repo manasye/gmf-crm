@@ -4,7 +4,15 @@
       <b-row>
         <b-col cols="6"><p class="mb-0 mt-1">GMF Services</p></b-col>
         <b-col cols="6" style="text-align: right">
-          <b-button variant="success" size="sm" @click="showModal = true">Add New Service</b-button>
+          <b-button
+            variant="success"
+            size="sm"
+            @click="
+              showModal = true;
+              newMode = true;
+            "
+            >Add New Service</b-button
+          >
         </b-col>
       </b-row>
     </div>
@@ -30,7 +38,14 @@
             <h2>{{ service.name.split(" ")[service.name.split(" ").length - 1] }}</h2>
             <b-button variant="primary" size="sm" class="mt-4">Explore</b-button>
             <br />
-            <b-button variant="success" size="sm" class="mt-3" v-if="isAdmin()">Edit</b-button>
+            <b-button
+              variant="success"
+              size="sm"
+              class="mt-3"
+              v-if="isAdmin()"
+              @click="editService(service)"
+              >Edit</b-button
+            >
           </b-carousel-slide>
         </b-carousel>
       </b-col>
@@ -52,7 +67,7 @@
       </b-col>
     </b-row>
 
-    <b-modal v-model="showModal" centered v-if="showModal">
+    <b-modal v-model="showModal" centered v-if="showModal" @ok="postService">
       <b-row>
         <b-col cols="4"> <label class="mt-2">Name</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -64,15 +79,27 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Large Image</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.name"></b-form-input>
+          <b-form-file
+            accept="image/*"
+            v-model="editedData.large_image"
+            placeholder="Choose new image"
+          ></b-form-file>
         </b-col>
         <b-col cols="4"> <label class="mt-2">First Small Image</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.name"></b-form-input>
+          <b-form-file
+            accept="image/*"
+            v-model="editedData.small_image1"
+            placeholder="Choose new image"
+          ></b-form-file>
         </b-col>
         <b-col cols="4"> <label class="mt-2">Second Small Image</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.name"></b-form-input> </b-col
+          <b-form-file
+            accept="image/*"
+            v-model="editedData.small_image2"
+            placeholder="Choose new image"
+          ></b-form-file> </b-col
       ></b-row>
     </b-modal>
   </div>
@@ -83,12 +110,7 @@ import axios from "axios";
 
 export default {
   mounted() {
-    axios
-      .get("/service/read")
-      .then(res => {
-        this.services = res.data.data;
-      })
-      .catch(() => {});
+    this.getServices();
   },
   data() {
     return {
@@ -96,9 +118,37 @@ export default {
       showModal: false,
       editedData: {
         name: "",
-        detail: ""
-      }
+        detail: "",
+        large_image: "",
+        small_image1: "",
+        small_image2: ""
+      },
+      newMode: false
     };
+  },
+  methods: {
+    editService(service) {
+      this.showModal = true;
+      this.editedData = service;
+      this.newMode = false;
+    },
+    postService() {
+      const url = this.newMode ? "/service/create" : "/service/update";
+      axios
+        .post(url, { ...this.editedData, id: this.editedData.service_id })
+        .then(res => {
+          this.getServices();
+        })
+        .catch(() => {});
+    },
+    getServices() {
+      axios
+        .get("/service/read")
+        .then(res => {
+          this.services = res.data.data;
+        })
+        .catch(() => {});
+    }
   }
 };
 </script>

@@ -19,7 +19,7 @@
       </b-col>
       <b-col cols="12" md="2" class="text-md-right mt-3 mt-md-0">
         <b-button variant="success" @click="$store.dispatch('goToPage', '/feedback-customer-new')"
-          >Add New Feedback</b-button
+          >Add New Complaint</b-button
         >
       </b-col>
     </b-row>
@@ -48,8 +48,17 @@
 
 <script>
 import { perPageOptions } from "@/utility/globalVar.js";
+import axios from "axios";
 
 export default {
+  mounted() {
+    axios
+      .get(`/complaint/read/${this.getCompanyId()}`)
+      .then(res => {
+        this.feedbacks = res.data.data;
+      })
+      .catch(() => {});
+  },
   data() {
     return {
       sendersOptions: [],
@@ -65,20 +74,11 @@ export default {
         { key: "complaint_id", sortable: true },
         { key: "date", sortable: true },
         { key: "sender", sortable: true },
-        { key: "department", sortable: true },
-        { key: "subject / Complaint", sortable: true },
+        { key: "service", sortable: true },
+        { key: "subject", sortable: true },
         { key: "status", label: "Status", sortable: true }
       ],
-      feedbacks: [
-        {
-          complaint_id: "CND",
-          date: "23/7/19",
-          sender: "a",
-          department: "a",
-          "subject / Complaint": "aa",
-          status: "Receive"
-        }
-      ]
+      feedbacks: []
     };
   },
   methods: {
