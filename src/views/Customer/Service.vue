@@ -8,8 +8,10 @@
             variant="success"
             size="sm"
             @click="
-              showModal = true;
-              newMode = true;
+              () => {
+                showModal = true;
+                newMode = true;
+              }
             "
             >Add New Service</b-button
           >
@@ -26,7 +28,10 @@
     >
       <b-col cols="12" md="7" :order-md="idx % 2 === 0 ? '1' : '2'">
         <b-carousel controls indicators background="#ababab">
-          <b-carousel-slide :img-src="service.large_image" :key="service.large_image">
+          <b-carousel-slide
+            :img-src="[getBaseStorage() + service.large_image]"
+            :key="service.large_image"
+          >
             <h1>
               {{
                 service.name
@@ -54,10 +59,10 @@
         <div class="detail-service">
           <b-row class="mb-5">
             <b-col cols="6">
-              <img :src="service.small_image1" alt />
+              <img :src="getBaseStorage() + service.small_image1" alt />
             </b-col>
             <b-col cols="6">
-              <img :src="service.small_image2" alt />
+              <img :src="getBaseStorage() + service.small_image2" alt />
             </b-col>
           </b-row>
           <hr />
@@ -67,7 +72,7 @@
       </b-col>
     </b-row>
 
-    <b-modal v-model="showModal" centered v-if="showModal" @ok="postService">
+    <b-modal v-model="showModal" centered v-if="showModal" @ok="postService" title="Manage Service">
       <b-row>
         <b-col cols="4"> <label class="mt-2">Name</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -117,6 +122,7 @@ export default {
       services: [],
       showModal: false,
       editedData: {
+        id: 1,
         name: "",
         detail: "",
         large_image: "",
@@ -134,12 +140,21 @@ export default {
     },
     postService() {
       const url = this.newMode ? "/service/create" : "/service/update";
+      let formData = new FormData();
+      formData.set("name", this.editedData.name);
+      formData.set("detail", this.editedData.detail);
+      formData.set("large_image", this.editedData.large_image);
+      formData.set("small_image1", this.editedData.small_image1);
+      formData.set("small_image2", this.editedData.small_image2);
+      formData.set("id", this.editedData.id);
       axios
-        .post(url, { ...this.editedData, id: this.editedData.service_id })
+        .post(url, formData)
         .then(res => {
           this.getServices();
         })
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     },
     getServices() {
       axios
@@ -175,6 +190,10 @@ hr {
 .service-card-wrapper {
   border-bottom: 1px dotted #95999c;
   border-top: 1px dotted #95999c;
+  /*h1,*/
+  /*h2 {*/
+  /*  color: #13619a;*/
+  /*}*/
 }
 </style>
 

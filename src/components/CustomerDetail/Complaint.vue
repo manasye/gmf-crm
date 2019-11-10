@@ -3,13 +3,13 @@
     <h5>Complaint List</h5>
     <b-row class="mt-4">
       <b-col cols="6" md="2">
-        <b-form-select v-model="sender" :options="sendersOptions"></b-form-select>
+        <b-form-select v-model="selectVal.sender" :options="sendersOptions"></b-form-select>
       </b-col>
       <b-col cols="6" md="2">
-        <b-form-select v-model="dept" :options="deptOptions"></b-form-select>
+        <b-form-select v-model="selectVal.service" :options="deptOptions"></b-form-select>
       </b-col>
       <b-col cols="6" md="2" class="mt-3 mt-md-0 mb-3 mb-md-0">
-        <b-form-select v-model="status" :options="statusOptions"></b-form-select>
+        <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
       </b-col>
       <b-col cols="0" md="3"></b-col>
       <b-col cols="8" md="2" class="mt-2">Numbers of item per page</b-col>
@@ -22,7 +22,7 @@
       style="margin-top: 20px;"
       striped
       hover
-      :items="complaints"
+      :items="filteredItems"
       :fields="complaintFields"
       :per-page="perPage"
       :current-page="currentPage"
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { perPageOptions } from "@/utility/globalVar.js";
+import { perPageOptions, departments, statusComplaints } from "@/utility/globalVar.js";
 import axios from "axios";
 
 export default {
@@ -64,14 +64,22 @@ export default {
   data() {
     return {
       sendersOptions: [],
-      deptOptions: [],
-      statusOptions: [],
+      deptOptions: [
+        {
+          value: null,
+          text: "All Departments"
+        },
+        ...departments
+      ],
+      statusOptions: statusComplaints,
       perPageOptions,
       perPage: "10",
       currentPage: 1,
-      sender: null,
-      dept: null,
-      status: null,
+      selectVal: {
+        sender: null,
+        service: null,
+        status: null
+      },
       complaintFields: [
         { key: "complaint_id", sortable: true },
         { key: "date", sortable: true },
@@ -80,16 +88,7 @@ export default {
         { key: "subject", sortable: true },
         { key: "status", label: "Status", sortable: true }
       ],
-      complaints: [
-        {
-          complaint_id: "CND",
-          date: "23/7/19",
-          sender: "a",
-          department: "a",
-          "subject / Complaint": "aa",
-          status: "Open"
-        }
-      ]
+      complaints: []
     };
   },
   methods: {
@@ -112,6 +111,18 @@ export default {
   computed: {
     rows() {
       return this.complaints.length;
+    },
+    filteredItems() {
+      return this.complaints.filter(item => {
+        let keep = true;
+        this.fieldKeys.forEach(key => {
+          keep = keep && (!this.selectVal[key] || item[key] === this.selectVal[key]);
+        });
+        return keep;
+      });
+    },
+    fieldKeys() {
+      return Object.keys(this.complaints[0]);
     }
   }
 };

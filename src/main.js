@@ -37,7 +37,8 @@ import {
   isAdmin,
   getUsername,
   getCompanyId,
-  getUserId
+  getUserId,
+  getBaseStorage
 } from "@/utility/func.js";
 
 // require styles
@@ -73,7 +74,8 @@ Vue.mixin({
     isAdmin,
     getUsername,
     getCompanyId,
-    getUserId
+    getUserId,
+    getBaseStorage
   }
 });
 

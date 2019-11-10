@@ -3,15 +3,19 @@
     <Header title="Customer List"></Header>
     <b-row>
       <b-col cols="2"
-        ><b-form-select v-model="region" :options="regionOptions"></b-form-select
+        ><b-form-select v-model="selectVal.region" :options="regionOptions"></b-form-select
       ></b-col>
       <b-col cols="2"
-        ><b-form-select v-model="country" :options="countryOptions"></b-form-select
+        ><b-form-select v-model="selectVal.country" :options="countryOptions"></b-form-select
       ></b-col>
-      <b-col cols="2"><b-form-select v-model="role" :options="roleOptions"></b-form-select></b-col>
-      <b-col cols="2"><b-form-select v-model="bm" :options="bmOptions"></b-form-select></b-col>
       <b-col cols="2"
-        ><b-form-select v-model="status" :options="statusOptions"></b-form-select
+        ><b-form-select v-model="selectVal.company_role" :options="roleOptions"></b-form-select
+      ></b-col>
+      <b-col cols="2"
+        ><b-form-select v-model="selectVal.business_model" :options="bmOptions"></b-form-select
+      ></b-col>
+      <b-col cols="2"
+        ><b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select
       ></b-col>
       <b-col cols="1" class="mt-2 text-right">Per page</b-col>
       <b-col cols="1"
@@ -30,7 +34,7 @@
       style="margin-top: 20px;"
       striped
       hover
-      :items="customers"
+      :items="filteredItems"
       :fields="customersFields"
       :per-page="perPage"
       :current-page="currentPage"
@@ -65,6 +69,14 @@
         <b-col cols="8" class="mb-3">
           <b-form-input v-model="editedData.name"></b-form-input>
         </b-col>
+        <b-col cols="4"> <label class="mt-2">Image</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-file
+            accept="image/*"
+            v-model="editedData.image"
+            placeholder="Choose new image"
+          ></b-form-file>
+        </b-col>
         <b-col cols="4"> <label class="mt-2">Region</label></b-col>
         <b-col cols="8" class="mb-3">
           <b-form-input v-model="editedData.region"></b-form-input>
@@ -75,7 +87,7 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Role</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.role"></b-form-input>
+          <b-form-input v-model="editedData.company_role"></b-form-input>
         </b-col>
         <b-col cols="4"> <label class="mt-2">Business Model</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -145,18 +157,34 @@ export default {
   },
   data() {
     return {
-      regionOptions: [],
-      region: null,
-      countryOptions: [],
-      country: null,
-      roleOptions: [],
-      role: null,
-      bmOptions: [],
-      bm: null,
+      regionOptions: [
+        {
+          value: null,
+          text: "All Regions"
+        }
+      ],
+      countryOptions: [
+        {
+          value: null,
+          text: "All Countries"
+        }
+      ],
+      roleOptions: [
+        {
+          value: null,
+          text: "All Roles"
+        }
+      ],
+      bmOptions: [
+        {
+          value: null,
+          text: "All Business Models"
+        }
+      ],
       statusOptions: [
         {
           value: null,
-          text: "Select status"
+          text: "All status"
         },
         {
           value: "Active",
@@ -171,19 +199,43 @@ export default {
           text: "Obsolete"
         }
       ],
-      status: null,
-      editedData: null,
+      selectVal: {
+        region: null,
+        country: null,
+        company_role: null,
+        business_model: null,
+        status: null
+      },
+      editedData: {
+        image: "",
+        name: "",
+        region: "",
+        country: "",
+        company_role: "",
+        business_model: "",
+        status: "",
+        est_date: 0,
+        type: "",
+        customer_type: "",
+        shareholder: "",
+        alliance: "",
+        MRO: "",
+        fleet_size: 0,
+        destination: 0,
+        customer_since: 0,
+        company_id: 0
+      },
       editedId: null,
       perPageOptions,
       perPage: "10",
       currentPage: 1,
-      customers: Array(10).fill(dummyCustomer),
+      customers: [],
       customersFields: [
         // { key: "customer_id", sortable: true },
         { key: "name", label: "Company Name", sortable: true },
         { key: "region", sortable: true },
         { key: "country", sortable: true },
-        { key: "role", sortable: true },
+        { key: "company_role", sortable: true },
         { key: "business_model", sortable: true },
         { key: "status", label: "Status", sortable: true }
       ],
@@ -205,8 +257,28 @@ export default {
       this.editedData = rowData;
     },
     changeStatus() {
+      let formData = new FormData();
+      formData.set("MRO", this.editedData.MRO || "");
+      formData.set("alliance", this.editedData.alliance || "");
+      formData.set("business_model", this.editedData.business_model || "");
+      formData.set("company_id", this.editedData.company_id || "");
+      formData.set("company_role", this.editedData.company_role || "");
+      formData.set("country", this.editedData.country || "");
+      formData.set("customer_since", this.editedData.customer_since || "");
+      formData.set("customer_type", this.editedData.customer_type || "");
+      formData.set("destination", this.editedData.destination || "");
+      formData.set("est_date", this.editedData.est_date || "");
+      formData.set("fleet_size", this.editedData.fleet_size || "");
+      formData.set("id", this.editedData.company_id || "");
+      formData.set("image", this.editedData.image || "");
+      formData.set("name", this.editedData.name || "");
+      formData.set("region", this.editedData.region || "");
+      formData.set("shareholder", this.editedData.shareholder || "");
+      formData.set("status", this.editedData.status || "");
+      formData.set("type", this.editedData.type || "");
+
       axios
-        .post("/company/update", { id: this.editedData.company_id, ...this.editedData })
+        .post("/company/update", formData)
         .then(() => {
           this.getCompanyData();
         })
@@ -226,6 +298,18 @@ export default {
   computed: {
     rows() {
       return this.customers.length;
+    },
+    filteredItems() {
+      return this.customers.filter(item => {
+        let keep = true;
+        this.fieldKeys.forEach(key => {
+          keep = keep && (!this.selectVal[key] || item[key] === this.selectVal[key]);
+        });
+        return keep;
+      });
+    },
+    fieldKeys() {
+      return Object.keys(this.customers[0]);
     }
   }
 };

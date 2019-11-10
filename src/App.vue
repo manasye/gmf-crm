@@ -23,12 +23,12 @@ export default {
     // console.log(this.$store.getters.walkthrough);
     axios
       .get("/login")
-      .then(res => {
-        if (!res.data.auth) {
+      .then(() => {})
+      .catch(err => {
+        if (!err.response.data.auth) {
           this.$store.dispatch("goToPage", "/login");
         }
-      })
-      .catch(() => {});
+      });
   },
   data() {
     return {};
