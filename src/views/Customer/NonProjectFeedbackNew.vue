@@ -28,6 +28,7 @@
 <script>
 import StarRating from "vue-star-rating";
 import axios from "axios";
+import swal from "sweetalert";
 
 export default {
   data() {
@@ -58,11 +59,17 @@ export default {
       }
     },
     submitProject() {
-      const data = { user_id: this.getUserId() };
+      const data = {
+        user_id: this.getUserId(),
+        subject: this.subject,
+        description: this.description,
+        rating: this.rating
+      };
       axios
-        .post("/feedbackproject/create", data)
+        .post("/feedbacknonproject/create", data)
         .then(() => {
           swal("Success!", "You have successfully submitted a non project feedback!", "success");
+          this.$store.dispatch("goToPage", "/feedback-customer-nonproject");
         })
         .catch(() => {});
     }

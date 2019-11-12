@@ -72,14 +72,14 @@ export default {
       }
     },
     submitComplaint() {
-      const data = {
-        subject: this.subject,
-        user_id: this.getUserId(),
-        complaint: this.description,
-        service: this.serviceSelected.join(",")
-      };
+      let formData = new FormData();
+      formData.set("subject", this.subject);
+      formData.set("user_id", this.getUserId());
+      formData.set("complaint", this.description);
+      formData.set("service", this.serviceSelected.join(","));
+
       axios
-        .post("/complaint/create", data)
+        .post("/complaint/create", formData)
         .then(() => {
           swal("Success!", "You have successfully submitted a complaint!", "success");
         })

@@ -29,7 +29,7 @@
       <b-col cols="12" md="7" :order-md="idx % 2 === 0 ? '1' : '2'">
         <b-carousel controls indicators background="#ababab">
           <b-carousel-slide
-            :img-src="[getBaseStorage() + service.large_image]"
+            :img-src="getBaseStorage() + service.large_image"
             :key="service.large_image"
           >
             <h1>

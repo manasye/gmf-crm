@@ -96,7 +96,7 @@ export default {
       ],
       showReplyTextArea: false,
       replyText: null,
-      detail: null,
+      detail: { status: "" },
       headers: {
         sender: "",
         complaint_submitted: "",

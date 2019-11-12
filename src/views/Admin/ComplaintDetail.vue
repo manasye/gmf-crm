@@ -36,12 +36,10 @@
     </div>
     <div class="detail-info">
       <div class="detail mt-3 mt-md-0">
-        <h5 class="title">JUDUL</h5>
-        <p class="dept">Department &nbsp; &nbsp; Base Maintenance</p>
+        <h5 class="title">{{ complaintDetail.subject }}</h5>
+        <p class="dept">Department &nbsp; &nbsp; {{ complaintDetail.service }}</p>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis adipisci suscipit
-          sapiente quas ipsam nulla exercitationem necessitatibus. Tenetur totam nisi porro saepe
-          modi ullam ex quibusdam error! Est, laboriosam nemo.
+          {{ complaintDetail.complaint }}
         </p>
       </div>
       <div class="file mt-4 mb-4">

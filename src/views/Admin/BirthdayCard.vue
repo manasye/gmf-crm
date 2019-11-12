@@ -43,11 +43,15 @@
                 }"
                 class="preview"
               >
-                <h2>Happy Birthday</h2>
-                <h4>Customer Name</h4>
-                <p>Wishing you a wonderful birthday and a year filled with success</p>
+                <div class="preview-text">
+                  <h2>Happy Birthday</h2>
+                  <h4>Customer Name</h4>
+                  <p>Wishing you a wonderful birthday and a year filled with success</p>
+                </div>
               </div>
-              <b-button variant="success" size="sm" class="mt-2">Preview</b-button>
+              <b-button variant="success" size="sm" class="mt-2" @click="showModal = true"
+                >Preview</b-button
+              >
             </b-col>
           </b-row>
         </div>
@@ -61,6 +65,22 @@
         </p>
       </b-col>
     </b-row>
+
+    <b-modal centered v-model="showModal" hide-footer hide-header body-class="modal-no-padding">
+      <div
+        :style="{
+          backgroundImage: `url(${urlBg})`,
+          height: sizeImg + 'px'
+        }"
+        class="preview"
+      >
+        <div class="preview-text">
+          <h2>Happy Birthday</h2>
+          <h4>Customer Name</h4>
+          <p>Wishing you a wonderful birthday and a year filled with success</p>
+        </div>
+      </div>
+    </b-modal>
   </b-container>
 </template>
 
@@ -75,7 +95,8 @@ export default {
       permalink: "",
       fileBg: null,
       urlBg: "",
-      sizeImg: ""
+      sizeImg: "",
+      showModal: false
     };
   },
   methods: {
@@ -92,18 +113,6 @@ export default {
     onFileChange(e) {
       const file = e.target.files[0];
       this.urlBg = URL.createObjectURL(file);
-      const self = this;
-
-      // const fr = new FileReader();
-      // fr.onload = function() {
-      //   // file is loaded
-      //   const img = new Image();
-      //   img.onload = function() {
-      //     self.sizeImg = img.height; // image is loaded; sizes are available
-      //   };
-      //   img.src = fr.result; // is the data URL because called with readAsDataURL
-      // };
-      // fr.readAsDataURL(file); // I'm using a <input type="file"> for demonstrating
     },
     getSize() {
       this.sizeImg = document.getElementById("backgroundImage").clientHeight;
@@ -120,7 +129,18 @@ export default {
 .preview {
   color: white;
   text-align: center;
-  padding: 75px 30px 150px 30px;
+  padding: 0 30px;
+  position: relative;
   background-size: 100% 100%;
+}
+.preview-text {
+  position: absolute;
+  top: 20%;
+}
+</style>
+
+<style>
+.modal-no-padding {
+  padding: 0 !important;
 }
 </style>

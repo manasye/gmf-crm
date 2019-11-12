@@ -1,6 +1,6 @@
 <template>
   <b-row class="row-login">
-    <b-col cols="12" md="7" class="left">
+    <b-col cols="12" md="8" class="left">
       <img src="../assets/img/logo-white.png" alt class="d-none d-md-block" />
       <b-row align-v="center" class="desc">
         <div>
@@ -13,7 +13,7 @@
         </div>
       </b-row>
     </b-col>
-    <b-col cols="12" md="5">
+    <b-col cols="12" md="4">
       <b-row align-v="center" class="row-login" @keyup.enter="login">
         <div class="r-container">
           <label for="username">Username</label>
@@ -27,7 +27,7 @@
           ></b-form-input>
 
           <b-row>
-            <b-col cols="6">
+            <b-col cols="12">
               <b-form-checkbox v-model="remember" class="mb-4 mb-md-3">Remember Me</b-form-checkbox>
             </b-col>
             <!--                      <b-col cols="6" style="text-align: right">-->
@@ -103,8 +103,8 @@ export default {
   padding: 10px 30px;
 }
 .left {
-  background: url("../assets/img/login-bg.jpg");
-  background-size: cover;
+  background: url("../assets/img/login-bg.png");
+  background-size: 100% 100%;
   color: white;
   img {
     width: 300px;
