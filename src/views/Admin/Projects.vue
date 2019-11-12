@@ -4,23 +4,23 @@
 
     <b-row>
       <b-col cols="2">
-        <b-form-select v-model="selectedCompany" :options="companyOptions"></b-form-select>
+        <b-form-select v-model="selectVal.company" :options="companyOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectedProject" :options="projectOptions"></b-form-select>
+        <b-form-select v-model="selectVal.project_type" :options="projectOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectedStatus" :options="statusOptions"></b-form-select>
+        <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
         <b-button variant="success" @click="showModal = true">Add New Project</b-button>
       </b-col>
       <b-col cols="4" style="text-align: right">
         <b-row>
-          <b-col cols="10" class="d-none d-md-block">
+          <b-col cols="9" class="d-none d-md-block">
             <p class="mt-2">Number of items per page</p>
           </b-col>
-          <b-col cols="2">
+          <b-col cols="3">
             <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
           </b-col>
         </b-row>
@@ -31,7 +31,7 @@
       style="margin-top: 20px;"
       striped
       hover
-      :items="projects"
+      :items="filteredItems"
       :fields="projectFields"
       :per-page="perPage"
       :current-page="currentPage"
@@ -111,7 +111,7 @@
 
 <script>
 import StarRating from "vue-star-rating";
-import { perPageOptions, departments } from "@/utility/globalVar.js";
+import { perPageOptions, departments, statusProjects } from "@/utility/globalVar.js";
 import axios from "axios";
 import swal from "sweetalert";
 
@@ -121,12 +121,25 @@ export default {
   },
   data() {
     return {
-      selectedStatus: null,
-      selectedProject: null,
-      selectedCompany: null,
-      statusOptions: [],
-      projectOptions: [],
-      companyOptions: [],
+      selectVal: {
+        status: null,
+        project_type: null,
+        company: null
+      },
+      statusOptions: statusProjects,
+      projectOptions: [
+        {
+          value: null,
+          text: "All Project Types"
+        },
+        ...departments
+      ],
+      companyOptions: [
+        {
+          value: null,
+          text: "All Companies"
+        }
+      ],
       currentPage: 1,
       perPageOptions,
       departments,
@@ -150,6 +163,18 @@ export default {
   computed: {
     rows() {
       return this.projects.length;
+    },
+    filteredItems() {
+      return this.projects.filter(item => {
+        let keep = true;
+        this.fieldKeys.forEach(key => {
+          keep = keep && (!this.selectVal[key] || item[key] === this.selectVal[key]);
+        });
+        return keep;
+      });
+    },
+    fieldKeys() {
+      return Object.keys(this.projects[0]);
     }
   },
   methods: {

@@ -9,7 +9,7 @@
           <b-form-input v-model="subject" placeholder="Enter your subject"></b-form-input>
 
           <p class="mt-3 mb-2">Permalink</p>
-          <b-form-input v-model="permalink" placeholder="Enter your subject"></b-form-input>
+          <b-form-input v-model="permalink" placeholder="Enter your permalink"></b-form-input>
 
           <!--          <b-row class="mt-2">-->
           <!--            <b-col cols="10">-->
@@ -22,12 +22,16 @@
           <!--            </b-col>-->
           <!--          </b-row>-->
 
-          <p class="mb-2 mt-4">Preview</p>
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRKAKaNFm-lamLybebUj-QRsq5IZ8egZXMWYQhlSBfJxFWBKo35"
-            alt=""
-            class="d-block"
-          />
+          <p class="mb-2 mt-4">Image</p>
+          <b-form-file
+            v-model="image"
+            placeholder="Enter image"
+            accept="image/*"
+            @change="onFileChange"
+            class="mb-2"
+          ></b-form-file>
+
+          <img :src="url" alt="" class="mb-2 mt-4" />
         </div>
       </b-col>
 
@@ -52,19 +56,30 @@ export default {
     return {
       subject: "",
       permalink: "",
-      sendDate: null
+      image: "",
+      sendDate: null,
+      url: ""
     };
   },
   methods: {
     sendNews() {
+      let formData = new FormData();
+      formData.set("subject", this.subject);
+      formData.set("image", this.image);
+      formData.set("permalink", this.permalink);
+
       axios
-        .post("/newsletter/update", { subject: this.subject, permalink: this.permalink })
+        .post("/newsletter/create", formData)
         .then(res => {
           swal("Success", "Newsletter successfully sent", "success");
         })
         .catch(err => {
           swal("Error", err.response.data.message, "error");
         });
+    },
+    onFileChange(e) {
+      const file = e.target.files[0];
+      this.url = URL.createObjectURL(file);
     }
   }
 };

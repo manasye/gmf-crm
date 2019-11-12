@@ -5,27 +5,27 @@
     <b-row>
       <b-col cols="2">
         <label>Company</label>
-        <b-form-select v-model="selectedCompany" :options="companyOptions"></b-form-select>
+        <b-form-select v-model="selectVal.company" :options="companyOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
         <label>Status</label>
-        <b-form-select v-model="selectedStatus" :options="statusOptions"></b-form-select>
+        <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
         <label>Department</label>
-        <b-form-select v-model="selectedDept" :options="deptOptions"></b-form-select>
+        <b-form-select v-model="selectVal.department" :options="deptOptions"></b-form-select>
       </b-col>
-      <b-col cols="1">
+      <b-col cols="2">
         <label>Year</label>
-        <b-form-select v-model="selectedYear" :options="yearOptions"></b-form-select>
+        <b-form-select v-model="selectVal.year" :options="yearOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
         <label>Month</label>
-        <b-form-select v-model="selectedMonth" :options="monthOptions"></b-form-select>
+        <b-form-select v-model="selectVal.month" :options="monthOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
         <label>Range</label>
-        <b-form-select v-model="selectedRange" :options="rangeOptions"></b-form-select>
+        <b-form-select v-model="selectVal.range" :options="rangeOptions"></b-form-select>
       </b-col>
     </b-row>
 
@@ -35,6 +35,7 @@
 
 <script>
 import LineChart from "@/components/LineChart.vue";
+import { departments, statusComplaints, months } from "@/utility/globalVar.js";
 
 const options = {
   responsive: true,
@@ -46,18 +47,41 @@ const options = {
 export default {
   data() {
     return {
-      selectedStatus: null,
-      selectedYear: null,
-      selectedCompany: null,
-      selectedDept: null,
-      selectedMonth: null,
-      selectedRange: null,
-      statusOptions: [],
-      yearOptions: [],
-      companyOptions: [],
-      deptOptions: [],
-      monthOptions: [],
-      rangeOptions: [],
+      selectVal: {
+        status: null,
+        year: null,
+        company: null,
+        department: null,
+        month: null,
+        range: null
+      },
+      statusOptions: statusComplaints,
+      yearOptions: [
+        {
+          value: null,
+          text: "All Years"
+        }
+      ],
+      companyOptions: [
+        {
+          value: null,
+          text: "All Companies"
+        }
+      ],
+      deptOptions: [
+        {
+          value: null,
+          text: "All Departments"
+        },
+        ...departments
+      ],
+      monthOptions: months,
+      rangeOptions: [
+        {
+          value: null,
+          text: "All Range"
+        }
+      ],
       options,
       chartData: {
         labels: Array(12).fill("Jan"),

@@ -63,7 +63,12 @@ export default {
   },
   data() {
     return {
-      sendersOptions: [],
+      sendersOptions: [
+        {
+          value: null,
+          text: "All Senders"
+        }
+      ],
       deptOptions: [
         {
           value: null,

@@ -4,7 +4,7 @@
 
     <b-row>
       <b-col cols="2">
-        <b-form-select v-model="selectedReligion" :options="religionOptions"></b-form-select>
+        <b-form-select v-model="selectVal.religion" :options="religionOptions"></b-form-select>
       </b-col>
       <b-col cols="4">
         <b-button variant="success" @click="showModal = true">Add New Holiday Card</b-button>
@@ -23,7 +23,7 @@
       style="margin-top: 20px;"
       striped
       hover
-      :items="cards"
+      :items="filteredItems"
       :per-page="perPage"
       :fields="cardField"
       :current-page="currentPage"
@@ -51,11 +51,15 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Image</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.image"></b-form-input>
+          <b-form-file
+            v-model="editedData.image"
+            placeholder="Enter image"
+            accept="image/*"
+          ></b-form-file>
         </b-col>
         <b-col cols="4"> <label class="mt-2">Date</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.date"></b-form-input>
+          <b-form-input v-model="editedData.date" placeholder="YYYY-MM-DD"></b-form-input>
         </b-col>
         <b-col cols="4"> <label class="mt-2">Religion</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -70,7 +74,7 @@
 </template>
 
 <script>
-import { perPageOptions } from "@/utility/globalVar.js";
+import { perPageOptions, religions } from "@/utility/globalVar.js";
 import axios from "axios";
 import swal from "sweetalert";
 
@@ -80,8 +84,10 @@ export default {
   },
   data() {
     return {
-      selectedReligion: null,
-      religionOptions: [],
+      selectVal: {
+        religion: null
+      },
+      religionOptions: religions,
       currentPage: 1,
       perPageOptions,
       perPage: "10",
@@ -108,8 +114,16 @@ export default {
       this.$store.dispatch("goToPage", `/information-holiday-card/${row.religion_card_id}`);
     },
     addCard() {
+      let formData = new FormData();
+      const data = this.editedData;
+      formData.set("subject", data.subject);
+      formData.set("image", data.image);
+      formData.set("date", data.date);
+      formData.set("religion", data.religion);
+      formData.set("permalink", data.permalink);
+
       axios
-        .post("/religion/create")
+        .post("/religion/create", formData)
         .then(res => {
           this.getCards();
         })
@@ -129,6 +143,18 @@ export default {
   computed: {
     rows() {
       return this.cards.length;
+    },
+    filteredItems() {
+      return this.cards.filter(item => {
+        let keep = true;
+        this.fieldKeys.forEach(key => {
+          keep = keep && (!this.selectVal[key] || item[key] === this.selectVal[key]);
+        });
+        return keep;
+      });
+    },
+    fieldKeys() {
+      return Object.keys(this.cards[0]);
     }
   }
 };

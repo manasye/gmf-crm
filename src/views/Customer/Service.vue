@@ -143,10 +143,13 @@ export default {
       let formData = new FormData();
       formData.set("name", this.editedData.name);
       formData.set("detail", this.editedData.detail);
-      formData.set("large_image", this.editedData.large_image);
-      formData.set("small_image1", this.editedData.small_image1);
-      formData.set("small_image2", this.editedData.small_image2);
-      formData.set("id", this.editedData.id);
+      if (this.editedData.large_image instanceof File)
+        formData.set("large_image", this.editedData.large_image);
+      if (this.editedData.small_image1 instanceof File)
+        formData.set("small_image1", this.editedData.small_image1);
+      if (this.editedData.small_image2 instanceof File)
+        formData.set("small_image2", this.editedData.small_image2);
+      formData.set("id", this.editedData.service_id);
       axios
         .post(url, formData)
         .then(res => {

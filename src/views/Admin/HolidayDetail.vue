@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header :title="title" :breadcrumbs="breadcrumbs"></Header>
+    <Header :title="subject" :breadcrumbs="breadcrumbs"></Header>
 
     <b-row>
       <b-col cols="8">
@@ -21,18 +21,20 @@
           </b-row>
 
           <p class="mb-2 mt-4">Preview</p>
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRKAKaNFm-lamLybebUj-QRsq5IZ8egZXMWYQhlSBfJxFWBKo35"
-            alt=""
-            class="d-block"
-          />
-          <b-button variant="success" size="sm" class="mt-3">Change</b-button>
+          <img :src="url || `${getBaseStorage()}${detail.image}`" alt="" class="d-block" />
+          <b-form-file
+            v-model="detail.image"
+            placeholder="Change Image"
+            accept="image/*"
+            @change="onFileChange"
+            class="mt-3"
+          ></b-form-file>
         </div>
       </b-col>
 
       <b-col cols="4" v-if="isAdmin()">
         <p class="mb-2">Send Date</p>
-        <datepicker v-model="sendDate"></datepicker>
+        <datepicker v-model="sendDate" :format="customFormatter"></datepicker>
         <b-button variant="success" size="sm" class="mt-4">Send</b-button>
         <p style="font-size: .8rem" class="mt-3 ">
           *Holiday cards will be sent automatically according to the holiday's date and customer's
@@ -54,7 +56,8 @@
 <script>
 import Datepicker from "vuejs-datepicker";
 import axios from "axios";
-import swal from 'sweetalert'
+import swal from "sweetalert";
+import moment from "moment";
 
 export default {
   mounted() {
@@ -62,7 +65,6 @@ export default {
       .get(`/religion/edit/${this.$route.params.id}`)
       .then(res => {
         const data = res.data.data[0];
-        this.title = data.subject;
         this.subject = data.subject;
         this.detail = data;
         this.breadcrumbs = [
@@ -83,9 +85,9 @@ export default {
       breadcrumbs: [],
       subject: null,
       sendDate: null,
-      title: null,
       showEdit: false,
-      detail: {}
+      detail: {},
+      url: ""
     };
   },
   components: {
@@ -99,6 +101,16 @@ export default {
         .catch(err => {
           swal("Error", err.response.data.message, "error");
         });
+    },
+    customFormatter(date) {
+      return moment(date).format("YYYY-MM-DD");
+    },
+    moment: function() {
+      return moment();
+    },
+    onFileChange(e) {
+      const file = e.target.files[0];
+      this.url = URL.createObjectURL(file);
     }
   }
 };

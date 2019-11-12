@@ -4,16 +4,16 @@
 
     <b-row>
       <b-col cols="2">
-        <b-form-select v-model="selectedCompany" :options="companyOptions"></b-form-select>
+        <b-form-select v-model="selectVal.company" :options="companyOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectedSender" :options="senderOptions"></b-form-select>
+        <b-form-select v-model="selectVal.sender" :options="senderOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectedDept" :options="deptOptions"></b-form-select>
+        <b-form-select v-model="selectVal.department" :options="deptOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectedStatus" :options="statusOptions"></b-form-select>
+        <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
       </b-col>
       <b-col cols="4" style="text-align: right">
         <b-row>
@@ -31,7 +31,7 @@
       style="margin-top: 20px;"
       striped
       hover
-      :items="complaints"
+      :items="filteredItems"
       :fields="complaintFields"
       :per-page="perPage"
       :current-page="currentPage"
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { perPageOptions } from "@/utility/globalVar.js";
+import { perPageOptions, departments, statusComplaints } from "@/utility/globalVar.js";
 import axios from "axios";
 
 export default {
@@ -70,35 +70,32 @@ export default {
   },
   data() {
     return {
-      selectedStatus: null,
-      selectedSender: null,
-      selectedCompany: null,
-      selectedDept: null,
-      statusOptions: [
+      selectVal: {
+        status: null,
+        sender: null,
+        company: null,
+        department: null
+      },
+      statusOptions: statusComplaints,
+      senderOptions: [
         {
           value: null,
-          text: "Select status"
-        },
-        {
-          value: "Open",
-          text: "Open"
-        },
-        {
-          value: "Receive",
-          text: "Receive"
-        },
-        {
-          value: "On Progress",
-          text: "On Progress"
-        },
-        {
-          value: "Closed",
-          text: "Closed"
+          text: "All Senders"
         }
       ],
-      senderOptions: [],
-      companyOptions: [],
-      deptOptions: [],
+      companyOptions: [
+        {
+          value: null,
+          text: "All Companies"
+        }
+      ],
+      deptOptions: [
+        {
+          value: null,
+          text: "All Departments"
+        },
+        ...departments
+      ],
       currentPage: 1,
       perPageOptions,
       perPage: "10",
@@ -134,6 +131,18 @@ export default {
   computed: {
     rows() {
       return this.complaints.length;
+    },
+    filteredItems() {
+      return this.complaints.filter(item => {
+        let keep = true;
+        this.fieldKeys.forEach(key => {
+          keep = keep && (!this.selectVal[key] || item[key] === this.selectVal[key]);
+        });
+        return keep;
+      });
+    },
+    fieldKeys() {
+      return Object.keys(this.complaints[0]);
     }
   }
 };

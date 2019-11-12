@@ -40,7 +40,32 @@ export const departments = [
   }
 ];
 
-export const religions = [];
+export const religions = [
+  {
+    value: null,
+    text: "All Religions"
+  },
+  {
+    value: "Christianity",
+    text: "Christianity"
+  },
+  {
+    value: "Islam",
+    text: "Islam"
+  },
+  {
+    value: "Buddhism",
+    text: "Buddhism"
+  },
+  {
+    value: "Hinduism",
+    text: "Hinduism"
+  },
+  {
+    value: "Sikhism",
+    text: "Sikhism"
+  }
+];
 
 export const statusProjects = [
   {
@@ -77,5 +102,87 @@ export const statusComplaints = [
   {
     value: "Closed",
     text: "Closed"
+  }
+];
+
+export const months = [
+  {
+    value: null,
+    text: "All Months"
+  },
+  {
+    text: "January",
+    value: "1"
+  },
+  {
+    text: "February",
+    value: "2"
+  },
+  {
+    text: "March",
+    value: "3"
+  },
+  {
+    text: "April",
+    value: "4"
+  },
+  {
+    text: "May",
+    value: "5"
+  },
+  {
+    text: "June",
+    value: "6"
+  },
+  {
+    text: "July",
+    value: "7"
+  },
+  {
+    text: "August",
+    value: "8"
+  },
+  {
+    text: "September",
+    value: "9"
+  },
+  {
+    text: "October",
+    value: "10"
+  },
+  {
+    text: "November",
+    value: "11"
+  },
+  {
+    text: "December",
+    value: "12"
+  }
+];
+
+export const ratingOptions = [
+  {
+    value: null,
+    text: "All Ratings"
+  },
+  {
+    text: "1",
+    value: "1"
+  },
+  {
+    text: "2",
+    value: "2"
+  },
+  {
+    text: "3",
+    value: "3"
+  },
+  {
+    text: "4",
+    value: "4"
+  },
+  {
+    text: "5",
+    value: "5"
   }
 ];

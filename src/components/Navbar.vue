@@ -70,7 +70,7 @@
                 @changedMonth="changeMonth"
               />
               <div class="p-2">
-                <p class="mb-0">{{ selectedDate | moment("DD MMMM YYYY") }}</p>
+                <p class="mb-0">{{ moment(selectedDate).format("DD MMMM YYYY") }}</p>
               </div>
             </div>
           </b-nav-item-dropdown>
@@ -128,6 +128,7 @@
 <script>
 import Datepicker from "vuejs-datepicker";
 import axios from "axios";
+import moment from "moment";
 
 export default {
   mounted() {
@@ -235,6 +236,9 @@ export default {
     },
     changeMonth(month) {
       console.log(month.getMonth());
+    },
+    moment: function() {
+      return moment();
     }
   },
   computed: {

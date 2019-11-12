@@ -1,35 +1,38 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Complaint Trend"></Header>
+    <Header title="Feedback Trend"></Header>
 
     <b-row>
       <b-col cols="2">
         <label>Company</label>
-        <b-form-select v-model="selectedCompany" :options="companyOptions"></b-form-select>
+        <b-form-select v-model="selectVal.company" :options="companyOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
         <label>Rating</label>
-        <b-form-select v-model="selectedRating" :options="ratingOptions"></b-form-select>
+        <b-form-select v-model="selectVal.rating" :options="ratingOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
         <label>Project Type</label>
-        <b-form-select v-model="selectedProj" :options="projOptions"></b-form-select>
+        <b-form-select v-model="selectVal.project_type" :options="projOptions"></b-form-select>
       </b-col>
       <b-col cols="1">
         <label>Year</label>
-        <b-form-select v-model="selectedYear" :options="yearOptions"></b-form-select>
+        <b-form-select v-model="selectVal.year" :options="yearOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
         <label>Month</label>
-        <b-form-select v-model="selectedMonth" :options="monthOptions"></b-form-select>
+        <b-form-select v-model="selectVal.month" :options="monthOptions"></b-form-select>
       </b-col>
       <b-col cols="1">
         <label>Range</label>
-        <b-form-select v-model="selectedRange" :options="rangeOptions"></b-form-select>
+        <b-form-select v-model="selectVal.range" :options="rangeOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
         <label>Feedback Component</label>
-        <b-form-select v-model="selectedComp" :options="compOptions"></b-form-select>
+        <b-form-select
+          v-model="selectVal.feedback_component"
+          :options="compOptions"
+        ></b-form-select>
       </b-col>
     </b-row>
 
@@ -39,6 +42,7 @@
 
 <script>
 import LineChart from "@/components/LineChart.vue";
+import { departments, statusComplaints, months, ratingOptions } from "@/utility/globalVar.js";
 
 const options = {
   responsive: true,
@@ -50,20 +54,48 @@ const options = {
 export default {
   data() {
     return {
-      selectedRating: null,
-      selectedYear: null,
-      selectedCompany: null,
-      selectedProj: null,
-      selectedMonth: null,
-      selectedRange: null,
-      selectedComp: null,
-      ratingOptions: [],
-      yearOptions: [],
-      companyOptions: [],
-      projOptions: [],
-      monthOptions: [],
-      rangeOptions: [],
-      compOptions: [],
+      selectVal: {
+        rating: null,
+        year: null,
+        company: null,
+        project_type: null,
+        month: null,
+        range: null,
+        feedback_component: null
+      },
+      ratingOptions,
+      yearOptions: [
+        {
+          value: null,
+          text: "All Years"
+        }
+      ],
+      companyOptions: [
+        {
+          value: null,
+          text: "All Companies"
+        }
+      ],
+      projOptions: [
+        {
+          value: null,
+          text: "All Project Types"
+        },
+        ...departments
+      ],
+      monthOptions: months,
+      rangeOptions: [
+        {
+          value: null,
+          text: "All Range"
+        }
+      ],
+      compOptions: [
+        {
+          value: null,
+          text: "All Project Components"
+        }
+      ],
       options,
       chartData: {
         labels: Array(12).fill("Jan"),

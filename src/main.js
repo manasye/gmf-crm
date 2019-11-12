@@ -82,7 +82,6 @@ Vue.mixin({
 Vue.use(BootstrapVue);
 Vue.use(Chat);
 Vue.use(VModal);
-Vue.use(require("vue-moment"));
 Vue.use(VueIntro);
 
 Vue.component("Header", Header);

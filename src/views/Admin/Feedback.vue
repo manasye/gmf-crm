@@ -3,13 +3,13 @@
     <Header title="Feedback List"></Header>
     <b-row>
       <b-col cols="2">
-        <b-form-select v-model="selectedCompany" :options="companyOptions"></b-form-select>
+        <b-form-select v-model="selectVal.company" :options="companyOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectedSender" :options="senderOptions"></b-form-select>
+        <b-form-select v-model="selectVal.sender" :options="senderOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectedProject" :options="projectOptions"></b-form-select>
+        <b-form-select v-model="selectVal.project_type" :options="projectOptions"></b-form-select>
       </b-col>
 
       <b-col cols="6" style="text-align: right">
@@ -28,7 +28,7 @@
       style="margin-top: 20px;"
       striped
       hover
-      :items="feedbacks"
+      :items="filteredItems"
       :fields="feedbackFields"
       :per-page="perPage"
       :current-page="currentPage"
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { perPageOptions } from "@/utility/globalVar.js";
+import { perPageOptions, departments } from "@/utility/globalVar.js";
 import StarRating from "vue-star-rating";
 import axios from "axios";
 
@@ -76,12 +76,30 @@ export default {
   },
   data() {
     return {
-      selectedProject: null,
-      selectedSender: null,
-      selectedCompany: null,
-      projectOptions: [],
-      senderOptions: [],
-      companyOptions: [],
+      selectVal: {
+        project_type: null,
+        sender: null,
+        company: null
+      },
+      projectOptions: [
+        {
+          value: null,
+          text: "All Project Types"
+        },
+        ...departments
+      ],
+      senderOptions: [
+        {
+          value: null,
+          text: "All Senders"
+        }
+      ],
+      companyOptions: [
+        {
+          value: null,
+          text: "All Companies"
+        }
+      ],
       currentPage: 1,
       perPageOptions,
       perPage: "10",
@@ -117,6 +135,18 @@ export default {
   computed: {
     rows() {
       return this.feedbacks.length;
+    },
+    filteredItems() {
+      return this.feedbacks.filter(item => {
+        let keep = true;
+        this.fieldKeys.forEach(key => {
+          keep = keep && (!this.selectVal[key] || item[key] === this.selectVal[key]);
+        });
+        return keep;
+      });
+    },
+    fieldKeys() {
+      return Object.keys(this.feedbacks[0]);
     }
   },
   components: {

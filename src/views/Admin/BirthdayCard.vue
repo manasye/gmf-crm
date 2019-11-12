@@ -24,21 +24,30 @@
           <b-row>
             <b-col cols="6">
               <p class="mb-2 mt-4">Background</p>
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRKAKaNFm-lamLybebUj-QRsq5IZ8egZXMWYQhlSBfJxFWBKo35"
-                alt=""
-                class="d-block"
-              />
-              <b-button variant="success" size="sm" class="mt-3" v-if="isAdmin()">Change</b-button>
+              <img :src="urlBg" alt="" class="d-block" id="backgroundImage" @load="getSize" />
+              <b-form-file
+                v-model="fileBg"
+                placeholder="Change Background"
+                accept="image/*"
+                @change="onFileChange"
+                class="mt-2"
+                v-if="isAdmin()"
+              ></b-form-file>
             </b-col>
-            <b-col cols="6">
+            <b-col cols="6" v-if="urlBg">
               <p class="mb-2 mt-4">Preview</p>
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRKAKaNFm-lamLybebUj-QRsq5IZ8egZXMWYQhlSBfJxFWBKo35"
-                alt=""
-                class="d-block"
-              />
-              <b-button variant="success" size="sm" class="mt-3">Preview</b-button>
+              <div
+                :style="{
+                  backgroundImage: `url(${urlBg})`,
+                  height: sizeImg + 'px'
+                }"
+                class="preview"
+              >
+                <h2>Happy Birthday</h2>
+                <h4>Customer Name</h4>
+                <p>Wishing you a wonderful birthday and a year filled with success</p>
+              </div>
+              <b-button variant="success" size="sm" class="mt-2">Preview</b-button>
             </b-col>
           </b-row>
         </div>
@@ -63,7 +72,10 @@ export default {
   data() {
     return {
       subject: "",
-      permalink: ""
+      permalink: "",
+      fileBg: null,
+      urlBg: "",
+      sizeImg: ""
     };
   },
   methods: {
@@ -76,14 +88,39 @@ export default {
         .catch(err => {
           swal("Error", err.response.data.message, "error");
         });
+    },
+    onFileChange(e) {
+      const file = e.target.files[0];
+      this.urlBg = URL.createObjectURL(file);
+      const self = this;
+
+      // const fr = new FileReader();
+      // fr.onload = function() {
+      //   // file is loaded
+      //   const img = new Image();
+      //   img.onload = function() {
+      //     self.sizeImg = img.height; // image is loaded; sizes are available
+      //   };
+      //   img.src = fr.result; // is the data URL because called with readAsDataURL
+      // };
+      // fr.readAsDataURL(file); // I'm using a <input type="file"> for demonstrating
+    },
+    getSize() {
+      this.sizeImg = document.getElementById("backgroundImage").clientHeight;
     }
   }
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .card-wrapper {
   border: 1px solid #95999c;
   padding: 16px 32px;
+}
+.preview {
+  color: white;
+  text-align: center;
+  padding: 75px 30px 150px 30px;
+  background-size: 100% 100%;
 }
 </style>

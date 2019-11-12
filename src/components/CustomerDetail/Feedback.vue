@@ -3,15 +3,12 @@
     <h5 style="font-weight: bold">FEEDBACK LIST</h5>
     <b-row class="mt-4">
       <b-col cols="6" md="2">
-        <b-form-select v-model="sender" :options="sendersOptions"></b-form-select>
+        <b-form-select v-model="selectVal.sender" :options="sendersOptions"></b-form-select>
       </b-col>
       <b-col cols="6" md="2">
-        <b-form-select v-model="project" :options="projectOptions"></b-form-select>
+        <b-form-select v-model="selectVal.project_type" :options="projectOptions"></b-form-select>
       </b-col>
-      <b-col cols="6" md="2" class="mt-3 mt-md-0 mb-3 mb-md-0">
-        <b-form-select v-model="status" :options="statusOptions"></b-form-select>
-      </b-col>
-      <b-col cols="0" md="3"></b-col>
+      <b-col cols="0" md="5"></b-col>
       <b-col cols="8" md="2" class="mt-2">Numbers of item per page</b-col>
       <b-col cols="4" md="1">
         <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
@@ -22,7 +19,7 @@
       style="margin-top: 20px;"
       striped
       hover
-      :items="feedbacks"
+      :items="filteredItems"
       :fields="feedbackFields"
       :per-page="perPage"
       :current-page="currentPage"
@@ -52,7 +49,7 @@
 </template>
 
 <script>
-import { perPageOptions } from "@/utility/globalVar.js";
+import { perPageOptions, departments } from "@/utility/globalVar.js";
 import StarRating from "vue-star-rating";
 import axios from "axios";
 
@@ -70,15 +67,27 @@ export default {
 
   data() {
     return {
-      sendersOptions: [],
-      projectOptions: [],
+      sendersOptions: [
+        {
+          value: null,
+          text: "All Senders"
+        }
+      ],
+      projectOptions: [
+        {
+          value: null,
+          text: "All Project Types"
+        },
+        ...departments
+      ],
       statusOptions: [],
       perPageOptions,
       perPage: "10",
       currentPage: 1,
-      sender: null,
-      project: null,
-      status: null,
+      selectVal: {
+        sender: null,
+        project_type: null
+      },
       feedbackFields: [
         { key: "feedback_project_id", label: "Id", sortable: true },
         { key: "date", sortable: true },
@@ -101,6 +110,18 @@ export default {
   computed: {
     rows() {
       return this.feedbacks.length;
+    },
+    filteredItems() {
+      return this.feedbacks.filter(item => {
+        let keep = true;
+        this.fieldKeys.forEach(key => {
+          keep = keep && (!this.selectVal[key] || item[key] === this.selectVal[key]);
+        });
+        return keep;
+      });
+    },
+    fieldKeys() {
+      return Object.keys(this.feedbacks[0]);
     }
   }
 };

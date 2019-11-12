@@ -12,7 +12,7 @@
       show-empty
     >
       <template v-slot:cell(image)="data">
-        <img :src="data.value" alt="" />
+        <img :src="getBaseStorage() + data.value" alt="" />
       </template>
       <template v-slot:cell(permalink)="data">
         <a :href="data.value">{{ data.value }}</a>
@@ -36,7 +36,7 @@
 
     <b-table style="margin-top: 20px;" striped hover :items="adList" responsive show-empty>
       <template v-slot:cell(image)="data">
-        <img :src="data.value" alt="" />
+        <img :src="getBaseStorage() + data.value" alt="" />
       </template>
       <template v-slot:cell(permalink)="data">
         <a :href="data.value">{{ data.value }}</a>
@@ -68,7 +68,11 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Image</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.image"></b-form-input>
+          <b-form-file
+            v-model="editedData.image"
+            placeholder="Choose new image"
+            accept="image/*"
+          ></b-form-file>
         </b-col>
         <b-col cols="4"> <label class="mt-2">Permalink</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -139,8 +143,13 @@ export default {
         });
     },
     submitAd() {
+      let formData = new FormData();
+      formData.set("subject", this.editedData.subject);
+      formData.set("image", this.editedData.image);
+      formData.set("permalink", this.editedData.permalink);
+
       axios
-        .post("/ads/create", this.editedData)
+        .post("/ads/create", formData)
         .then(() => {
           this.getAdList();
         })
