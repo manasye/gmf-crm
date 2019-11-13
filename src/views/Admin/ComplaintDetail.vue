@@ -132,7 +132,7 @@ export default {
         },
         {
           value: "On Progress",
-          text: "On Progress"
+          text: "Onprogress"
         },
         {
           value: "Closed",

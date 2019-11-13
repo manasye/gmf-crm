@@ -3,7 +3,7 @@
     <Header title="NEW COMPLAINT" :breadcrumbs="breadcrumbs"></Header>
     <div class="feedback-wrapper">
       <p class="mb-2">Subject / Complaint</p>
-      <b-form-input v-model="subject" placeholder></b-form-input>
+      <b-form-input v-model="subject"></b-form-input>
       <p class="mb-2 mt-4">Department</p>
       <b-form-checkbox-group>
         <b-row>
@@ -20,7 +20,7 @@
         </b-row>
       </b-form-checkbox-group>
       <p class="mb-2 mt-4">Description</p>
-      <b-form-textarea v-model="description" placeholder rows="3" max-rows="6"></b-form-textarea>
+      <b-form-textarea v-model="description" rows="3" max-rows="6"></b-form-textarea>
 
       <b-form-file
         id="file-default"

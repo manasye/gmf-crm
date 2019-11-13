@@ -20,9 +20,9 @@
 
       <p class="mt-2">How would you rate GMF performance?</p>
       <b-row>
-        <b-col cols="12" md="4" v-for="p in performances" :key="p.title" class="mb-4 mb-md-0">
+        <b-col cols="12" md="4" v-for="p in performances" :key="p.service" class="mb-4 mb-md-0">
           <div class="feedback-wrapper">
-            <h5 class="performance-title">{{ p.title }}</h5>
+            <h5 class="performance-title">{{ p.service }}</h5>
             <star-rating
               v-model="p.rating"
               :show-rating="false"
@@ -41,22 +41,24 @@
             <p>What aspect(s) do you think we could improve?</p>
             <b-form-checkbox-group>
               <b-form-checkbox
-                v-for="(i, idx) in improvements"
+                v-for="i in improvements"
                 :key="i.name"
                 class="checkbox"
-                :id="i.name + p.title"
-                :name="i.name + p.title"
+                :id="i.name + p.service"
+                :name="i.name + p.service"
                 :value="i.value"
-                v-model="p.improvements"
+                v-model="p.aspect_to_improve"
               >
                 {{ i.name }}
               </b-form-checkbox>
             </b-form-checkbox-group>
             <p class="mt-4">Remark / Other Comments</p>
-            <b-form-textarea v-model="p.comment" rows="3" max-rows="6"></b-form-textarea>
+            <b-form-textarea v-model="p.remark" rows="3" max-rows="6"></b-form-textarea>
           </div>
         </b-col>
       </b-row>
+
+      <p v-if="performances.length === 0" class="mb-0">No Service Selected</p>
 
       <b-button variant="success" @click="submitFeedback" class="mt-md-4 submit-button mb-2"
         >SUBMIT</b-button
@@ -103,17 +105,13 @@ export default {
       services: departments,
       serviceSelected: null,
       improvements: [
-        { name: "Product Quality", value: "" },
-        { name: "Quality Assurance Team", value: "" },
-        { name: "On Team Delivery", value: "" },
-        { name: "Personnel Competency & Capability", value: "" },
-        { name: "Communication", value: "" }
+        { name: "Product Quality", value: "Product Quality" },
+        { name: "Quality Assurance Team", value: "Quality Assurance Team" },
+        { name: "On Team Delivery", value: "On Team Delivery" },
+        { name: "Personnel Competency & Capability", value: "Personnel Competency & Capability" },
+        { name: "Communication", value: "Communication" }
       ],
-      performances: [
-        { title: "BASE MAINTENANCE", rating: 0, improvements: [], comment: null },
-        { title: "CABIN MAINTENANCE", rating: 0, improvements: [], comment: null },
-        { title: "ENGINEERING SERVICES", rating: 0, improvements: [], comment: null }
-      ],
+      performances: [],
       projectType: ""
     };
   },
@@ -121,7 +119,25 @@ export default {
     StarRating
   },
   methods: {
-    submitFeedback() {},
+    submitFeedback() {
+      const feedbacks = this.performances.map(p => ({
+        ...p,
+        aspect_to_improve: p.aspect_to_improve.join(",")
+      }));
+
+      axios
+        .post("/feedbackproject/create", {
+          user_id: this.getUserId(),
+          project_id: this.$route.params.id,
+          service: feedbacks
+        })
+        .then(() => {
+          swal("Success", "Feedback submitted successfully", "success");
+        })
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
+    },
     generateResultRating(rating) {
       if (rating >= 4) {
         return ["Satisfied", "text-success"];
@@ -134,7 +150,10 @@ export default {
     changeService(services) {
       let performances = [];
       services.map(s => {
-        performances.push({ title: s, rating: 0, improvements: [], comment: "" });
+        const performance = this.performances.find(p => p.service === s);
+        if (!performance)
+          performances.push({ service: s, rating: 0, aspect_to_improve: [], remark: "" });
+        else performances.push(performance);
       });
       this.performances = performances;
     }

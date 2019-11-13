@@ -65,12 +65,25 @@
             <div>
               <datepicker
                 :inline="true"
-                v-model="selectedDate"
+                @selected="changeSelectedDate"
                 :highlighted="highlighted"
                 @changedMonth="changeMonth"
+                @changedYear="changeMonth"
+                @changedDecade="changeMonth"
+                :minimumView="'day'"
+                :maximumView="'day'"
               />
-              <div class="p-2">
-                <p class="mb-0">{{ moment(selectedDate).format("DD MMMM YYYY") }}</p>
+              <div class="p-2 info-event" v-if="selectedDate" style="">
+                <p class="mb-0">
+                  {{ selectedDate }}
+                </p>
+                <hr style="margin: 8px 0" />
+                <div v-for="e in eventSelected" :key="e.event">
+                  <p class="mb-2">
+                    {{ e.event }}
+                    <span v-if="e.company" style="color: #949699">{{ e.company }} </span>
+                  </p>
+                </div>
               </div>
             </div>
           </b-nav-item-dropdown>
@@ -201,6 +214,18 @@ export default {
         { name: "Services", route: "/#/services", icon: "tools" }
       ];
     }
+
+    const now = new Date();
+
+    axios
+      .get(`/calendar/${now.getMonth() + 1}/${now.getFullYear()}`)
+      .then(res => {
+        this.highlighted = {
+          ...this.highlighted,
+          daysOfMonth: res.data.highlightedDays
+        };
+      })
+      .catch(() => {});
   },
   data() {
     return {
@@ -210,7 +235,8 @@ export default {
       highlighted: {
         daysOfMonth: [1, 2, 3]
       },
-      month: null
+      month: null,
+      eventSelected: []
     };
   },
   methods: {
@@ -234,8 +260,25 @@ export default {
         })
         .catch(() => {});
     },
-    changeMonth(month) {
-      console.log(month.getMonth());
+    changeMonth(date) {
+      axios
+        .get(`/calendar/${date.getMonth() + 1}/${date.getFullYear()}`)
+        .then(res => {
+          this.highlighted = {
+            ...this.highlighted,
+            daysOfMonth: res.data.highlightedDays
+          };
+        })
+        .catch(() => {});
+    },
+    changeSelectedDate(date) {
+      this.selectedDate = moment(date).format("DD MMMM YYYY");
+      axios
+        .get(`/calendar/${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        .then(res => {
+          this.eventSelected = res.data.detail;
+        })
+        .catch(() => {});
     },
     moment: function() {
       return moment();
@@ -278,6 +321,10 @@ export default {
 }
 .user-navbar {
   margin-right: 10px;
+}
+.info-event {
+  overflow-y: auto;
+  height: 250px;
 }
 </style>
 
