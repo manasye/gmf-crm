@@ -65,6 +65,18 @@ export default {
       .get("/complaint/read")
       .then(res => {
         this.complaints = res.data.data;
+        let companies = [],
+          senders = [];
+        res.data.data.map(p => {
+          if (!companies.find(l => l.value === p.company_name) && p.company_name) {
+            companies.push({ value: p.company_name, text: p.company_name });
+          }
+          if (!senders.find(l => l.value === p.sender) && p.sender) {
+            senders.push({ value: p.sender, text: p.sender });
+          }
+        });
+        this.companyOptions = this.companyOptions.concat(companies);
+        this.senderOptions = this.senderOptions.concat(senders);
       })
       .catch(() => {});
   },

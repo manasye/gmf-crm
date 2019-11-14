@@ -31,6 +31,10 @@
       @row-clicked="showCard"
       show-empty
     >
+      <template v-slot:cell(image)="data"
+        ><img :src="getBaseStorage() + data.value" alt="" style="width: 70%"
+      /></template>
+
       <template v-slot:cell(permalink)="data"
         ><a :href="data.value">{{ data.value }}</a></template
       >
@@ -93,7 +97,7 @@ export default {
       perPage: "10",
       cardField: [
         { key: "subject", sortable: true },
-        { key: "image", sortable: true },
+        { key: "image", sortable: true, class: "w-25" },
         { key: "religion", sortable: true },
         { key: "date", sortable: true },
         { key: "permalink", sortable: true }

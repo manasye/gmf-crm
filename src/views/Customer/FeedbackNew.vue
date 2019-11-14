@@ -25,7 +25,6 @@
       <b-form-file
         id="file-default"
         class="mb-2 mt-4 file-form"
-        multiple
         v-model="files"
         :file-name-formatter="formatNames"
       ></b-form-file>
@@ -77,13 +76,16 @@ export default {
       formData.set("user_id", this.getUserId());
       formData.set("complaint", this.description);
       formData.set("service", this.serviceSelected.join(","));
+      formData.set("file", this.files);
 
       axios
         .post("/complaint/create", formData)
         .then(() => {
           swal("Success!", "You have successfully submitted a complaint!", "success");
         })
-        .catch(() => {});
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
     }
   }
 };

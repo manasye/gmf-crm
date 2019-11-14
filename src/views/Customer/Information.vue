@@ -19,30 +19,24 @@
           </tr>
         </thead>
         <tbody>
-          <template v-for="(info, idx) in infos">
-            <tr
-              data-toggle="collapse"
-              :key="info.id"
-              :data-target="`#collapse${info.id}`"
-              class="clickable"
-              @click="showInfoDetail(info.id, idx)"
-            >
-              <td width="5%">
-                <div style="text-align: right">
-                  <span class="dot" v-if="info.new"></span>
-                </div>
-              </td>
-              <td width="15%">{{ info.type }}</td>
+          <template v-for="(info, idx) in paginatedItems">
+            <tr data-toggle="collapse" class="clickable" @click="showInfoDetail(idx)" :key="idx">
+              <!--              <td width="5%">-->
+              <!--                <div style="text-align: right">-->
+              <!--                  <span class="dot" v-if="info.new"></span>-->
+              <!--                </div>-->
+              <!--              </td>-->
+              <td width="15%">{{ info.category }}</td>
               <td>{{ info.subject }}</td>
-              <td>{{ info.time }}</td>
+              <td>{{ moment(info.updated_at).format("DD MMMM YYYY") }}</td>
               <td width="5%">
                 <font-awesome-icon :icon="info.plus ? 'angle-down' : 'angle-up'" />
               </td>
             </tr>
-            <tr :key="info.id + 'collapse'" v-if="!info.plus">
+            <tr v-if="!info.plus" :key="idx">
               <td colspan="12">
                 <div class="detail-info-image">
-                  <img src="https://www.urbansplash.co.uk/images/placeholder-16-9.jpg" alt />
+                  <img :src="getBaseStorage() + info.image" alt />
                 </div>
               </td>
             </tr>
@@ -57,35 +51,59 @@
 
 <script>
 import { perPageOptions } from "@/utility/globalVar.js";
+import axios from "axios";
+import moment from "moment";
 
 export default {
+  mounted() {
+    axios
+      .get(`/information/read`)
+      .then(res => {
+        this.infos = res.data.map(el => {
+          let o = Object.assign({}, el);
+          o.plus = true;
+          return o;
+        });
+      })
+      .catch(() => {});
+  },
   data() {
     return {
       model: true,
       perPage: "10",
       perPageOptions,
       currentPage: 1,
-      informationFields: ["", "Category", "Subject", "Date", ""],
+      informationFields: ["Category", "Subject", "Date", ""],
       infos: [
         {
-          id: "a",
-          new: true,
-          type: "GMF Product",
-          subject: "Reset your account password",
-          time: "13.52",
+          subject: "Islam",
+          updated_at: "2019-11-13 06:35:45",
+          image: "religioncard/19OrE946ST73UqcKodV2LZaZpw0XbBalvHVyeVzN.jpeg",
+          category: "Holiday Card",
           plus: true
         }
       ]
     };
   },
   methods: {
-    showInfoDetail(id, idx) {
-      this.infos[idx].plus = !this.infos[idx].plus;
+    showInfoDetail(idx) {
+      const paginatedIdx = (this.currentPage - 1) * +this.perPage + idx;
+      this.infos[paginatedIdx].plus = !this.infos[paginatedIdx].plus;
+    },
+    moment: function() {
+      return moment();
+    },
+    paginate(array, page_size, page_number) {
+      --page_number;
+      return array.slice(page_number * page_size, (page_number + 1) * page_size);
     }
   },
   computed: {
     rows() {
       return this.infos.length;
+    },
+    paginatedItems() {
+      return this.paginate(this.infos, +this.perPage, this.currentPage);
     }
   }
 };

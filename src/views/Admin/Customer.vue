@@ -2,9 +2,9 @@
   <b-container fluid class="container-app">
     <Header title="Customer List"></Header>
     <b-row>
-      <b-col cols="2"
-        ><b-form-select v-model="selectVal.region" :options="regionOptions"></b-form-select
-      ></b-col>
+      <!--      <b-col cols="2"-->
+      <!--        ><b-form-select v-model="selectVal.region" :options="regionOptions"></b-form-select-->
+      <!--      ></b-col>-->
       <b-col cols="2"
         ><b-form-select v-model="selectVal.country" :options="countryOptions"></b-form-select
       ></b-col>
@@ -17,6 +17,7 @@
       <b-col cols="2"
         ><b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select
       ></b-col>
+      <b-col cols="2"></b-col>
       <b-col cols="1" class="mt-2 text-right">Per page</b-col>
       <b-col cols="1"
         ><b-form-select v-model="perPage" :options="perPageOptions"></b-form-select
@@ -135,7 +136,7 @@
 </template>
 
 <script>
-import { perPageOptions } from "@/utility/globalVar";
+import { perPageOptions, religions } from "@/utility/globalVar";
 import axios from "axios";
 import swal from "sweetalert";
 
@@ -157,12 +158,7 @@ export default {
   },
   data() {
     return {
-      regionOptions: [
-        {
-          value: null,
-          text: "All Regions"
-        }
-      ],
+      regionOptions: religions,
       countryOptions: [
         {
           value: null,
@@ -291,6 +287,23 @@ export default {
         .get("/company/read")
         .then(res => {
           this.customers = res.data.data;
+          let countries = [],
+            roles = [],
+            businessModels = [];
+          res.data.data.map(p => {
+            if (!countries.find(l => l.value === p.country) && p.country) {
+              countries.push({ value: p.country, text: p.country });
+            }
+            if (!roles.find(l => l.value === p.company_role) && p.company_role) {
+              roles.push({ value: p.company_role, text: p.company_role });
+            }
+            if (!businessModels.find(l => l.value === p.business_model) && p.business_model) {
+              businessModels.push({ value: p.business_model, text: p.business_model });
+            }
+          });
+          this.countryOptions = this.countryOptions.concat(countries);
+          this.roleOptions = this.roleOptions.concat(roles);
+          this.bmOptions = this.bmOptions.concat(businessModels);
         })
         .catch(() => {});
     }

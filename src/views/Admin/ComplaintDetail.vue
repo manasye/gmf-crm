@@ -51,14 +51,12 @@
           </a>
         </p>
       </div>
-      <div class="comments mb-3 mb-md-0">
+      <div class="comments mb-3 mb-md-0" v-for="r in replies" :key="r.reply_complaint_id">
         <h5>
-          <b-badge pill variant="primary">Admin</b-badge>
+          <b-badge pill variant="primary">{{ r.sender }}</b-badge>
         </h5>
         <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos, optio consectetur? Iure
-          odit soluta tenetur velit itaque quam, nesciunt ipsa quod nisi in quas dolor laborum
-          blanditiis error eaque aut.
+          {{ r.description }}
         </p>
       </div>
       <b-form-textarea
@@ -69,9 +67,10 @@
         max-rows="6"
         class="mb-4"
       ></b-form-textarea>
-      <b-button variant="success" @click="showReplyTextArea = !showReplyTextArea" v-if="isAdmin()"
+      <b-button variant="success" @click="showReplyTextArea = true" v-if="!showReplyTextArea"
         >REPLY</b-button
       >
+      <b-button variant="success" v-else @click="submitReply">SUBMIT</b-button>
 
       <b-modal v-model="showModal" centered title="Edit Status" @ok="changeStatus">
         <b-row>
@@ -89,10 +88,12 @@
 <script>
 import axios from "axios";
 import swal from "sweetalert";
+import { statusComplaints } from "@/utility/globalVar.js";
 
 export default {
   mounted() {
     this.getDetail();
+    this.getReplies();
   },
   data() {
     return {
@@ -117,28 +118,8 @@ export default {
       showModal: false,
       status: null,
       complaintDetail: null,
-      statusOptions: [
-        {
-          value: null,
-          text: "Select status"
-        },
-        {
-          value: "Open",
-          text: "Open"
-        },
-        {
-          value: "Receive",
-          text: "Receive"
-        },
-        {
-          value: "On Progress",
-          text: "Onprogress"
-        },
-        {
-          value: "Closed",
-          text: "Closed"
-        }
-      ]
+      statusOptions: statusComplaints,
+      replies: []
     };
   },
   methods: {
@@ -176,6 +157,30 @@ export default {
           this.headers.complaint_closed = data.closed;
         })
         .catch(() => {});
+    },
+    getReplies() {
+      axios
+        .get(`/complaint/readreply/${this.$route.params.id}`)
+        .then(res => {
+          this.replies = res.data.data;
+        })
+        .catch(() => {});
+    },
+    submitReply() {
+      axios
+        .post("/complaint/reply", {
+          description: this.replyText,
+          user_id: this.getUserId(),
+          complaint_id: this.$route.params.id
+        })
+        .then(() => {
+          this.getReplies();
+          this.showReplyTextArea = false;
+        })
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+          this.showReplyTextArea = false;
+        });
     }
   }
 };

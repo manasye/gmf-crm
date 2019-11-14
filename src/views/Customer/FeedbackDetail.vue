@@ -12,7 +12,7 @@
           :key="key"
         >
           <p class="mb-1">{{ convertSnakeCaseToText(key) }}</p>
-          <p class="mb-0 font-weight-bold">{{ value }}</p>
+          <p class="mb-0 font-weight-bold">{{ value || "-" }}</p>
         </b-col>
         <b-col cols="4" md="3" class="mb-md-0">
           <p class="mb-1">Status</p>
@@ -43,14 +43,12 @@
           </a>
         </p>
       </div>
-      <div class="comments mb-3 mb-md-0">
+      <div class="comments mb-3 mb-md-0" v-for="r in replies" :key="r.reply_complaint_id">
         <h5>
-          <b-badge pill variant="primary">Admin</b-badge>
+          <b-badge pill variant="primary">{{ r.sender }}</b-badge>
         </h5>
         <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos, optio consectetur? Iure
-          odit soluta tenetur velit itaque quam, nesciunt ipsa quod nisi in quas dolor laborum
-          blanditiis error eaque aut.
+          {{ r.description }}
         </p>
       </div>
       <b-form-textarea
@@ -61,7 +59,10 @@
         max-rows="6"
         class="mb-4"
       ></b-form-textarea>
-      <b-button variant="success" @click="showReplyTextArea = !showReplyTextArea">REPLY</b-button>
+      <b-button variant="success" @click="showReplyTextArea = true" v-if="!showReplyTextArea"
+        >REPLY</b-button
+      >
+      <b-button variant="success" v-else @click="submitReply">SUBMIT</b-button>
     </div>
   </b-container>
 </template>
@@ -81,6 +82,7 @@ export default {
         this.detail = data;
       })
       .catch(() => {});
+    this.getReplies();
   },
   data() {
     return {
@@ -101,7 +103,8 @@ export default {
         sender: "",
         complaint_submitted: "",
         complaint_closed: ""
-      }
+      },
+      replies: []
     };
   },
   methods: {
@@ -116,6 +119,30 @@ export default {
         default:
           return "primary";
       }
+    },
+    getReplies() {
+      axios
+        .get(`/complaint/readreply/${this.$route.params.id}`)
+        .then(res => {
+          this.replies = res.data.data;
+        })
+        .catch(() => {});
+    },
+    submitReply() {
+      axios
+        .post("/complaint/reply", {
+          description: this.replyText,
+          user_id: this.getUserId(),
+          complaint_id: this.$route.params.id
+        })
+        .then(() => {
+          this.getReplies();
+          this.showReplyTextArea = false;
+        })
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+          this.showReplyTextArea = false;
+        });
     }
   }
 };

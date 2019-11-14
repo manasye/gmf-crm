@@ -60,6 +60,13 @@ export default {
         .get(`/feedbackproject/read/${this.$route.params.id}`)
         .then(({ data }) => {
           this.feedbacks = data.data;
+          let senders = [];
+          data.data.map(p => {
+            if (!senders.find(l => l.value === p.sender) && p.sender) {
+              senders.push({ value: p.sender, text: p.sender });
+            }
+          });
+          this.sendersOptions = this.sendersOptions.concat(senders);
         })
         .catch(() => {});
     }

@@ -196,6 +196,13 @@ export default {
         .get("/project/read")
         .then(res => {
           this.projects = res.data.data;
+          let companies = [];
+          res.data.data.map(p => {
+            if (!companies.find(l => l.value === p.company_name) && p.company_name) {
+              companies.push({ value: p.company_name, text: p.company_name });
+            }
+          });
+          this.companyOptions = this.companyOptions.concat(companies);
         })
         .catch(() => {});
     }

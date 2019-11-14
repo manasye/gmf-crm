@@ -62,6 +62,13 @@ export default {
       .get(`/feedbacknonproject/read/${this.getCompanyId()}`)
       .then(res => {
         this.feedbacks = res.data.data;
+        let senders = [];
+        res.data.data.map(p => {
+          if (!senders.find(l => l.value === p.sender) && p.sender) {
+            senders.push({ value: p.sender, text: p.sender });
+          }
+        });
+        this.sendersOptions = this.sendersOptions.concat(senders);
       })
       .catch(() => {});
   },

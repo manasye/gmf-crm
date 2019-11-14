@@ -27,6 +27,7 @@ export default {
       .catch(err => {
         if (!err.response.data.auth) {
           this.$store.dispatch("goToPage", "/login");
+          localStorage.removeItem("role");
         }
       });
   },

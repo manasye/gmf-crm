@@ -83,6 +83,13 @@ export default {
       .get(`/project/read/${this.getCompanyId()}`)
       .then(res => {
         this.projects = res.data.data;
+        let locations = [];
+        res.data.data.map(p => {
+          if (!locations.find(l => l.value === p.location) && p.location) {
+            locations.push({ value: p.location, text: p.location });
+          }
+        });
+        this.locationOptions = this.locationOptions.concat(locations);
       })
       .catch(() => {});
   },
