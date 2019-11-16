@@ -84,6 +84,9 @@ h2 {
 .badge-warning {
   color: white !important;
 }
+.sc-chat-window {
+  z-index: 2000 !important;
+}
 
 img {
   max-width: 100%;
