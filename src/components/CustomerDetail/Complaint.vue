@@ -12,7 +12,7 @@
         <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
       </b-col>
       <b-col cols="0" md="3"></b-col>
-      <b-col cols="8" md="2" class="mt-2">Numbers of item per page</b-col>
+      <b-col cols="8" md="2" class="mt-2 text-md-right">Per page</b-col>
       <b-col cols="4" md="1">
         <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
       </b-col>
@@ -93,7 +93,7 @@ export default {
         status: null
       },
       complaintFields: [
-        { key: "complaint_id", sortable: true },
+        { key: "complaint_id", label: "Id", sortable: true },
         { key: "date", sortable: true },
         { key: "sender", sortable: true },
         { key: "service", sortable: true },

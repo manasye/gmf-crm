@@ -58,7 +58,7 @@
             />
           </b-nav-item>
 
-          <b-nav-item-dropdown v-else right>
+          <b-nav-item-dropdown v-else right class="no-icon-dropdown">
             <template v-slot:button-content>
               <img src="../assets/img/calendar.png" class="navbar-img" alt
             /></template>
@@ -150,22 +150,19 @@ export default {
         {
           name: "Project",
           route: "/#/project-customer",
-          icon: "tasks",
-          intro: "PROJECTS <br/> akoakosakoas"
+          icon: "tasks"
         },
         {
           name: "Information",
           route: "/#/information-customer",
-          icon: "info-circle",
-          intro: "lorem"
+          icon: "info-circle"
         },
-        { name: "Profile", route: "/#/profile-customer", icon: "users", intro: "lorem" },
-        { name: "GMF Services", route: "/#/services", icon: "tools", intro: "lorem" },
+        { name: "Profile", route: "/#/profile-customer", icon: "users" },
+        { name: "GMF Services", route: "/#/services", icon: "tools" },
         {
           name: "Your Feedback",
           route: "/#/feedback-customer",
           icon: "comment-dots",
-          intro: "lorem",
           childrens: [
             {
               name: "Complaint",
@@ -329,6 +326,9 @@ export default {
 </style>
 
 <style>
+.no-icon-dropdown a::after {
+  display: none !important;
+}
 .navbar-brand {
   margin-right: 0 !important;
 }

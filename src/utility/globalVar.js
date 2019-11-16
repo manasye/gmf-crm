@@ -186,3 +186,26 @@ export const ratingOptions = [
     value: "5"
   }
 ];
+
+export const rangeOptions = [
+  {
+    value: null,
+    text: "All Range"
+  },
+  {
+    value: 1,
+    text: "This Month"
+  },
+  {
+    value: 3,
+    text: "Last 3 Month"
+  },
+  {
+    value: 6,
+    text: "Last 6 Month"
+  },
+  {
+    value: 12,
+    text: "This Year"
+  }
+];

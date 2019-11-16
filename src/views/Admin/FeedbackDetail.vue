@@ -34,7 +34,7 @@
 
     <div class="detail-info">
       <div class="detail mt-3 mt-md-0">
-        <h5 class="title">JUDUL</h5>
+        <h5 class="title">{{ details.service_name }}</h5>
         <p class="dept mb-2">Aspect(s) to improve</p>
         <ul style="padding-left: 16px">
           <li v-for="a in aspects" :key="a">{{ a }}</li>

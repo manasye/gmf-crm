@@ -13,7 +13,7 @@
         <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
       </b-col>
       <b-col cols="2">
-        <b-button variant="success" @click="showModal = true">Add New Project</b-button>
+        <b-button variant="success" @click="addProject">Add New Project</b-button>
       </b-col>
       <b-col cols="4" style="text-align: right">
         <b-row>
@@ -57,6 +57,13 @@
           v-if="!isNaN(+rate.value)"
         ></star-rating>
       </template>
+      <template v-slot:cell(edit)="data">
+        <font-awesome-icon
+          style="cursor: pointer;"
+          icon="pen"
+          @click.stop="editProject(data.item)"
+        ></font-awesome-icon
+      ></template>
     </b-table>
 
     <b-pagination
@@ -87,6 +94,10 @@
         <b-col cols="4"> <label class="mt-2">Quantity</label></b-col>
         <b-col cols="8" class="mb-3">
           <b-form-input v-model="editedData.quantity" type="number"></b-form-input>
+        </b-col>
+        <b-col cols="4" v-if="!newMode"> <label class="mt-2">Status</label></b-col>
+        <b-col cols="8" class="mb-3" v-if="!newMode">
+          <b-form-select v-model="editedData.status" :options="statusOptions"> </b-form-select>
         </b-col>
         <b-col cols="4"> <label class="mt-2">Company Name</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -152,11 +163,13 @@ export default {
         { key: "project_type", sortable: true },
         { key: "status", sortable: true },
         { key: "quantity", sortable: true },
-        { key: "rating", sortable: true }
+        { key: "rating", sortable: true },
+        { key: "edit", label: "Edit" }
       ],
       projects: [],
       showModal: false,
-      editedData: {}
+      editedData: {},
+      newMode: true
     };
   },
   components: { StarRating },
@@ -181,9 +194,21 @@ export default {
     showProjectDetail(row) {
       this.$store.dispatch("goToPage", `/project-customer/${row.project_id}`);
     },
+    addProject() {
+      this.showModal = true;
+      this.newMode = true;
+    },
+    editProject(data) {
+      this.newMode = false;
+      this.editedData = data;
+      this.showModal = true;
+    },
     postProject() {
+      const url = this.newMode ? "/project/create" : "/project/update";
+      const data = this.editedData;
+
       axios
-        .post("/project/create", this.editedData)
+        .post(url, data)
         .then(res => {
           this.getData();
         })
@@ -195,7 +220,11 @@ export default {
       axios
         .get("/project/read")
         .then(res => {
-          this.projects = res.data.data;
+          this.projects = res.data.data.map(el => {
+            let o = Object.assign({}, el);
+            o.edit = "a";
+            return o;
+          });
           let companies = [];
           res.data.data.map(p => {
             if (!companies.find(l => l.value === p.company_name) && p.company_name) {

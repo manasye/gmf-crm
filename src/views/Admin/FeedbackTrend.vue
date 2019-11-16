@@ -15,11 +15,11 @@
         <label>Project Type</label>
         <b-form-select v-model="selectVal.project_type" :options="projOptions"></b-form-select>
       </b-col>
-      <b-col cols="1">
+      <b-col cols="1" v-if="!selectVal.range">
         <label>Year</label>
         <b-form-select v-model="selectVal.year" :options="yearOptions"></b-form-select>
       </b-col>
-      <b-col cols="2">
+      <b-col cols="2" v-if="!selectVal.range">
         <label>Month</label>
         <b-form-select v-model="selectVal.month" :options="monthOptions"></b-form-select>
       </b-col>
@@ -42,7 +42,7 @@
 
 <script>
 import LineChart from "@/components/LineChart.vue";
-import { departments, statusComplaints, months, ratingOptions } from "@/utility/globalVar.js";
+import { departments, months, ratingOptions, rangeOptions } from "@/utility/globalVar.js";
 
 const options = {
   responsive: true,
@@ -84,12 +84,7 @@ export default {
         ...departments
       ],
       monthOptions: months,
-      rangeOptions: [
-        {
-          value: null,
-          text: "All Range"
-        }
-      ],
+      rangeOptions,
       compOptions: [
         {
           value: null,

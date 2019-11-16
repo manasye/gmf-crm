@@ -27,7 +27,7 @@
         ><b-button variant="success">Customer Form</b-button></b-col
       >
       <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
-        ><b-button variant="success">Add New Customer</b-button></b-col
+        ><b-button variant="success" @click="showModalAdd = true">Add New Customer</b-button></b-col
       >
     </b-row>
 
@@ -57,6 +57,19 @@
     </b-table>
 
     <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage"></b-pagination>
+
+    <b-modal
+      v-model="showModalAdd"
+      centered
+      title="Add Customer"
+      v-if="showModalAdd"
+      @ok="addCustomer"
+    >
+      <b-row>
+        <b-col cols="4"> <label class="mt-2">Upload File</label></b-col>
+        <b-col cols="8" class="mb-3"> <b-form-file v-model="customerFile"></b-form-file> </b-col
+      ></b-row>
+    </b-modal>
 
     <b-modal
       v-model="showModalStatus"
@@ -235,7 +248,9 @@ export default {
         { key: "business_model", sortable: true },
         { key: "status", label: "Status", sortable: true }
       ],
-      showModalStatus: false
+      showModalStatus: false,
+      showModalAdd: false,
+      customerFile: null
     };
   },
   methods: {
@@ -266,7 +281,7 @@ export default {
       formData.set("est_date", this.editedData.est_date || "");
       formData.set("fleet_size", this.editedData.fleet_size || "");
       formData.set("id", this.editedData.company_id || "");
-      formData.set("image", this.editedData.image || "");
+      if (this.editedData.image instanceof File) formData.set("image", this.editedData.image || "");
       formData.set("name", this.editedData.name || "");
       formData.set("region", this.editedData.region || "");
       formData.set("shareholder", this.editedData.shareholder || "");
@@ -276,6 +291,7 @@ export default {
       axios
         .post("/company/update", formData)
         .then(() => {
+          swal("Success", "Company successfully updated", "success");
           this.getCompanyData();
         })
         .catch(err => {
@@ -306,6 +322,9 @@ export default {
           this.bmOptions = this.bmOptions.concat(businessModels);
         })
         .catch(() => {});
+    },
+    addCustomer() {
+      console.log(this.customerFile);
     }
   },
   computed: {

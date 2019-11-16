@@ -35,13 +35,13 @@
         </p>
       </div>
       <div class="file mt-4 mb-4">
-        <p v-for="i in 1">
-          <font-awesome-icon icon="link"></font-awesome-icon>
-          <a href>
-            Example.pdf
-            <br />
-          </a>
-        </p>
+        <font-awesome-icon icon="link"></font-awesome-icon>
+        <!--        <p v-for="i in 1">-->
+        <a :href="getBaseStorage() + detail.file">
+          {{ detail.file_name || 'File' }}
+          <br />
+        </a>
+        <!--        </p>-->
       </div>
       <div class="comments mb-3 mb-md-0" v-for="r in replies" :key="r.reply_complaint_id">
         <h5>
