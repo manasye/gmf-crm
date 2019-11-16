@@ -13,7 +13,7 @@
         <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
       </b-col>
       <b-col cols="0" md="1"></b-col>
-      <b-col cols="8" md="2" class="mt-2">Numbers of item per page</b-col>
+      <b-col cols="8" md="2" class="mt-2 text-md-right" >Item per page</b-col>
       <b-col cols="4" md="1">
         <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
       </b-col>

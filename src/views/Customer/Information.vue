@@ -4,7 +4,7 @@
 
     <b-row>
       <b-col cols="6" md="2" class="mt-2">
-        <p>Number of items per page</p>
+        <p>Items per page</p>
       </b-col>
       <b-col cols="6" md="1">
         <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>

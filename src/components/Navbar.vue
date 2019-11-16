@@ -293,7 +293,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .navbar {
   background-color: #022f46;
 }
@@ -329,6 +329,9 @@ export default {
 </style>
 
 <style>
+.navbar-brand {
+  margin-right: 0 !important;
+}
 .b-nav-dropdown a {
   color: rgba(255, 255, 255, 0.6) !important;
 }

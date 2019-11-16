@@ -24,29 +24,37 @@ export default new Router({
       path: "/project-customer/:id",
       name: "projectdetail",
       component: () =>
-        import(/* webpackChunkName: "project-customer-detail" */
-        "./views/Customer/ProjectDetail.vue")
+        import(
+          /* webpackChunkName: "project-customer-detail" */
+          "./views/Customer/ProjectDetail.vue"
+        )
     },
     {
       path: "/project-customer/:id/feedback",
       name: "projectfeedback",
       component: () =>
-        import(/* webpackChunkName: "project-customer-feedback" */
-        "./views/Customer/ProjectFeedback.vue")
+        import(
+          /* webpackChunkName: "project-customer-feedback" */
+          "./views/Customer/ProjectFeedback.vue"
+        )
     },
     {
       path: "/information-customer",
       name: "informationcustomer",
       component: () =>
-        import(/* webpackChunkName: "information-customer" */
-        "./views/Customer/Information.vue")
+        import(
+          /* webpackChunkName: "information-customer" */
+          "./views/Customer/Information.vue"
+        )
     },
     {
       path: "/information-customer/:id",
       name: "informationcustomerdetail",
       component: () =>
-        import(/* webpackChunkName: "information-custome-rdetail" */
-        "./views/Customer/InformationDetail.vue")
+        import(
+          /* webpackChunkName: "information-custome-rdetail" */
+          "./views/Customer/InformationDetail.vue"
+        )
     },
     {
       path: "/profile-customer",
@@ -70,35 +78,45 @@ export default new Router({
       path: "/feedback-customer-nonproject",
       name: "your feedback customer nonproj",
       component: () =>
-        import(/* webpackChunkName: "feedback-customer-non-project" */ "./views/Customer/NonProjectFeedback.vue")
+        import(
+          /* webpackChunkName: "feedback-customer-non-project" */ "./views/Customer/NonProjectFeedback.vue"
+        )
     },
     {
       path: "/feedback-customer-new",
       name: "your feedback customer new",
       component: () =>
-        import(/* webpackChunkName: "feedback-customer-new" */
-        "./views/Customer/FeedbackNew.vue")
+        import(
+          /* webpackChunkName: "feedback-customer-new" */
+          "./views/Customer/FeedbackNew.vue"
+        )
     },
     {
       path: "/feedback-customer-new-nonproject",
       name: "your feedback customer new nonproj",
       component: () =>
-        import(/* webpackChunkName: "feedback-customer-new-non-project" */
-        "./views/Customer/NonProjectFeedbackNew.vue")
+        import(
+          /* webpackChunkName: "feedback-customer-new-non-project" */
+          "./views/Customer/NonProjectFeedbackNew.vue"
+        )
     },
     {
       path: "/feedback/:id",
       name: "your feedback detail",
       component: () =>
-        import(/* webpackChunkName: "feedback-detail" */
-        "./views/Customer/FeedbackDetail.vue")
+        import(
+          /* webpackChunkName: "feedback-detail" */
+          "./views/Customer/FeedbackDetail.vue"
+        )
     },
     {
       path: "/feedback-customer-nonproject/:id",
       name: "your feedback customer detail nonproj",
       component: () =>
-        import(/* webpackChunkName: "feedback-customer-detail-non-project" */
-        "./views/Customer/NonProjectFeedbackDetail.vue")
+        import(
+          /* webpackChunkName: "feedback-customer-detail-non-project" */
+          "./views/Customer/NonProjectFeedbackDetail.vue"
+        )
     },
 
     // Admin Routes
@@ -175,7 +193,9 @@ export default new Router({
       path: "/information-holiday-card/:id",
       name: "information holiday card detail",
       component: () =>
-        import(/* webpackChunkName: "information-holiday-card-detail" */ "./views/Admin/HolidayDetail.vue")
+        import(
+          /* webpackChunkName: "information-holiday-card-detail" */ "./views/Admin/HolidayDetail.vue"
+        )
     },
     {
       path: "/information-birthday-card",

@@ -15,7 +15,7 @@
       <b-col cols="6" md="3">
         <b-row>
           <b-col cols="0" md="8" class="d-none d-md-block">
-            <p class="per-page-text">Number of items per page</p>
+            <p class="per-page-text " style="text-align: right">Items per page</p>
           </b-col>
           <b-col cols="12" md="4">
             <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
