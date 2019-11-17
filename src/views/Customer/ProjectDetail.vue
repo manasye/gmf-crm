@@ -1,6 +1,6 @@
 <template>
-  <b-container fluid class="container-app">
-    <Header :title="title" :breadcrumbs="breadcrumbs" data-intro="aa"></Header>
+  <b-container fluid class="container-app" data-intro="Project Detail">
+    <Header :title="title" :breadcrumbs="breadcrumbs"></Header>
     <div class="detail-header">
       <b-row>
         <b-col
@@ -54,12 +54,19 @@ const options = {
 export default {
   mounted() {
     if (this.$store.getters.walkthrough) {
+      this.completed = false;
       const introJS = require("intro.js");
       introJS
         .introJs()
+        .setOption("doneLabel", "Next page")
         .start()
+        .onexit(() => {
+          if (!this.completed) this.$store.commit("changeWalkthrough", false);
+        })
         .oncomplete(() => {
-          this.$store.commit("changeWalkthrough", false);
+          this.completed = true;
+          window.location.href = "/#/information-customer";
+          this.$store.commit("changeWalkthrough", true);
         });
     } else {
       axios
@@ -110,7 +117,8 @@ export default {
         location: "",
         type: "",
         project_type: ""
-      }
+      },
+      completed: false
     };
   },
   components: {

@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="container-app">
+  <b-container fluid class="container-app" data-intro="Infor">
     <Header title="INFORMATION LIST"></Header>
 
     <b-row>
@@ -56,16 +56,33 @@ import moment from "moment";
 
 export default {
   mounted() {
-    axios
-      .get(`/information/read`)
-      .then(res => {
-        this.infos = res.data.map(el => {
-          let o = Object.assign({}, el);
-          o.plus = true;
-          return o;
+    if (this.$store.getters.walkthrough) {
+      this.completed = false;
+      const introJS = require("intro.js");
+      introJS
+        .introJs()
+        .setOption("doneLabel", "Next page")
+        .start()
+        .onexit(() => {
+          if (!this.completed) this.$store.commit("changeWalkthrough", false);
+        })
+        .oncomplete(() => {
+          this.completed = true;
+          window.location.href = "/#/services";
+          this.$store.commit("changeWalkthrough", true);
         });
-      })
-      .catch(() => {});
+    } else {
+      axios
+        .get(`/information/read`)
+        .then(res => {
+          this.infos = res.data.map(el => {
+            let o = Object.assign({}, el);
+            o.plus = true;
+            return o;
+          });
+        })
+        .catch(() => {});
+    }
   },
   data() {
     return {
@@ -82,7 +99,8 @@ export default {
           category: "Holiday Card",
           plus: true
         }
-      ]
+      ],
+      completed: false
     };
   },
   methods: {

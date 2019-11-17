@@ -2,9 +2,9 @@
   <b-container fluid class="container-app">
     <Header title="Customer List"></Header>
     <b-row>
-      <!--      <b-col cols="2"-->
-      <!--        ><b-form-select v-model="selectVal.region" :options="regionOptions"></b-form-select-->
-      <!--      ></b-col>-->
+      <b-col cols="2"
+        ><b-form-select v-model="selectVal.region" :options="regionOptions"></b-form-select
+      ></b-col>
       <b-col cols="2"
         ><b-form-select v-model="selectVal.country" :options="countryOptions"></b-form-select
       ></b-col>
@@ -17,7 +17,6 @@
       <b-col cols="2"
         ><b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select
       ></b-col>
-      <b-col cols="2"></b-col>
       <b-col cols="1" class="mt-2 text-right">Per page</b-col>
       <b-col cols="1"
         ><b-form-select v-model="perPage" :options="perPageOptions"></b-form-select
@@ -149,7 +148,7 @@
 </template>
 
 <script>
-import { perPageOptions, religions } from "@/utility/globalVar";
+import { perPageOptions } from "@/utility/globalVar";
 import axios from "axios";
 import swal from "sweetalert";
 
@@ -171,7 +170,12 @@ export default {
   },
   data() {
     return {
-      regionOptions: religions,
+      regionOptions: [
+        {
+          value: null,
+          text: "All Regions"
+        }
+      ],
       countryOptions: [
         {
           value: null,
@@ -305,7 +309,8 @@ export default {
           this.customers = res.data.data;
           let countries = [],
             roles = [],
-            businessModels = [];
+            businessModels = [],
+            regions = [];
           res.data.data.map(p => {
             if (!countries.find(l => l.value === p.country) && p.country) {
               countries.push({ value: p.country, text: p.country });
@@ -316,10 +321,14 @@ export default {
             if (!businessModels.find(l => l.value === p.business_model) && p.business_model) {
               businessModels.push({ value: p.business_model, text: p.business_model });
             }
+            if (!regions.find(l => l.value === p.region) && p.region) {
+              regions.push({ value: p.region, text: p.region });
+            }
           });
           this.countryOptions = this.countryOptions.concat(countries);
           this.roleOptions = this.roleOptions.concat(roles);
           this.bmOptions = this.bmOptions.concat(businessModels);
+          this.regionOptions = this.regionOptions.concat(regions);
         })
         .catch(() => {});
     },

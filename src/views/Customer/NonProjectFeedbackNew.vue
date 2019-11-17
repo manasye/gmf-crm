@@ -1,9 +1,9 @@
 <template>
-  <b-container fluid class="container-app">
+  <b-container fluid class="container-app" data-intro="Non Project New">
     <Header title="NEW NON-PROJECT FEEDBACK" :breadcrumbs="breadcrumbs"></Header>
     <div class="feedback-wrapper">
       <p class="mb-2">Subject</p>
-      <b-form-input v-model="subject" placeholder></b-form-input>
+      <b-form-input v-model="subject"></b-form-input>
       <p class="mb-2 mt-4">Rating</p>
       <star-rating
         v-model="rating"
@@ -19,7 +19,7 @@
         {{ generateResultRating(rating)[0] }}
       </p>
       <p class="mb-2 mt-4">Description</p>
-      <b-form-textarea v-model="description" placeholder rows="3" max-rows="6"></b-form-textarea>
+      <b-form-textarea v-model="description" rows="3" max-rows="6"></b-form-textarea>
       <b-button variant="success" class="mt-4 mb-2" @click="submitProject">SUBMIT</b-button>
     </div>
   </b-container>
@@ -31,6 +31,24 @@ import axios from "axios";
 import swal from "sweetalert";
 
 export default {
+  mounted() {
+    if (this.$store.getters.walkthrough) {
+      this.completed = false;
+      const introJS = require("intro.js");
+      introJS
+        .introJs()
+        .setOption("doneLabel", "Next page")
+        .start()
+        .onexit(() => {
+          if (!this.completed) this.$store.commit("changeWalkthrough", false);
+        })
+        .oncomplete(() => {
+          this.completed = true;
+          window.location.href = "/#/feedback-customer-new-nonproject";
+          this.$store.commit("changeWalkthrough", false);
+        });
+    }
+  },
   data() {
     return {
       breadcrumbs: [

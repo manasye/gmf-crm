@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="container-app">
+  <b-container fluid class="container-app" data-intro="Non Project">
     <Header title="NON-PROJECT FEEDBACK"></Header>
 
     <b-row class="mt-0 mt-md-4">
@@ -58,19 +58,36 @@ import axios from "axios";
 
 export default {
   mounted() {
-    axios
-      .get(`/feedbacknonproject/read/${this.getCompanyId()}`)
-      .then(res => {
-        this.feedbacks = res.data.data;
-        let senders = [];
-        res.data.data.map(p => {
-          if (!senders.find(l => l.value === p.sender) && p.sender) {
-            senders.push({ value: p.sender, text: p.sender });
-          }
+    if (this.$store.getters.walkthrough) {
+      this.completed = false;
+      const introJS = require("intro.js");
+      introJS
+        .introJs()
+        .setOption("doneLabel", "Next page")
+        .start()
+        .onexit(() => {
+          if (!this.completed) this.$store.commit("changeWalkthrough", false);
+        })
+        .oncomplete(() => {
+          this.completed = true;
+          window.location.href = "/#/feedback-customer-new-nonproject";
+          this.$store.commit("changeWalkthrough", true);
         });
-        this.sendersOptions = this.sendersOptions.concat(senders);
-      })
-      .catch(() => {});
+    } else {
+      axios
+        .get(`/feedbacknonproject/read/${this.getCompanyId()}`)
+        .then(res => {
+          this.feedbacks = res.data.data;
+          let senders = [];
+          res.data.data.map(p => {
+            if (!senders.find(l => l.value === p.sender) && p.sender) {
+              senders.push({ value: p.sender, text: p.sender });
+            }
+          });
+          this.sendersOptions = this.sendersOptions.concat(senders);
+        })
+        .catch(() => {});
+    }
   },
   data() {
     return {
@@ -91,7 +108,8 @@ export default {
         { key: "subject", label: "Subject", sortable: true },
         { key: "rating", sortable: true }
       ],
-      feedbacks: []
+      feedbacks: [],
+      completed: false
     };
   },
   components: { StarRating },

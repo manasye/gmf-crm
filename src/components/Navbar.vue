@@ -88,7 +88,13 @@
             </div>
           </b-nav-item-dropdown>
 
-          <b-nav-item-dropdown right class="user-navbar">
+          <b-nav-item-dropdown
+            ref="userdropdown"
+            right
+            class="user-navbar"
+            id="icon-user"
+            :data-intro="firstTime ? 'User' : null"
+          >
             <template v-slot:button-content>
               <img
                 src="https://ra.ac.ae/wp-content/uploads/2017/02/user-icon-placeholder.png"
@@ -145,6 +151,8 @@ import moment from "moment";
 
 export default {
   mounted() {
+    this.$refs.userdropdown.$emit("show");
+
     if (this.getRole() === "Customer") {
       this.navItems = [
         {
@@ -230,23 +238,36 @@ export default {
       navItems: null,
       selectedDate: null,
       highlighted: {
-        daysOfMonth: [1, 2, 3]
+        daysOfMonth: []
       },
       month: null,
-      eventSelected: []
+      eventSelected: [],
+      completed: false,
+      firstTime: true
     };
   },
   methods: {
     startWalkthrough() {
       this.$store.commit("changeWalkthrough", true);
-      const introJS = require("intro.js");
-      introJS
-        .introJs()
-        .setOption("doneLabel", "Next page")
-        .start()
-        .oncomplete(function() {
-          window.location.href = "/#/project-customer/a";
-        });
+      window.location.href = "/#/project-customer";
+      this.completed = false;
+
+      setTimeout(() => {
+        const introJS = require("intro.js");
+        introJS
+          .introJs()
+          .setOption("doneLabel", "Next page")
+          .start()
+          .onexit(() => {
+            if (!this.completed) this.$store.commit("changeWalkthrough", false);
+          })
+          .oncomplete(() => {
+            this.firstTime = false;
+            this.completed = true;
+            window.location.href = "/#/project-customer/a";
+            this.$store.commit("changeWalkthrough", true);
+          });
+      }, 1000);
     },
     logout() {
       axios
@@ -258,6 +279,9 @@ export default {
         .catch(() => {});
     },
     changeMonth(date) {
+      this.highlighted = {
+        daysOfMonth: []
+      };
       axios
         .get(`/calendar/${date.getMonth() + 1}/${date.getFullYear()}`)
         .then(res => {

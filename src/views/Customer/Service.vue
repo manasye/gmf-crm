@@ -25,6 +25,7 @@
       no-gutters
       class="mb-md-4 service-card-wrapper"
       style=" "
+      data-intro="Service"
     >
       <b-col cols="12" md="7" :order-md="idx % 2 === 0 ? '1' : '2'">
         <b-carousel controls indicators background="#ababab">
@@ -115,11 +116,40 @@ import axios from "axios";
 
 export default {
   mounted() {
-    this.getServices();
+    if (this.$store.getters.walkthrough) {
+      this.completed = false;
+      const introJS = require("intro.js");
+      introJS
+        .introJs()
+        .setOption("doneLabel", "Next page")
+        .start()
+        .onexit(() => {
+          if (!this.completed) this.$store.commit("changeWalkthrough", false);
+        })
+        .oncomplete(() => {
+          this.completed = true;
+          window.location.href = "/#/feedback-customer";
+          this.$store.commit("changeWalkthrough", true);
+        });
+    } else {
+      this.getServices();
+    }
   },
   data() {
     return {
-      services: [],
+      services: [
+        {
+          created_at: "2019-11-11 20:09:10",
+          detail:
+            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. ",
+          large_image: "serviceimage/cC7ljgbFGrZfZYzZK2YWzMgWMikmBM697UrJ7WKA.jpeg",
+          name: "Engineering Service",
+          service_id: 5,
+          small_image1: "serviceimage/s38uRN76MnAg41m8hgi1IwlvEpXmPBJq0NMam3TP.jpeg",
+          small_image2: "serviceimage/sNiSwphCMdXWElBatoB5oCHSd7HdyhvZgBQkG5yn.jpeg",
+          updated_at: "2019-11-13 06:41:25"
+        }
+      ],
       showModal: false,
       editedData: {
         id: 1,
@@ -129,7 +159,8 @@ export default {
         small_image1: "",
         small_image2: ""
       },
-      newMode: false
+      newMode: false,
+      completed: false
     };
   },
   methods: {
@@ -191,7 +222,6 @@ hr {
   padding: 15px 30px 12px;
 }
 .service-card-wrapper {
-  border-bottom: 1px dotted #95999c;
   border-top: 1px dotted #95999c;
   /*h1,*/
   /*h2 {*/

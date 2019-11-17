@@ -5,7 +5,7 @@
     <b-row>
       <b-col cols="8">
         <div class="card-wrapper">
-          <h5>SUBJECT</h5>
+          <p class="mb-2">Subject</p>
           <b-form-input v-model="subject" placeholder="Enter your subject"></b-form-input>
           <!--          <b-row class="mt-2">-->
           <!--            <b-col cols="10">-->

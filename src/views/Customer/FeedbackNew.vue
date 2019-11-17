@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="container-app">
+  <b-container fluid class="container-app" data-intro="Complaint New">
     <Header title="NEW COMPLAINT" :breadcrumbs="breadcrumbs"></Header>
     <div class="feedback-wrapper">
       <p class="mb-2">Subject / Complaint</p>
@@ -43,6 +43,24 @@ import axios from "axios";
 import swal from "sweetalert";
 
 export default {
+  mounted() {
+    if (this.$store.getters.walkthrough) {
+      this.completed = false;
+      const introJS = require("intro.js");
+      introJS
+        .introJs()
+        .setOption("doneLabel", "Next page")
+        .start()
+        .onexit(() => {
+          if (!this.completed) this.$store.commit("changeWalkthrough", false);
+        })
+        .oncomplete(() => {
+          this.completed = true;
+          window.location.href = "/#/feedback-customer-nonproject";
+          this.$store.commit("changeWalkthrough", true);
+        });
+    }
+  },
   data() {
     return {
       breadcrumbs: [
@@ -59,7 +77,8 @@ export default {
       services: departments,
       serviceSelected: null,
       description: null,
-      files: null
+      files: null,
+      completed: false
     };
   },
   methods: {
