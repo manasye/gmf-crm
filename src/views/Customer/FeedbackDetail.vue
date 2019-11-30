@@ -34,11 +34,11 @@
           {{ detail.complaint }}
         </p>
       </div>
-      <div class="file mt-4 mb-4">
+      <div class="file mt-4 mb-4" v-if="detail.file">
         <font-awesome-icon icon="link"></font-awesome-icon>
         <!--        <p v-for="i in 1">-->
         <a :href="getBaseStorage() + detail.file">
-          {{ detail.file_name || 'File' }}
+          {{ detail.file_name || "File" }}
           <br />
         </a>
         <!--        </p>-->

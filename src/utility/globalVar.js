@@ -209,3 +209,24 @@ export const rangeOptions = [
     text: "This Year"
   }
 ];
+
+export const trendOption = {
+  responsive: true,
+  maintainAspectRatio: false,
+  animation: {
+    animateRotate: false
+  },
+  legend: {
+    align: "center"
+  },
+  scales: {
+    yAxes: [
+      {
+        ticks: {
+          min: 0,
+          stepSize: 1
+        }
+      }
+    ]
+  }
+};

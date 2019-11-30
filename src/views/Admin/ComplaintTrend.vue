@@ -53,26 +53,14 @@
       </b-col>
     </b-row>
 
-    <line-chart class="mt-3" :chart-data="data" :options="options"></line-chart>
+    <line-chart class="mt-3" :chart-data="data" :options="trendOption"></line-chart>
   </b-container>
 </template>
 
 <script>
 import LineChart from "@/components/LineChart.vue";
-import { rangeOptions } from "@/utility/globalVar.js";
+import { rangeOptions, trendOption } from "@/utility/globalVar.js";
 import axios from "axios";
-import { departments } from "../../utility/globalVar";
-
-const options = {
-  responsive: true,
-  maintainAspectRatio: false,
-  animation: {
-    animateRotate: false
-  },
-  legend: {
-    align: "center"
-  }
-};
 
 export default {
   mounted() {
@@ -92,6 +80,7 @@ export default {
   },
   data() {
     return {
+      trendOption,
       selectVal: {
         status: null,
         year: null,
@@ -131,7 +120,6 @@ export default {
         }
       ],
       rangeOptions,
-      options,
       chartData: null
     };
   },
@@ -147,7 +135,7 @@ export default {
         range: this.selectVal.range
       };
       if (!this.selectVal.range) {
-        data = { ...data, year: this.selectVal.year, month: this.selectVal.month };
+        data = { ...data, year: +this.selectVal.year, month: +this.selectVal.month };
       }
       this.postFilter(data);
     },
@@ -170,9 +158,15 @@ export default {
             labels: keys,
             datasets: [
               {
-                label: "Amount of complaint",
-                backgroundColor: Array(values.length).fill("#022f46"),
-                data: values
+                label: "Amount of Complaint",
+                backgroundColor: Array(values.length).fill("#13619a"),
+                data: values,
+                borderColor: "#13619a",
+                pointBorderColor: "#13619a",
+                pointBackgroundColor: "#13619a",
+                pointHoverBackgroundColor: "#13619a",
+                pointHoverBorderColor: "#13619a",
+                fill: false
               }
             ]
           };
@@ -187,5 +181,3 @@ export default {
   }
 };
 </script>
-
-<style scoped></style>

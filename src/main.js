@@ -38,7 +38,8 @@ import {
   getUsername,
   getCompanyId,
   getUserId,
-  getBaseStorage
+  getBaseStorage,
+  getUserImage
 } from "@/utility/func.js";
 
 // require styles
@@ -75,7 +76,8 @@ Vue.mixin({
     getUsername,
     getCompanyId,
     getUserId,
-    getBaseStorage
+    getBaseStorage,
+    getUserImage
   }
 });
 

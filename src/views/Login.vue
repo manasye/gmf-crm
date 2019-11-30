@@ -82,6 +82,7 @@ export default {
           localStorage.setItem("username", res.data.data_user.username);
           localStorage.setItem("company_id", res.data.detail_user.company_id);
           localStorage.setItem("user_id", res.data.detail_user.user_id);
+          localStorage.setItem("user_image", res.data.data_user.image);
           const route = role === "Customer" ? "/project-customer" : "/customer";
           this.$store.dispatch("goToPage", route);
         })

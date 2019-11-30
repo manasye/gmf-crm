@@ -97,16 +97,32 @@
           >
             <template v-slot:button-content>
               <img
-                src="https://ra.ac.ae/wp-content/uploads/2017/02/user-icon-placeholder.png"
+                :src="
+                  getUserImage()
+                    ? getBaseStorage() + getUserImage()
+                    : 'https://ra.ac.ae/wp-content/uploads/2017/02/user-icon-placeholder.png'
+                "
                 alt
                 class="navbar-img"
               />
             </template>
             <div style="margin: 15px 15px 0 15px">
+              <div style="text-align: right">
+                <font-awesome-icon
+                  icon="pen"
+                  style="cursor: pointer;"
+                  @click="showImgModal = true"
+                ></font-awesome-icon>
+              </div>
               <img
-                src="https://ra.ac.ae/wp-content/uploads/2017/02/user-icon-placeholder.png"
+                :src="
+                  getUserImage()
+                    ? getBaseStorage() + getUserImage()
+                    : 'https://ra.ac.ae/wp-content/uploads/2017/02/user-icon-placeholder.png'
+                "
                 alt
                 class="navbar-img-expand mb-3"
+                style="height: auto; max-width: auto"
               />
               <p class="mb-2 text-center">{{ getUsername() }}</p>
               <b-button variant="primary" size="sm" class="d-block mx-auto mb-3" @click="logout"
@@ -141,6 +157,18 @@
         </b-button>
       </template>
     </b-modal>
+
+    <b-modal v-model="showImgModal" centered title="Change User Image" @ok="changeImage">
+      <b-row>
+        <b-col cols="4"> <label class="mt-2">User Image</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-file
+            v-model="userImage"
+            placeholder="Choose new image"
+            accept="image/*"
+          ></b-form-file>
+        </b-col> </b-row
+    ></b-modal>
   </div>
 </template>
 
@@ -148,6 +176,7 @@
 import Datepicker from "vuejs-datepicker";
 import axios from "axios";
 import moment from "moment";
+import swal from "sweetalert";
 
 export default {
   mounted() {
@@ -235,6 +264,7 @@ export default {
   data() {
     return {
       showModal: false,
+      showImgModal: false,
       navItems: null,
       selectedDate: null,
       highlighted: {
@@ -243,7 +273,8 @@ export default {
       month: null,
       eventSelected: [],
       completed: false,
-      firstTime: true
+      firstTime: true,
+      userImage: null
     };
   },
   methods: {
@@ -303,6 +334,21 @@ export default {
     },
     moment: function() {
       return moment();
+    },
+    changeImage() {
+      let form = new FormData();
+      form.append("id", this.getUserId());
+      form.append("image", this.userImage);
+
+      axios
+        .post("/user/update", form)
+        .then(res => {
+          localStorage.setItem("user_image", res.data.data.image);
+          swal("Success", "Image updated", "success").then(() => {
+            window.location.reload();
+          });
+        })
+        .catch(() => {});
     }
   },
   computed: {
@@ -334,6 +380,7 @@ export default {
 .navbar-img {
   height: 25px;
   margin-right: 5px;
+  max-width: 30px;
 }
 .navbar-img-expand {
   height: 40px;

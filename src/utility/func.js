@@ -37,6 +37,10 @@ export const getCompanyId = () => {
   return localStorage.getItem("company_id");
 };
 
+export const getUserImage = () => {
+  return localStorage.getItem("user_image");
+};
+
 export const getBaseStorage = () => {
   return "http://172.16.40.180:8080/storage/";
 };
