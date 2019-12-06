@@ -23,7 +23,17 @@ export default {
     // console.log(this.$store.getters.walkthrough);
     axios
       .get("/login")
-      .then(() => {})
+      .then(() => {
+        if (!this.isAdmin()) {
+          axios
+            .get(`/popup/read/${this.getUserId()}`)
+            .then(res => {
+              const data = res.data;
+              console.log(data);
+            })
+            .catch(() => {});
+        }
+      })
       .catch(err => {
         if (!err.response.data.auth) {
           this.$store.dispatch("goToPage", "/login");

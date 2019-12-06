@@ -70,7 +70,7 @@ export default {
 
       axios
         .post("/newsletter/create", formData)
-        .then(res => {
+        .then(() => {
           swal("Success", "Newsletter successfully sent", "success");
         })
         .catch(err => {

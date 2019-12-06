@@ -6,28 +6,24 @@
       <b-col cols="8">
         <div class="card-wrapper">
           <p class="mb-2">Subject</p>
-          <b-form-input v-model="subject" placeholder="Enter your subject"></b-form-input>
-          <!--          <b-row class="mt-2">-->
-          <!--            <b-col cols="10">-->
-          <!--              <p style="font-size: .8rem" class="mb-0 ">-->
-          <!--                Permalink : <a :href="permalink">{{ permalink }}</a>-->
-          <!--              </p></b-col-->
-          <!--            >-->
-          <!--            <b-col cols="2" style="text-align: right">-->
-          <!--              <b-button variant="success" size="sm" v-if="isAdmin()">Edit</b-button>-->
-          <!--            </b-col>-->
-          <!--          </b-row>-->
+          <b-form-input
+            v-model="editedData.subject"
+            placeholder="Enter your subject"
+          ></b-form-input>
 
           <p class="mt-3 mb-2">Permalink</p>
-          <b-form-input v-model="permalink" placeholder="Enter your subject"></b-form-input>
+          <b-form-input
+            v-model="editedData.permalink"
+            placeholder="Enter your subject"
+          ></b-form-input>
 
           <b-row>
             <b-col cols="6">
               <p class="mb-2 mt-4">Background</p>
               <img :src="urlBg" alt="" class="d-block" id="backgroundImage" @load="getSize" />
               <b-form-file
-                v-model="fileBg"
-                placeholder="Change Background"
+                v-model="editedData.image"
+                placeholder="Upload Background"
                 accept="image/*"
                 @change="onFileChange"
                 class="mt-2"
@@ -58,7 +54,7 @@
       </b-col>
 
       <b-col cols="4" v-if="isAdmin()">
-        <b-button variant="success" size="sm" @ok="postBirthday">Send</b-button>
+        <b-button variant="success" size="sm" @click="postBirthday">Send</b-button>
         <p style="font-size: .8rem" class="mt-3 ">
           *Birthday card will be sent automatically according to the customer's birthday. The
           customer's name will be taken from the name when registering customer's account.
@@ -89,11 +85,21 @@ import axios from "axios";
 import swal from "sweetalert";
 
 export default {
+  mounted() {
+    axios
+      .get("/birthday/read")
+      .then(res => {
+        this.editedData = res.data.data[0];
+      })
+      .catch(() => {});
+  },
   data() {
     return {
-      subject: "",
-      permalink: "",
-      fileBg: null,
+      editedData: {
+        subject: "",
+        permalink: "",
+        image: null
+      },
       urlBg: "",
       sizeImg: "",
       showModal: false
@@ -101,8 +107,14 @@ export default {
   },
   methods: {
     postBirthday() {
+      let data = new FormData();
+      data.set("subject", this.editedData.subject);
+      data.set("image", this.editedData.image);
+      data.set("permalink", this.editedData.permalink);
+      data.set("id", this.editedData.birthday_card_id);
+
       axios
-        .post("/birthday/create", { subject: this.subject, permalink: this.permalink })
+        .post("/birthday/update", data)
         .then(() => {
           swal("Success", "Birthday card will be sent", "success");
         })

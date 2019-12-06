@@ -28,7 +28,7 @@
               <!--              </td>-->
               <td width="15%">{{ info.category }}</td>
               <td>{{ info.subject }}</td>
-              <td>{{ moment(info.updated_at).format("DD MMMM YYYY") }}</td>
+              <td>{{ info.updated_at | moment }}</td>
               <td width="5%">
                 <font-awesome-icon :icon="info.plus ? 'angle-down' : 'angle-up'" />
               </td>
@@ -54,6 +54,14 @@ import { perPageOptions } from "@/utility/globalVar.js";
 import axios from "axios";
 import moment from "moment";
 
+const initialInfo = {
+  subject: "Islam",
+  updated_at: "2019-11-13 06:35:45",
+  image: "religioncard/19OrE946ST73UqcKodV2LZaZpw0XbBalvHVyeVzN.jpeg",
+  category: "Holiday Card",
+  plus: true
+};
+
 export default {
   mounted() {
     if (this.$store.getters.walkthrough) {
@@ -73,7 +81,7 @@ export default {
         });
     } else {
       axios
-        .get(`/information/read`)
+        .get(`/information/read/${this.getUserId()}`)
         .then(res => {
           this.infos = res.data.map(el => {
             let o = Object.assign({}, el);
@@ -91,15 +99,7 @@ export default {
       perPageOptions,
       currentPage: 1,
       informationFields: ["Category", "Subject", "Date", ""],
-      infos: [
-        {
-          subject: "Islam",
-          updated_at: "2019-11-13 06:35:45",
-          image: "religioncard/19OrE946ST73UqcKodV2LZaZpw0XbBalvHVyeVzN.jpeg",
-          category: "Holiday Card",
-          plus: true
-        }
-      ],
+      infos: Array(10).fill(initialInfo),
       completed: false
     };
   },
@@ -114,6 +114,11 @@ export default {
     paginate(array, page_size, page_number) {
       --page_number;
       return array.slice(page_number * page_size, (page_number + 1) * page_size);
+    }
+  },
+  filters: {
+    moment: function(date) {
+      return moment(date).format("DD MMMM YYYY");
     }
   },
   computed: {

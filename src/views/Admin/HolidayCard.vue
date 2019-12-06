@@ -67,7 +67,11 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Religion</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.religion"></b-form-input>
+          <b-form-select
+            v-model="editedData.religion"
+            :options="religionOptions.slice(1, religionOptions.length - 1)"
+            placeholder="Select religion"
+          ></b-form-select>
         </b-col>
         <b-col cols="4"> <label class="mt-2">Permalink</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -128,7 +132,8 @@ export default {
 
       axios
         .post("/religion/create", formData)
-        .then(res => {
+        .then(() => {
+          swal("Success", "Holiday card successfully created", "success");
           this.getCards();
         })
         .catch(err => {

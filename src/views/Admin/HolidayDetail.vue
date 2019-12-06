@@ -35,7 +35,7 @@
       <b-col cols="4" v-if="isAdmin()">
         <p class="mb-2">Send Date</p>
         <datepicker v-model="sendDate" :format="customFormatter"></datepicker>
-        <b-button variant="success" size="sm" class="mt-4">Send</b-button>
+        <b-button variant="success" size="sm" class="mt-4" @click="editCard">Send</b-button>
         <p style="font-size: .8rem" class="mt-3 ">
           *Holiday cards will be sent automatically according to the holiday's date and customer's
           religion
@@ -43,7 +43,7 @@
       </b-col>
     </b-row>
 
-    <b-modal v-model="showEdit" centered size="lg" @ok="editCard" v-if="showEdit">
+    <b-modal v-model="showEdit" centered size="lg" v-if="showEdit">
       <b-row>
         <b-col cols="3"> <label class="mt-2">Permalink</label></b-col>
         <b-col cols="9" class="mb-3">
@@ -95,9 +95,19 @@ export default {
   },
   methods: {
     editCard() {
+      let data = new FormData();
+      if (this.detail.image instanceof File) data.set("image", this.detail.image);
+      data.set("date", moment(this.sendDate).format("YYYY-MM-DD"));
+      data.set("permalink", this.detail.permalink);
+      data.set("religion_card_id", this.detail.religion_card_id);
+      data.set("subject", this.detail.subject);
+      data.set("religion", this.detail.religion);
+
       axios
-        .post("/religion/update", this.detail)
-        .then(res => {})
+        .post("/religion/update", data)
+        .then(() => {
+          swal("Success", "Holiday card successfully updated", "success");
+        })
         .catch(err => {
           swal("Error", err.response.data.message, "error");
         });

@@ -110,7 +110,7 @@
               <div style="text-align: right">
                 <font-awesome-icon
                   icon="pen"
-                  style="cursor: pointer;"
+                  style="cursor: pointer; margin-bottom: 16px"
                   @click="showImgModal = true"
                 ></font-awesome-icon>
               </div>
@@ -122,7 +122,6 @@
                 "
                 alt
                 class="navbar-img-expand mb-3"
-                style="height: auto; max-width: auto"
               />
               <p class="mb-2 text-center">{{ getUsername() }}</p>
               <b-button variant="primary" size="sm" class="d-block mx-auto mb-3" @click="logout"
@@ -383,9 +382,10 @@ export default {
   max-width: 30px;
 }
 .navbar-img-expand {
-  height: 40px;
+  height: auto;
   margin: 0 auto;
   display: block;
+  max-width: 100%;
 }
 .user-navbar {
   margin-right: 10px;
