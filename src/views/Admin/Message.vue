@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Messages"></Header>
+    <Header title="Messages" />
     <div class="chat-container">
       <b-row no-gutters>
         <b-col cols="4" class="chat-left-container">
@@ -18,17 +18,21 @@
                   />
                 </b-col>
                 <b-col cols="8"><p class="mb-0 ml-3" style="margin-top: .7rem">Admin</p></b-col>
-                <b-col cols="2" style="text-align: right; margin-bottom: 35px"
-                  ><font-awesome-icon
+                <b-col cols="2" style="text-align: right; margin-bottom: 35px">
+                  <font-awesome-icon
                     icon="plus-circle"
                     style="margin-top: .7rem; font-size: 20px;cursor: pointer;"
-                    @click="showModal = true"
-                  ></font-awesome-icon></b-col
+                    @click="showModal = true"/></b-col
               ></b-row>
             </b-col>
             <b-col cols="12" class="mb-4 pl-3 pr-3">
               <b-input-group>
-                <b-form-input placeholder="Search..." v-model="search"></b-form-input>
+                <b-form-input
+                  placeholder="Search..."
+                  v-model="search"
+                  @change="getChats"
+                  debouce="500"
+                />
               </b-input-group>
             </b-col>
             <div class="chat-left">
@@ -94,7 +98,7 @@
                 placeholder="Write a message..."
                 v-model="chat"
                 @keyup.enter="sendMessage"
-              ></b-form-input>
+              />
             </b-col>
             <b-col cols="1" class="pt-3 pl-3" style="text-align: center">
               <font-awesome-icon
@@ -102,15 +106,15 @@
                 size="lg"
                 style="cursor: pointer; color: rgba(0,0,0,.6)"
                 @click="fileUpload"
-              ></font-awesome-icon
-              ><b-form-file
+              />
+              <b-form-file
                 v-model="files"
                 placeholder="Choose a file or drop it here..."
                 drop-placeholder="Drop file here..."
                 id="file"
                 style="display: none"
                 multiple
-              ></b-form-file>
+              />
             </b-col>
             <b-col cols="1" class="pt-2" style="text-align: center">
               <img
@@ -134,11 +138,9 @@
     >
       <b-row>
         <b-col cols="4"> <label class="mt-2">Customer Id</label></b-col>
-        <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.rcvr_id"></b-form-input> </b-col
+        <b-col cols="8" class="mb-3"> <b-form-input v-model="editedData.rcvr_id" /> </b-col
         ><b-col cols="4"> <label class="mt-2">Message</label></b-col>
-        <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.message"></b-form-input> </b-col></b-row
+        <b-col cols="8" class="mb-3"> <b-form-input v-model="editedData.message" /> </b-col></b-row
     ></b-modal>
   </b-container>
 </template>
@@ -217,8 +219,14 @@ export default {
         .catch(() => {});
     },
     getChats() {
+      let url = `/messages/get/${this.getUserId()}`;
+
+      if (this.search) {
+        url = `/messages/search/${this.search}`;
+      }
+
       axios
-        .get(`/messages/get/${this.getUserId()}`)
+        .get(url)
         .then(res => {
           const data = res.data[0];
           let m = [];
