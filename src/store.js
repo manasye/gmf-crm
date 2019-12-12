@@ -6,15 +6,20 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    walkthrough: false
+    walkthrough: false,
+    firstTime: true
   },
   mutations: {
     changeWalkthrough(state, walkthrough) {
       state.walkthrough = walkthrough;
+    },
+    changeFirstTime(state, firstTime) {
+      state.firstTime = firstTime;
     }
   },
   getters: {
-    walkthrough: state => state.walkthrough
+    walkthrough: state => state.walkthrough,
+    firstTime: state => state.firstTime
   },
   actions: {
     goToPage(context, page) {

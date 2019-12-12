@@ -1,21 +1,15 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="BIRTHDAY CARD"></Header>
+    <Header title="BIRTHDAY CARD" />
 
     <b-row>
       <b-col cols="8">
         <div class="card-wrapper">
           <p class="mb-2">Subject</p>
-          <b-form-input
-            v-model="editedData.subject"
-            placeholder="Enter your subject"
-          ></b-form-input>
+          <b-form-input v-model="editedData.subject" placeholder="Enter your subject" />
 
           <p class="mt-3 mb-2">Permalink</p>
-          <b-form-input
-            v-model="editedData.permalink"
-            placeholder="Enter your subject"
-          ></b-form-input>
+          <b-form-input v-model="editedData.permalink" placeholder="Enter your subject" />
 
           <b-row>
             <b-col cols="6">
@@ -28,7 +22,7 @@
                 @change="onFileChange"
                 class="mt-2"
                 v-if="isAdmin()"
-              ></b-form-file>
+              />
             </b-col>
             <b-col cols="6" v-if="urlBg">
               <p class="mb-2 mt-4">Preview</p>
@@ -148,11 +142,5 @@ export default {
 .preview-text {
   position: absolute;
   top: 20%;
-}
-</style>
-
-<style>
-.modal-no-padding {
-  padding: 0 !important;
 }
 </style>

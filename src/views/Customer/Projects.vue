@@ -1,16 +1,16 @@
 <template>
   <b-container fluid class="container-app" data-intro="PRoject">
-    <Header title="PROJECT LIST"></Header>
+    <Header title="PROJECT LIST" />
 
     <b-row>
       <b-col cols="6" md="2" class="mb-3 mb-md-0">
-        <b-form-select v-model="selectVal.location" :options="locationOptions"></b-form-select>
+        <b-form-select v-model="selectVal.location" :options="locationOptions" />
       </b-col>
       <b-col cols="6" md="2">
-        <b-form-select v-model="selectVal.project_type" :options="typeOptions"></b-form-select>
+        <b-form-select v-model="selectVal.project_type" :options="typeOptions" />
       </b-col>
       <b-col cols="6" md="2">
-        <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
+        <b-form-select v-model="selectVal.status" :options="statusOptions" />
       </b-col>
       <b-col cols="6" md="3">
         <b-row>
@@ -18,7 +18,7 @@
             <p class="per-page-text " style="text-align: right">Items per page</p>
           </b-col>
           <b-col cols="12" md="4">
-            <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
+            <b-form-select v-model="perPage" :options="perPageOptions" />
           </b-col>
         </b-row>
       </b-col>
@@ -48,14 +48,15 @@
         </b-badge>
       </template>
       <template v-slot:cell(rating)="rate">
-        <star-rating
-          :rating="+rate.value"
-          read-only
-          :show-rating="false"
-          :star-size="25"
-          :increment="0.5"
-          v-if="rate.value && !isNaN(+rate.value)"
-        ></star-rating>
+        <div @click.stop="viewHistory(rate)" v-if="rate.value && !isNaN(+rate.value)">
+          <star-rating
+            :rating="+rate.value"
+            read-only
+            :show-rating="false"
+            :star-size="25"
+            :increment="0.5"
+          />
+        </div>
 
         <b-button
           variant="primary"
@@ -67,7 +68,29 @@
       </template>
     </b-table>
 
-    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage"></b-pagination>
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" />
+
+    <b-modal
+      v-model="showModalHistory"
+      v-if="projectChosen"
+      centered
+      :title="projectChosen.name"
+      hide-footer
+    >
+      <p class="mb-2">{{ projectChosen.project_type }}</p>
+      <p class="mb-4">Location &nbsp;&nbsp;&nbsp;&nbsp;{{ projectChosen.location }}</p>
+      <b-table show-empty striped hover :items="histories">
+        <template v-slot:cell(rating)="rate">
+          <star-rating
+            :rating="+rate.value"
+            read-only
+            :show-rating="false"
+            :star-size="25"
+            :increment="0.5"
+          />
+        </template>
+      </b-table>
+    </b-modal>
   </b-container>
 </template>
 
@@ -127,7 +150,10 @@ export default {
         { key: "quantity", label: "Qty", sortable: true },
         { key: "rating", label: "Rating", sortable: true }
       ],
-      projects: []
+      histories: [{ date: "a", rating: "1" }],
+      projects: [],
+      showModalHistory: false,
+      projectChosen: null
     };
   },
   components: {
@@ -153,6 +179,10 @@ export default {
   methods: {
     showProjectDetail(row) {
       this.$store.dispatch("goToPage", `/project-customer/${row.project_id}`);
+    },
+    viewHistory(rate) {
+      this.projectChosen = rate.item;
+      this.showModalHistory = true;
     }
   }
 };

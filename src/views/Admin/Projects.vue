@@ -1,16 +1,16 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Project List"></Header>
+    <Header title="Project List" />
 
     <b-row>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.company" :options="companyOptions"></b-form-select>
+        <b-form-select v-model="selectVal.company" :options="companyOptions" />
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.project_type" :options="projectOptions"></b-form-select>
+        <b-form-select v-model="selectVal.project_type" :options="projectOptions" />
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
+        <b-form-select v-model="selectVal.status" :options="statusOptions" />
       </b-col>
       <b-col cols="2">
         <b-button variant="success" @click="addProject">Add New Project</b-button>
@@ -21,7 +21,7 @@
             <p class="mt-2">Number of items per page</p>
           </b-col>
           <b-col cols="3">
-            <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
+            <b-form-select v-model="perPage" :options="perPageOptions" />
           </b-col>
         </b-row>
       </b-col>
@@ -48,52 +48,67 @@
         </b-badge>
       </template>
       <template v-slot:cell(rating)="rate">
-        <star-rating
-          :rating="+rate.value"
-          read-only
-          :show-rating="false"
-          :star-size="25"
-          :increment="0.5"
-          v-if="!isNaN(+rate.value)"
-        ></star-rating>
+        <div @click.stop="viewHistory(rate)">
+          <star-rating
+            :rating="+rate.value"
+            read-only
+            :show-rating="false"
+            :star-size="25"
+            :increment="0.5"
+            v-if="!isNaN(+rate.value)"
+          />
+        </div>
       </template>
       <template v-slot:cell(edit)="data">
-        <font-awesome-icon
-          style="cursor: pointer;"
-          icon="pen"
-          @click.stop="editProject(data.item)"
-        ></font-awesome-icon
-      ></template>
+        <font-awesome-icon style="cursor: pointer;" icon="pen" @click.stop="editProject(data.item)"
+      /></template>
     </b-table>
 
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      align="right"
-    ></b-pagination>
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="right" />
+
+    <b-modal
+      v-model="showModalHistory"
+      v-if="projectChosen"
+      centered
+      :title="projectChosen.name"
+      hide-footer
+    >
+      <p class="mb-2">{{ projectChosen.project_type }}</p>
+      <p class="mb-4">Location &nbsp;&nbsp;&nbsp;&nbsp;{{ projectChosen.location }}</p>
+      <b-table show-empty striped hover :items="histories">
+        <template v-slot:cell(rating)="rate">
+          <star-rating
+            :rating="+rate.value"
+            read-only
+            :show-rating="false"
+            :star-size="25"
+            :increment="0.5"
+          />
+        </template>
+      </b-table>
+    </b-modal>
 
     <b-modal v-model="showModal" centered title="Manage Project" @ok="postProject">
       <b-row>
         <b-col cols="4"> <label class="mt-2">Name</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.name"></b-form-input>
+          <b-form-input v-model="editedData.name" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Start Date</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.start" placeholder="YYYY-MM-DD"></b-form-input>
+          <b-form-input v-model="editedData.start" placeholder="YYYY-MM-DD" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Finish Date</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.finish" placeholder="YYYY-MM-DD"></b-form-input>
+          <b-form-input v-model="editedData.finish" placeholder="YYYY-MM-DD" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Project Type</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-select v-model="editedData.project_type" :options="departments"></b-form-select>
+          <b-form-select v-model="editedData.project_type" :options="departments" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Quantity</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.quantity" type="number"></b-form-input>
+          <b-form-input v-model="editedData.quantity" type="number" />
         </b-col>
         <b-col cols="4" v-if="!newMode"> <label class="mt-2">Status</label></b-col>
         <b-col cols="8" class="mb-3" v-if="!newMode">
@@ -101,19 +116,19 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Company Name</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.company_name"></b-form-input>
+          <b-form-input v-model="editedData.company_name" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Location</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.location"></b-form-input>
+          <b-form-input v-model="editedData.location" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">AC Reg</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.ac_reg"></b-form-input>
+          <b-form-input v-model="editedData.ac_reg" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Type</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.type"></b-form-input>
+          <b-form-input v-model="editedData.type" />
         </b-col>
       </b-row>
     </b-modal>
@@ -169,7 +184,10 @@ export default {
       projects: [],
       showModal: false,
       editedData: {},
-      newMode: true
+      newMode: true,
+      showModalHistory: false,
+      projectChosen: null,
+      histories: [{ date: "a", rating: "1" }]
     };
   },
   components: { StarRating },
@@ -234,9 +252,13 @@ export default {
           this.companyOptions = this.companyOptions.concat(companies);
         })
         .catch(() => {});
+    },
+    viewHistory(rate) {
+      this.projectChosen = rate.item;
+      this.showModalHistory = true;
     }
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped />

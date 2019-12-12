@@ -46,6 +46,8 @@ import {
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import "intro.js/introjs.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 library.add(faTools);
 library.add(faInfoCircle);

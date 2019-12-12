@@ -48,8 +48,11 @@
                   <b-col cols="2"> <img :src="chat.user_img" alt=""/></b-col>
                   <b-col cols="8"
                     ><p class="mb-0 ml-3">{{ chat.user_name }}</p>
-                    <p class="mb-0 ml-3" style="color: #949699">{{ chat.last_message }}</p></b-col
-                  >
+                    <p class="mb-0 ml-3" style="color: #949699" v-if="chat.type === 'text'">
+                      {{ chat.last_message }}
+                    </p>
+                    <p class="mb-0 ml-3" style="color: #949699" v-else>File</p>
+                  </b-col>
                   <b-col cols="2" style="text-align: right">
                     <p class="mb-0" :class="{ 'text-success': chat.unread }">{{ chat.time }}</p>
                     <b-badge v-if="chat.unread" pill variant="success">{{ chat.unread }}</b-badge>
@@ -79,16 +82,24 @@
             <b-col cols="12" class="chat-content p-3" ref="content">
               <template v-for="c in activeChat.messages">
                 <div class="in" :key="c.message_id" v-if="c.sender === 'admin'">
-                  <p>
+                  <p v-if="c.type === 'text'">
                     {{ c.message }}
                   </p>
+                  <a
+                    :href="getBaseStorage() + c.message"
+                    v-else
+                    target="_blank"
+                    style="color: white"
+                    >File</a
+                  >
                 </div>
                 <br v-if="c.sender === 'admin'" :key="c.message_id" />
                 <div style="text-align: right" :key="c.message_id" v-if="c.sender !== 'admin'">
                   <div class="out">
-                    <p>
+                    <p v-if="c.type === 'text'">
                       {{ c.message }}
                     </p>
+                    <a :href="getBaseStorage() + c.message" v-else target="_blank">File</a>
                   </div>
                 </div>
               </template>
@@ -113,7 +124,7 @@
                 drop-placeholder="Drop file here..."
                 id="file"
                 style="display: none"
-                multiple
+                @input="uploadFileChat"
               />
             </b-col>
             <b-col cols="1" class="pt-2" style="text-align: center">
@@ -138,7 +149,8 @@
     >
       <b-row>
         <b-col cols="4"> <label class="mt-2">Customer Id</label></b-col>
-        <b-col cols="8" class="mb-3"> <b-form-input v-model="editedData.rcvr_id" /> </b-col
+        <b-col cols="8" class="mb-3">
+          <b-form-select :options="customers" v-model="editedData.rcvr_id" /> </b-col
         ><b-col cols="4"> <label class="mt-2">Message</label></b-col>
         <b-col cols="8" class="mb-3"> <b-form-input v-model="editedData.message" /> </b-col></b-row
     ></b-modal>
@@ -155,6 +167,19 @@ export default {
   mounted() {
     this.getChats();
     this.chatInterval = setInterval(this.getChats, TIME_FETCH_INTERVAL);
+
+    axios
+      .get("/user/read")
+      .then(res => {
+        let customerOptions = [{ value: null, text: "Select Customer" }];
+        const customers = res.data.data.filter(c => c.role === "Customer");
+        customers.map(c => {
+          customerOptions.push({ value: c.user_id, text: c.username });
+        });
+
+        this.customers = customerOptions;
+      })
+      .catch(() => {});
   },
   beforeDestroy() {
     clearInterval(this.chatInterval);
@@ -168,13 +193,28 @@ export default {
       chat: null,
       files: [],
       showModal: false,
-      editedData: { rcvr_id: "", message: "" },
-      chatInterval: null
+      editedData: { rcvr_id: null, message: "" },
+      chatInterval: null,
+      customers: []
     };
   },
   methods: {
     fileUpload() {
       document.getElementById("file").click();
+    },
+    uploadFileChat(file) {
+      let form = new FormData();
+      form.set("user_id", this.getUserId());
+      form.set("file", file);
+      form.set("rcvr_id", this.activeChatId);
+      form.set("type", "file");
+
+      axios
+        .post("/messages/send", form)
+        .then(() => {
+          this.getChats();
+        })
+        .catch(() => {});
     },
     viewChat(idx, chat) {
       this.activeChatId = chat.chat_id;
@@ -189,12 +229,13 @@ export default {
         .post("/messages/send", {
           user_id: this.getUserId(),
           message: this.chat,
-          rcvr_id: this.activeChatId
+          rcvr_id: this.activeChatId,
+          type: "text"
         })
         .then(() => {
           this.getChats();
           this.chat = null;
-          this.clearChat();
+          // this.clearChat();
         })
         .catch(() => {});
     },
@@ -203,7 +244,8 @@ export default {
         .post("/messages/send", {
           user_id: this.getUserId(),
           message: this.editedData.message,
-          rcvr_id: this.editedData.rcvr_id
+          rcvr_id: `${this.editedData.rcvr_id}`,
+          type: "text"
         })
         .then(() => {
           this.getChats();
@@ -212,7 +254,7 @@ export default {
     },
     clearChat() {
       axios
-        .get(`/messages/read/${this.getUserId()}/${this.activeChatId}`)
+        .get(`/messages/read/${this.activeChatId}/${this.getUserId()}`)
         .then(() => {
           this.activeChat.unread = 0;
         })
@@ -239,7 +281,8 @@ export default {
                 last_message: this.shortenText(d[k].last_message.message, 20),
                 time: moment(d[k].last_message.created_at).format("h:mm"),
                 unread: d[k].unread_count,
-                messages: d[k].messages
+                messages: d[k].messages,
+                type: d[k].last_message.type
               };
               if (this.activeChatId === k) {
                 this.activeChat = data;

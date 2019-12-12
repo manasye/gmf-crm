@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="chatClicked">
     <beautiful-chat
       :participants="participants"
       :titleImageUrl="titleImageUrl"
@@ -15,8 +15,6 @@
       :showTypingIndicator="showTypingIndicator"
       :colors="colors"
       :alwaysScrollToBottom="alwaysScrollToBottom"
-      :messageStyling="messageStyling"
-      @onType="handleOnType"
       @edit="editMessage"
       ><template v-slot:header>
         <img
@@ -40,14 +38,27 @@ export default {
   mounted() {
     this.getChats();
     this.chatInterval = setInterval(this.getChats, TIME_FETCH_INTERVAL);
+
+    // setTimeout(() => {
+    //   const images = document.getElementsByClassName("sc-image") || [];
+    //
+    //   for (let i = 0; i < images.length; i++) {
+    //     images[i].onerror = () => {
+    //       console.log(images[i]);
+    //       images[i].style.display = "none";
+    //     };
+    //   }
+    // }, TIME_FETCH_INTERVAL);
   },
   beforeDestroy() {
     clearInterval(this.chatInterval);
+    clearInterval(this.imageInterval);
   },
   name: "Chat",
   data() {
     return {
       chatInterval: null,
+      imageInterval: null,
       icons: {
         open: {
           img: OpenIcon,
@@ -107,19 +118,41 @@ export default {
     };
   },
   methods: {
+    chatClicked() {
+      axios
+        .get(`/messages/read/1/${this.getUserId()}`)
+        .then(() => {})
+        .catch(() => {});
+    },
     getChats() {
       axios
         .get(`/messages/get/${this.getUserId()}`)
         .then(res => {
           let msg = [];
-          res.data[0].map(m => {
+          res.data.message.map(m => {
+            let author;
             if (m.user_id === +this.getUserId()) {
-              msg.push({ type: "text", author: `me`, data: { text: m.message } });
+              author = "me";
             } else {
-              msg.push({ type: "text", author: m.sender, data: { text: m.message } });
+              author = m.sender;
             }
+
+            let data;
+            if (m.type === "text") {
+              data = { text: m.message || "" };
+            } else {
+              data = {
+                file: {
+                  name: "File",
+                  url: this.getBaseStorage() + m.message
+                }
+              };
+            }
+
+            msg.push({ type: m.type, author: author, data });
           });
           this.messageList = msg;
+          this.newMessagesCount = res.data.unread_count;
         })
         .catch(() => {});
     },
@@ -134,8 +167,25 @@ export default {
       }
     },
     onMessageWasSent(message) {
+      let data;
+
+      if (message.type === "file") {
+        let formData = new FormData();
+        formData.set("user_id", this.getUserId());
+        formData.set("file", message.data.file);
+        formData.set("type", "file");
+
+        data = formData;
+      } else {
+        data = {
+          user_id: this.getUserId(),
+          message: message.data.text,
+          type: "text"
+        };
+      }
+
       axios
-        .post("/messages/send", { user_id: this.getUserId(), message: message.data.text })
+        .post("/messages/send", data)
         .then(() => {
           this.messageList = [...this.messageList, message];
         })
@@ -172,5 +222,17 @@ export default {
   height: 50px;
   width: 50px;
   padding: 0;
+}
+.sc-message--file-name a {
+  font-size: 14px !important;
+}
+.sc-message--file-name {
+  margin-top: 7px;
+}
+.sc-message--file-text {
+  padding: 5px 20px !important;
+}
+.sc-message--file-icon {
+  display: none;
 }
 </style>
