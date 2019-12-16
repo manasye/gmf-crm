@@ -1,15 +1,15 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Feedback List"></Header>
+    <Header title="Feedback List" />
     <b-row>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.company" :options="companyOptions"></b-form-select>
+        <b-form-select v-model="selectVal.company" :options="companyOptions" />
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.sender" :options="senderOptions"></b-form-select>
+        <b-form-select v-model="selectVal.sender" :options="senderOptions" />
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.project_type" :options="projectOptions"></b-form-select>
+        <b-form-select v-model="selectVal.project_type" :options="projectOptions" />
       </b-col>
 
       <b-col cols="6" style="text-align: right">
@@ -18,7 +18,7 @@
             <p class="mt-2">Number of items per page</p>
           </b-col>
           <b-col cols="3">
-            <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
+            <b-form-select v-model="perPage" :options="perPageOptions" />
           </b-col>
         </b-row>
       </b-col>
@@ -40,23 +40,18 @@
         <star-rating
           :rating="+rate.value"
           read-only
-          :show-rating="false"
+          :show-rating="true"
           :star-size="25"
           :increment="0.5"
           v-if="rate.value"
-        ></star-rating>
+        />
       </template>
       <template v-slot:cell(remark)="data">
         {{ shortenText(data.value, 20) }}
       </template>
     </b-table>
 
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      align="right"
-    ></b-pagination>
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="right" />
   </b-container>
 </template>
 
@@ -85,6 +80,16 @@ export default {
         this.senderOptions = this.senderOptions.concat(senders);
       })
       .catch(() => {});
+
+    departments().then(res => {
+      this.projectOptions = [
+        {
+          value: null,
+          text: "All Project Type"
+        },
+        ...res
+      ];
+    });
   },
   data() {
     return {
@@ -98,7 +103,6 @@ export default {
           value: null,
           text: "All Project Types"
         },
-        ...departments
       ],
       senderOptions: [
         {
@@ -167,4 +171,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped />

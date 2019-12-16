@@ -3,18 +3,18 @@
     <h5>Complaint List</h5>
     <b-row class="mt-4">
       <b-col cols="6" md="2">
-        <b-form-select v-model="selectVal.sender" :options="sendersOptions"></b-form-select>
+        <b-form-select v-model="selectVal.sender" :options="sendersOptions" />
       </b-col>
       <b-col cols="6" md="2">
-        <b-form-select v-model="selectVal.service" :options="deptOptions"></b-form-select>
+        <b-form-select v-model="selectVal.service" :options="deptOptions" />
       </b-col>
       <b-col cols="6" md="2" class="mt-3 mt-md-0 mb-3 mb-md-0">
-        <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
+        <b-form-select v-model="selectVal.status" :options="statusOptions" />
       </b-col>
-      <b-col cols="0" md="3"></b-col>
+      <b-col cols="0" md="3" />
       <b-col cols="8" md="2" class="mt-2 text-md-right">Per page</b-col>
       <b-col cols="4" md="1">
-        <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
+        <b-form-select v-model="perPage" :options="perPageOptions" />
       </b-col>
     </b-row>
 
@@ -37,12 +37,7 @@
       </template>
     </b-table>
 
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      align="right"
-    ></b-pagination>
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="right" />
   </div>
 </template>
 
@@ -67,6 +62,16 @@ export default {
         })
         .catch(() => {});
     }
+
+    departments().then(res => {
+      this.deptOptions = [
+        {
+          value: null,
+          text: "All Departments"
+        },
+        ...res
+      ];
+    });
   },
   data() {
     return {
@@ -80,8 +85,7 @@ export default {
         {
           value: null,
           text: "All Departments"
-        },
-        ...departments
+        }
       ],
       statusOptions: statusComplaints,
       perPageOptions,

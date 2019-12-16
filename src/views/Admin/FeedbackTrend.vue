@@ -67,13 +67,7 @@
 
 <script>
 import LineChart from "@/components/LineChart.vue";
-import {
-  departments,
-  months,
-  ratingOptions,
-  rangeOptions,
-  trendOption
-} from "@/utility/globalVar.js";
+import { ratingOptions, rangeOptions, trendOption } from "@/utility/globalVar.js";
 import axios from "axios";
 
 export default {

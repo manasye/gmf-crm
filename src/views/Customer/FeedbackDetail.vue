@@ -133,7 +133,8 @@ export default {
         .post("/complaint/reply", {
           description: this.replyText,
           user_id: this.getUserId(),
-          complaint_id: this.$route.params.id
+          complaint_id: this.$route.params.id,
+          sender_role: "Customer"
         })
         .then(() => {
           this.getReplies();

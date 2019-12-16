@@ -33,16 +33,21 @@
             :icon="data.item.show_pass ? 'eye' : 'eye-slash'"
             style="cursor: pointer"
             @click="data.item.show_pass = !data.item.show_pass"
-          ></font-awesome-icon>
+          />
         </template>
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
             v-if="isAdmin()"
             icon="pen"
             style="cursor: pointer"
-            @click="editPerson(data.item)"
-          ></font-awesome-icon
-        ></template>
+            @click="editPerson(data.item)"/>
+          <font-awesome-icon
+            v-if="isAdmin()"
+            icon="trash"
+            style="cursor: pointer"
+            class="ml-3"
+            @click="removePerson(data.item)"
+        /></template>
       </b-table>
 
       <b-button
@@ -70,16 +75,21 @@
             :icon="data.item.show_pass ? 'eye' : 'eye-slash'"
             style="cursor: pointer"
             @click="data.item.show_pass = !data.item.show_pass"
-          ></font-awesome-icon>
+          />
         </template>
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
             v-if="isAdmin()"
             icon="pen"
             style="cursor: pointer"
-            @click="editPerson(data.item)"
-          ></font-awesome-icon
-        ></template>
+            @click="editPerson(data.item)"/>
+          <font-awesome-icon
+            v-if="isAdmin()"
+            icon="trash"
+            style="cursor: pointer"
+            class="ml-3"
+            @click="removePerson(data.item)"
+        /></template>
       </b-table>
 
       <b-button variant="success" class="float-right" size="sm" v-if="isAdmin()" @click="newCp"
@@ -100,9 +110,14 @@
             v-if="isAdmin()"
             icon="pen"
             style="cursor: pointer"
-            @click="editCp(data.item)"
-          ></font-awesome-icon
-        ></template>
+            @click="editCp(data.item)"/>
+          <font-awesome-icon
+            v-if="isAdmin()"
+            icon="trash"
+            style="cursor: pointer"
+            class="ml-3"
+            @click="removeCp(data.item)"
+        /></template>
       </b-table>
     </b-col>
 
@@ -110,40 +125,40 @@
       <b-row>
         <b-col cols="4"> <label class="mt-2">Name</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.name"></b-form-input>
+          <b-form-input v-model="editedData.name" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Position</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.position"></b-form-input>
+          <b-form-input v-model="editedData.position" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Religion</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.religion"></b-form-input>
+          <b-form-select v-model="editedData.religion" :options="religions" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Birthday</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.birthday"></b-form-input>
+          <b-form-input v-model="editedData.birthday" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Email</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.email"></b-form-input>
+          <b-form-input v-model="editedData.email" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Customer Role</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.customer_role"></b-form-input>
+          <b-form-input v-model="editedData.customer_role" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Username</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.username"></b-form-input>
+          <b-form-input v-model="editedData.username" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Password</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.pass_raw"></b-form-input>
+          <b-form-input v-model="editedData.pass_raw" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Status</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-select v-model="editedData.status" :options="statusOptions"></b-form-select
-        ></b-col>
+          <b-form-select v-model="editedData.status" :options="statusOptions"
+        /></b-col>
       </b-row>
     </b-modal>
 
@@ -151,19 +166,19 @@
       <b-row>
         <b-col cols="4"> <label class="mt-2">Name</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedCp.name"></b-form-input>
+          <b-form-input v-model="editedCp.name" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Phone</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedCp.phone"></b-form-input>
+          <b-form-input v-model="editedCp.phone" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Position</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedCp.position"></b-form-input>
+          <b-form-input v-model="editedCp.position" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Email</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedCp.email"></b-form-input>
+          <b-form-input v-model="editedCp.email" />
         </b-col>
       </b-row>
     </b-modal>
@@ -173,6 +188,7 @@
 <script>
 import axios from "axios";
 import swal from "sweetalert";
+import { religions } from "@/utility/globalVar.js";
 
 const initialUser = {
   name: "",
@@ -252,7 +268,8 @@ export default {
       ],
       showModalCp: false,
       newUserMode: false,
-      newCpMode: false
+      newCpMode: false,
+      religions
     };
   },
   methods: {
@@ -278,10 +295,16 @@ export default {
       this.showModalUser = true;
       this.newUserMode = false;
     },
+    removePerson(person) {
+      console.log(person);
+    },
     editCp(cp) {
       this.editedCp = cp;
       this.showModalCp = true;
       this.newCpMode = false;
+    },
+    removeCp(cp) {
+      console.log(cp);
     },
     getUser() {
       axios
@@ -322,15 +345,18 @@ export default {
     },
     postUser() {
       const url = this.newUserMode ? "/user/create" : "/user/update";
+      const data = {
+        ...this.editedData,
+        id: this.editedData.user_id,
+        password: this.editedData.pass_raw,
+        role: "Customer",
+        company_id: this.$route.params.id
+      };
+      delete data.image;
+
       axios
-        .post(url, {
-          ...this.editedData,
-          id: this.editedData.user_id,
-          password: this.editedData.pass_raw,
-          role: "Customer",
-          company_id: this.$route.params.id
-        })
-        .then(res => {
+        .post(url, data)
+        .then(() => {
           this.editedData = initialUser;
           this.getUser();
         })
@@ -340,13 +366,16 @@ export default {
     },
     postCp() {
       const url = this.newCpMode ? "/cp/create" : "/cp/update";
+      const data = {
+        ...this.editedCp,
+        id: this.editedCp.gmf_cp_id,
+        company_id: this.$route.params.id
+      };
+      delete data.image;
+
       axios
-        .post(url, {
-          ...this.editedCp,
-          id: this.editedCp.gmf_cp_id,
-          company_id: this.$route.params.id
-        })
-        .then(res => {
+        .post(url, data)
+        .then(() => {
           this.editedCp = initialCp;
           this.getCp();
         })

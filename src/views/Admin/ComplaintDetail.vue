@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header :title="`Complaint ${$route.params.id}`" :breadcrumbs="breadcrumbs"></Header>
+    <Header :title="`Complaint ${$route.params.id}`" :breadcrumbs="breadcrumbs" />
     <div class="detail-header">
       <b-row>
         <b-col
@@ -44,7 +44,7 @@
       </div>
       <div class="file mt-4 mb-4" v-if="complaintDetail.file">
         <!--        <p v-for="i in 1">-->
-        <font-awesome-icon icon="link"></font-awesome-icon>
+        <font-awesome-icon icon="link" />
         <a :href="getBaseStorage() + complaintDetail.file">
           {{ complaintDetail.file_name || "File" }}
           <br />
@@ -66,7 +66,7 @@
         rows="3"
         max-rows="6"
         class="mb-4"
-      ></b-form-textarea>
+      />
       <b-button variant="success" @click="showReplyTextArea = true" v-if="!showReplyTextArea"
         >REPLY</b-button
       >
@@ -79,7 +79,7 @@
             <b-form-select
               v-model="complaintDetail.status"
               :options="statusOptions"
-            ></b-form-select> </b-col></b-row
+            /> </b-col></b-row
       ></b-modal>
     </div>
   </b-container>
@@ -171,7 +171,8 @@ export default {
         .post("/complaint/reply", {
           description: this.replyText,
           user_id: this.getUserId(),
-          complaint_id: this.$route.params.id
+          complaint_id: this.$route.params.id,
+          sender_role: "Admin"
         })
         .then(() => {
           this.getReplies();

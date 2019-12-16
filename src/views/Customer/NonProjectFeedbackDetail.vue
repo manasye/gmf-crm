@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header :title="`Feedback ${$route.params.id}`" :breadcrumbs="breadcrumbs"></Header>
+    <Header :title="`Feedback ${$route.params.id}`" :breadcrumbs="breadcrumbs" />
     <div class="detail-header">
       <b-row>
         <b-col cols="4" md="2" class="mb-3 mb-md-0">
@@ -16,10 +16,10 @@
           <star-rating
             :rating="rating"
             read-only
-            :show-rating="false"
+            :show-rating="true"
             :star-size="25"
             :increment="0.5"
-          ></star-rating>
+          />
         </b-col>
       </b-row>
     </div>

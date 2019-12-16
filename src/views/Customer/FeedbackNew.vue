@@ -60,6 +60,10 @@ export default {
           this.$store.commit("changeWalkthrough", true);
         });
     }
+
+    departments().then(res => {
+      this.services = res;
+    });
   },
   data() {
     return {
@@ -74,7 +78,7 @@ export default {
         }
       ],
       subject: null,
-      services: departments,
+      services: [],
       serviceSelected: null,
       description: null,
       files: null,
@@ -95,7 +99,7 @@ export default {
       formData.set("user_id", this.getUserId());
       formData.set("complaint", this.description);
       formData.set("service", this.serviceSelected.join(","));
-      formData.set("file", this.files);
+      if (this.files) formData.set("file", this.files);
 
       axios
         .post("/complaint/create", formData)

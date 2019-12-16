@@ -1,3 +1,7 @@
+import axios from "axios";
+axios.defaults.baseURL = "http://172.16.40.180:8080/api";
+axios.defaults.withCredentials = true;
+
 export const perPageOptions = [
   {
     value: "10",
@@ -13,32 +17,20 @@ export const perPageOptions = [
   }
 ];
 
-export const departments = [
-  { name: "Base Maintenance", value: "Base Maintenance", text: "Base Maintenance" },
-  {
-    name: "Outstation Line Maintenance",
-    value: "Outstation Line Maintenance",
-    text: "Outstation Line Maintenance"
-  },
-  {
-    name: "Logistic & Material Maintenance",
-    value: "Logistic & Material Maintenance",
-    text: "Logistic & Material Maintenance"
-  },
-  { name: "Learning / Training", value: "Learning / Training", text: "Learning / Training" },
-  { name: "Cabin Maintenance", value: "Cabin Maintenance", text: "Cabin Maintenance" },
-  { name: "Engineering Services", value: "Engineering Services", text: "Engineering Services" },
-  { name: "Power Service (IGTE)", value: "Power Service (IGTE)", text: "Power Service (IGTE)" },
-  { name: "Component Services", value: "Component Services", text: "Component Services" },
-  { name: "Line Maintenance", value: "Line Maintenance", text: "Line Maintenance" },
-  { name: "Engine Services", value: "Engine Services", text: "Engine Services" },
-  { name: "Ground Support", value: "Ground Support", text: "Ground Support" },
-  {
-    name: "Facility / IT / Other Services",
-    value: "Facility / IT / Other Services",
-    text: "Facility / IT / Other Services"
-  }
-];
+export const departments = () => {
+  return axios
+    .get("/service/read")
+    .then(res => {
+      let services = [];
+      res.data.data.map(s => {
+        services.push({ name: s.name, value: s.name, text: s.name });
+      });
+      return services;
+    })
+    .catch(() => {
+      return [];
+    });
+};
 
 export const religions = [
   {
@@ -46,12 +38,12 @@ export const religions = [
     text: "All Religions"
   },
   {
-    value: "Christianity",
-    text: "Christianity"
-  },
-  {
     value: "Islam",
     text: "Islam"
+  },
+  {
+    value: "Christians",
+    text: "Christians"
   },
   {
     value: "Buddhism",
@@ -64,6 +56,10 @@ export const religions = [
   {
     value: "Sikhism",
     text: "Sikhism"
+  },
+  {
+    value: "Other",
+    text: "Other"
   }
 ];
 

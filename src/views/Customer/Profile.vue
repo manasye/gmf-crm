@@ -12,8 +12,15 @@
           <h5>CUSTOMER ACCOUNT</h5>
           <hr align="left" />
           <div v-for="c in customers" :key="c.user_customer_id" class="mb-3">
-            <p>{{ c.name }}</p>
-            <p class="username">{{ c.username }}</p>
+            <b-row>
+              <b-col cols="2">
+                <img :src="getBaseStorage() + c.image" alt="" />
+              </b-col>
+              <b-col cols="10">
+                <p>{{ c.name }}</p>
+                <p class="username">{{ c.username }}</p></b-col
+              >
+            </b-row>
           </div>
         </b-col>
 
@@ -21,9 +28,14 @@
           <h5>GMF CONTACT PERSON</h5>
           <hr style="width:10%" align="left" />
           <div v-for="c in contactPersons" :key="c.gmf_cp_id" class="mb-3">
-            <p>{{ c.name }}</p>
-            <p class="username">{{ c.position }} &nbsp;&nbsp;{{ c.phone }}</p>
-            <p class="username">{{ c.email }}</p>
+            <b-row>
+              <b-col cols="2"> <img :src="getBaseStorage() + c.image" alt=""/></b-col>
+              <b-col cols="9">
+                <p>{{ c.name }}</p>
+                <p class="username">{{ c.position }} &nbsp;&nbsp;{{ c.phone }}</p>
+                <p class="username">{{ c.email }}</p></b-col
+              >
+            </b-row>
           </div>
         </b-col>
       </b-row>

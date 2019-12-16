@@ -1,12 +1,12 @@
 <template>
   <b-container fluid class="container-app">
-    <Header :title="subject" :breadcrumbs="breadcrumbs"></Header>
+    <Header :title="subject" :breadcrumbs="breadcrumbs" />
 
     <b-row>
       <b-col cols="8">
         <div class="card-wrapper">
           <h5>SUBJECT</h5>
-          <b-form-input v-model="subject" placeholder="Enter your subject"></b-form-input>
+          <b-form-input v-model="subject" placeholder="Enter your subject" />
           <b-row class="mt-2">
             <b-col cols="10">
               <p style="font-size: .8rem" class="mb-0 ">
@@ -28,13 +28,13 @@
             accept="image/*"
             @change="onFileChange"
             class="mt-3"
-          ></b-form-file>
+          />
         </div>
       </b-col>
 
       <b-col cols="4" v-if="isAdmin()">
         <p class="mb-2">Send Date</p>
-        <datepicker v-model="sendDate" :format="customFormatter"></datepicker>
+        <datepicker v-model="sendDate" :format="customFormatter" />
         <b-button variant="success" size="sm" class="mt-4" @click="editCard">Send</b-button>
         <p style="font-size: .8rem" class="mt-3 ">
           *Holiday cards will be sent automatically according to the holiday's date and customer's
@@ -46,8 +46,7 @@
     <b-modal v-model="showEdit" centered size="lg" v-if="showEdit">
       <b-row>
         <b-col cols="3"> <label class="mt-2">Permalink</label></b-col>
-        <b-col cols="9" class="mb-3">
-          <b-form-input v-model="detail.permalink"></b-form-input> </b-col
+        <b-col cols="9" class="mb-3"> <b-form-input v-model="detail.permalink" /> </b-col
       ></b-row>
     </b-modal>
   </b-container>

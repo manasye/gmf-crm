@@ -23,7 +23,7 @@
           }"
           :key="p.url"
         >
-          <div class="preview-text" v-if="p.type === 'birthday'">
+          <div class="preview-text-ads" v-if="p.type === 'birthday'">
             <h2>Happy Birthday</h2>
             <h4>Customer Name</h4>
             <p>Wishing you a wonderful birthday and a year filled with success</p>
@@ -154,7 +154,7 @@ img {
   background-size: cover;
 }
 
-.preview-text {
+.preview-text-ads {
   position: absolute;
   top: 20%;
   text-align: center;

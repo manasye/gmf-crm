@@ -37,22 +37,19 @@
       show-empty
     >
       <template v-slot:cell(status)="data">
-        <b-badge v-if="data.value === 'Closed'" variant="danger">
-          <p style="margin: 5px">{{ data.value }}</p>
-        </b-badge>
-        <b-badge v-if="data.value === 'Active'" variant="success">
-          <p style="margin: 5px">{{ data.value }}</p>
-        </b-badge>
-        <b-badge v-else variant="secondary">
-          <p style="margin: 5px">{{ data.value }}</p>
-        </b-badge>
+        <b-button v-if="data.value === 'Closed'" variant="primary" size="sm">
+          {{ data.value }}
+        </b-button>
+        <b-button v-else variant="outline-primary" size="sm">
+          {{ data.value }}
+        </b-button>
       </template>
       <template v-slot:cell(rating)="rate">
         <div @click.stop="viewHistory(rate)" v-if="rate.value && !isNaN(+rate.value)">
           <star-rating
             :rating="+rate.value"
             read-only
-            :show-rating="false"
+            :show-rating="true"
             :star-size="25"
             :increment="0.5"
           />
@@ -84,7 +81,7 @@
           <star-rating
             :rating="+rate.value"
             read-only
-            :show-rating="false"
+            :show-rating="true"
             :star-size="25"
             :increment="0.5"
           />
@@ -115,6 +112,16 @@ export default {
         this.locationOptions = this.locationOptions.concat(locations);
       })
       .catch(() => {});
+
+    departments().then(res => {
+      this.typeOptions = [
+        {
+          value: null,
+          text: "All Project Type"
+        },
+        ...res
+      ];
+    });
   },
   data() {
     return {
@@ -123,8 +130,7 @@ export default {
         {
           value: null,
           text: "All Project Types"
-        },
-        ...departments
+        }
       ],
       locationOptions: [
         {
@@ -142,7 +148,7 @@ export default {
       currentPage: 1,
       projectFields: [
         { key: "project_id", sortable: true },
-        { key: "name", sortable: true },
+        { key: "name", label: "Project Name", sortable: true },
         { key: "start", label: "Est Start Date", sortable: true },
         { key: "finish", label: "Est Finish Date", sortable: true },
         { key: "project_type", sortable: true },

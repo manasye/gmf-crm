@@ -4,7 +4,7 @@
 
     <b-row>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.company" :options="companyOptions" />
+        <b-form-select v-model="selectVal.company_name" :options="companyOptions" />
       </b-col>
       <b-col cols="2">
         <b-form-select v-model="selectVal.project_type" :options="projectOptions" />
@@ -40,19 +40,19 @@
       show-empty
     >
       <template v-slot:cell(status)="data">
-        <b-badge v-if="data.value === 'Closed'" variant="primary">
-          <p style="margin: 5px">{{ data.value }}</p>
-        </b-badge>
-        <b-badge v-if="data.value === 'On Going'" variant="secondary">
-          <p style="margin: 5px">{{ data.value }}</p>
-        </b-badge>
+        <b-button v-if="data.value === 'Closed'" variant="primary" size="sm">
+          {{ data.value }}
+        </b-button>
+        <b-button v-else variant="outline-primary" size="sm">
+          {{ data.value }}
+        </b-button>
       </template>
       <template v-slot:cell(rating)="rate">
         <div @click.stop="viewHistory(rate)">
           <star-rating
             :rating="+rate.value"
             read-only
-            :show-rating="false"
+            :show-rating="true"
             :star-size="25"
             :increment="0.5"
             v-if="!isNaN(+rate.value)"
@@ -60,7 +60,17 @@
         </div>
       </template>
       <template v-slot:cell(edit)="data">
-        <font-awesome-icon style="cursor: pointer;" icon="pen" @click.stop="editProject(data.item)"
+        <font-awesome-icon
+          v-if="isAdmin()"
+          style="cursor: pointer;"
+          icon="pen"
+          @click.stop="editProject(data.item)"/>
+        <font-awesome-icon
+          v-if="isAdmin()"
+          icon="trash"
+          style="cursor: pointer"
+          class="ml-3"
+          @click.stop="removeProject(data.item)"
       /></template>
     </b-table>
 
@@ -80,7 +90,7 @@
           <star-rating
             :rating="+rate.value"
             read-only
-            :show-rating="false"
+            :show-rating="true"
             :star-size="25"
             :increment="0.5"
           />
@@ -104,7 +114,7 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Project Type</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-select v-model="editedData.project_type" :options="departments" />
+          <b-form-select v-model="editedData.project_type" :options="projectOptions" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Quantity</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -144,21 +154,24 @@ import swal from "sweetalert";
 export default {
   mounted() {
     this.getData();
+
+    departments().then(res => {
+      this.projectOptions = res;
+    });
   },
   data() {
     return {
       selectVal: {
         status: null,
         project_type: null,
-        company: null
+        company_name: null
       },
       statusOptions: statusProjects,
       projectOptions: [
         {
           value: null,
           text: "All Project Types"
-        },
-        ...departments
+        }
       ],
       companyOptions: [
         {
@@ -168,11 +181,10 @@ export default {
       ],
       currentPage: 1,
       perPageOptions,
-      departments,
       perPage: "10",
       projectFields: [
         { key: "company_name", label: "Company", sortable: true },
-        { key: "name", label: "Project", sortable: true },
+        { key: "name", label: "Project Name", sortable: true },
         { key: "start", label: "Est Start Date", sortable: true },
         { key: "finish", label: "Est Finish Date", sortable: true },
         { key: "project_type", sortable: true },
@@ -240,7 +252,7 @@ export default {
         .then(res => {
           this.projects = res.data.data.map(el => {
             let o = Object.assign({}, el);
-            o.edit = "a";
+            if (this.isAdmin()) o.edit = "a";
             return o;
           });
           let companies = [];
@@ -250,6 +262,15 @@ export default {
             }
           });
           this.companyOptions = this.companyOptions.concat(companies);
+        })
+        .catch(() => {});
+    },
+    removeProject(project) {
+      axios
+        .get(`/project/delete/${project.project_id}`)
+        .then(() => {
+          swal("Success", `Project successfully deleted`, "success");
+          this.getData();
         })
         .catch(() => {});
     },

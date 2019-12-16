@@ -1,15 +1,15 @@
 <template>
   <b-container fluid class="container-app" data-intro="Non Project">
-    <Header title="NON-PROJECT FEEDBACK"></Header>
+    <Header title="NON-PROJECT FEEDBACK" />
 
     <b-row class="mt-0 mt-md-4">
       <b-col cols="6" md="2" class="mb-3 mb-md-0">
-        <b-form-select v-model="selectVal.sender" :options="sendersOptions"></b-form-select>
+        <b-form-select v-model="selectVal.sender" :options="sendersOptions" />
       </b-col>
-      <b-col cols="0" md="5"></b-col>
+      <b-col cols="0" md="5" />
       <b-col cols="8" md="2" class="mt-2 text-md-right">Item per page</b-col>
       <b-col cols="4" md="1">
-        <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
+        <b-form-select v-model="perPage" :options="perPageOptions" />
       </b-col>
       <b-col cols="12" md="2" class="text-md-right mt-3 mt-md-0">
         <b-button
@@ -39,15 +39,15 @@
         <star-rating
           :rating="+rate.value"
           read-only
-          :show-rating="false"
+          :show-rating="true"
           :star-size="25"
           :increment="0.5"
           v-if="rate.value"
-        ></star-rating>
+        />
       </template>
     </b-table>
 
-    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage"></b-pagination>
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" />
   </b-container>
 </template>
 
@@ -141,4 +141,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped />

@@ -1,19 +1,19 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Complaint List"></Header>
+    <Header title="Complaint List" />
 
     <b-row>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.company" :options="companyOptions"></b-form-select>
+        <b-form-select v-model="selectVal.company" :options="companyOptions" />
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.sender" :options="senderOptions"></b-form-select>
+        <b-form-select v-model="selectVal.sender" :options="senderOptions" />
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.department" :options="deptOptions"></b-form-select>
+        <b-form-select v-model="selectVal.department" :options="deptOptions" />
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
+        <b-form-select v-model="selectVal.status" :options="statusOptions" />
       </b-col>
       <b-col cols="4" style="text-align: right">
         <b-row>
@@ -21,7 +21,7 @@
             <p class="mt-2">Number of items per page</p>
           </b-col>
           <b-col cols="3">
-            <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
+            <b-form-select v-model="perPage" :options="perPageOptions" />
           </b-col>
         </b-row>
       </b-col>
@@ -46,12 +46,7 @@
       </template>
     </b-table>
 
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      align="right"
-    ></b-pagination>
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="right" />
   </b-container>
 </template>
 
@@ -79,6 +74,16 @@ export default {
         this.senderOptions = this.senderOptions.concat(senders);
       })
       .catch(() => {});
+
+    departments().then(res => {
+      this.deptOptions = [
+        {
+          value: null,
+          text: "All Departments"
+        },
+        ...res
+      ];
+    });
   },
   data() {
     return {
@@ -101,13 +106,7 @@ export default {
           text: "All Companies"
         }
       ],
-      deptOptions: [
-        {
-          value: null,
-          text: "All Departments"
-        },
-        ...departments
-      ],
+      deptOptions: [],
       currentPage: 1,
       perPageOptions,
       perPage: "10",
@@ -160,4 +159,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped />

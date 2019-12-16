@@ -225,32 +225,34 @@ export default {
       return moment();
     },
     sendMessage() {
-      axios
-        .post("/messages/send", {
-          user_id: this.getUserId(),
-          message: this.chat,
-          rcvr_id: this.activeChatId,
-          type: "text"
-        })
-        .then(() => {
-          this.getChats();
-          this.chat = null;
-          // this.clearChat();
-        })
-        .catch(() => {});
+      if (this.chat)
+        axios
+          .post("/messages/send", {
+            user_id: this.getUserId(),
+            message: this.chat,
+            rcvr_id: this.activeChatId,
+            type: "text"
+          })
+          .then(() => {
+            this.getChats();
+            this.chat = null;
+            // this.clearChat();
+          })
+          .catch(() => {});
     },
     sendNewMessage() {
-      axios
-        .post("/messages/send", {
-          user_id: this.getUserId(),
-          message: this.editedData.message,
-          rcvr_id: `${this.editedData.rcvr_id}`,
-          type: "text"
-        })
-        .then(() => {
-          this.getChats();
-        })
-        .catch(() => {});
+      if (this.chat)
+        axios
+          .post("/messages/send", {
+            user_id: this.getUserId(),
+            message: this.editedData.message,
+            rcvr_id: `${this.editedData.rcvr_id}`,
+            type: "text"
+          })
+          .then(() => {
+            this.getChats();
+          })
+          .catch(() => {});
     },
     clearChat() {
       axios
@@ -272,22 +274,23 @@ export default {
         .then(res => {
           const data = res.data[0];
           let m = [];
+
           data.map(d => {
             for (let k in d) {
-              const data = {
+              const chatData = {
                 chat_id: k,
                 user_img: this.getUserImage() + d[k].image,
                 user_name: d[k].name,
-                last_message: this.shortenText(d[k].last_message.message, 20),
+                last_message: this.shortenText(d[k].last_message.message || "-", 20),
                 time: moment(d[k].last_message.created_at).format("h:mm"),
                 unread: d[k].unread_count,
                 messages: d[k].messages,
                 type: d[k].last_message.type
               };
               if (this.activeChatId === k) {
-                this.activeChat = data;
+                this.activeChat = chatData;
               }
-              m.push(data);
+              m.push(chatData);
             }
           });
           this.chats = m;

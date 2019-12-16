@@ -1,32 +1,33 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Customer List"></Header>
+    <Header title="Customer List" />
     <b-row>
-      <b-col cols="2"
-        ><b-form-select v-model="selectVal.region" :options="regionOptions"></b-form-select
-      ></b-col>
-      <b-col cols="2"
-        ><b-form-select v-model="selectVal.country" :options="countryOptions"></b-form-select
-      ></b-col>
-      <b-col cols="2"
-        ><b-form-select v-model="selectVal.company_role" :options="roleOptions"></b-form-select
-      ></b-col>
-      <b-col cols="2"
-        ><b-form-select v-model="selectVal.business_model" :options="bmOptions"></b-form-select
-      ></b-col>
-      <b-col cols="2"
-        ><b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select
-      ></b-col>
+      <b-col cols="2"> <b-form-select v-model="selectVal.region" :options="regionOptions"/></b-col>
+      <b-col cols="2">
+        <b-form-select v-model="selectVal.country" :options="countryOptions"
+      /></b-col>
+      <b-col cols="2">
+        <b-form-select v-model="selectVal.company_role" :options="roleOptions"
+      /></b-col>
+      <b-col cols="2">
+        <b-form-select v-model="selectVal.business_model" :options="bmOptions"
+      /></b-col>
+      <b-col cols="2"> <b-form-select v-model="selectVal.status" :options="statusOptions"/></b-col>
       <b-col cols="1" class="mt-2 text-right">Per page</b-col>
-      <b-col cols="1"
-        ><b-form-select v-model="perPage" :options="perPageOptions"></b-form-select
-      ></b-col>
-      <b-col cols="8"></b-col>
+      <b-col cols="1"> <b-form-select v-model="perPage" :options="perPageOptions"/></b-col>
+      <b-col cols="6" />
       <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
-        ><b-button variant="success">Customer Form</b-button></b-col
+        ><b-button variant="success" style="width: 100%">Customer Form</b-button></b-col
       >
       <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
-        ><b-button variant="success" @click="showModalAdd = true">Add New Customer</b-button></b-col
+        ><b-button variant="success" @click="showModalAdd = true" style="width: 100%"
+          >Upload Form</b-button
+        ></b-col
+      >
+      <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
+        ><b-button variant="success" @click="showModalStatus = true"
+          >Add New Customer</b-button
+        ></b-col
       >
     </b-row>
 
@@ -50,12 +51,19 @@
           v-if="getRole() === 'Admin'"
           icon="pen"
           style="cursor: pointer"
+          class="mr-3"
           @click.stop="editStatus(data.item)"
-        ></font-awesome-icon>
+        />
+        <font-awesome-icon
+          v-if="getRole() === 'Admin'"
+          icon="trash"
+          style="cursor: pointer"
+          @click.stop="removeCustomer(data.item)"
+        />
       </template>
     </b-table>
 
-    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage"></b-pagination>
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" />
 
     <b-modal
       v-model="showModalAdd"
@@ -66,7 +74,7 @@
     >
       <b-row>
         <b-col cols="4"> <label class="mt-2">Upload File</label></b-col>
-        <b-col cols="8" class="mb-3"> <b-form-file v-model="customerFile"></b-form-file> </b-col
+        <b-col cols="8" class="mb-3"> <b-form-file v-model="customerFile" /> </b-col
       ></b-row>
     </b-modal>
 
@@ -80,67 +88,63 @@
       <b-row>
         <b-col cols="4"> <label class="mt-2">Name</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.name"></b-form-input>
+          <b-form-input v-model="editedData.name" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Image</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-file
-            accept="image/*"
-            v-model="editedData.image"
-            placeholder="Choose new image"
-          ></b-form-file>
+          <b-form-file accept="image/*" v-model="editedData.image" placeholder="Choose new image" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Region</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.region"></b-form-input>
+          <b-form-input v-model="editedData.region" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Country</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.country"></b-form-input>
+          <b-form-input v-model="editedData.country" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Role</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.company_role"></b-form-input>
+          <b-form-input v-model="editedData.company_role" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Business Model</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.business_model"></b-form-input>
+          <b-form-input v-model="editedData.business_model" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Status</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-select v-model="editedData.status" :options="statusOptions"></b-form-select
-        ></b-col>
-        <b-col cols="4"> <label class="mt-2">Est Date</label></b-col>
+          <b-form-select v-model="editedData.status" :options="statusOptions"
+        /></b-col>
+        <b-col cols="4"> <label class="mt-2">Establish Year</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.est_date" type="number"></b-form-input>
+          <b-form-input v-model="editedData.est_date" type="number" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Customer Type</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.customer_type"></b-form-input>
+          <b-form-input v-model="editedData.customer_type" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Shareholder</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.shareholder"></b-form-input>
+          <b-form-input v-model="editedData.shareholder" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Alliance</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.alliance"></b-form-input>
+          <b-form-input v-model="editedData.alliance" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">MRO</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.MRO"></b-form-input>
+          <b-form-input v-model="editedData.MRO" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Fleet Size</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.fleet_size" type="number"></b-form-input>
+          <b-form-input v-model="editedData.fleet_size" type="number" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Destination</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.destination" type="number"></b-form-input>
+          <b-form-input v-model="editedData.destination" type="number" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Customer Since</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.customer_since" type="number"></b-form-input>
+          <b-form-input v-model="editedData.customer_since" type="number" />
         </b-col>
       </b-row>
     </b-modal>
@@ -168,6 +172,7 @@ export default {
       this.getCompanyData();
     }
   },
+
   data() {
     return {
       regionOptions: [
@@ -273,29 +278,44 @@ export default {
     },
     changeStatus() {
       let formData = new FormData();
-      formData.set("MRO", this.editedData.MRO || "");
-      formData.set("alliance", this.editedData.alliance || "");
-      formData.set("business_model", this.editedData.business_model || "");
-      formData.set("company_id", this.editedData.company_id || "");
-      formData.set("company_role", this.editedData.company_role || "");
-      formData.set("country", this.editedData.country || "");
-      formData.set("customer_since", this.editedData.customer_since || "");
-      formData.set("customer_type", this.editedData.customer_type || "");
-      formData.set("destination", this.editedData.destination || "");
-      formData.set("est_date", this.editedData.est_date || "");
-      formData.set("fleet_size", this.editedData.fleet_size || "");
-      formData.set("id", this.editedData.company_id || "");
+      if (this.editedData.MRO) formData.set("MRO", this.editedData.MRO || "");
+      if (this.editedData.alliance) formData.set("alliance", this.editedData.alliance || "");
+      if (this.editedData.business_model)
+        formData.set("business_model", this.editedData.business_model || "");
+      if (this.editedData.company_id) formData.set("company_id", this.editedData.company_id || "");
+      if (this.editedData.company_role)
+        formData.set("company_role", this.editedData.company_role || "");
+      if (this.editedData.country) formData.set("country", this.editedData.country || "");
+      if (this.editedData.customer_since)
+        formData.set("customer_since", this.editedData.customer_since || "");
+      if (this.editedData.customer_type)
+        formData.set("customer_type", this.editedData.customer_type || "");
+      if (this.editedData.destination)
+        formData.set("destination", this.editedData.destination || "");
+      if (this.editedData.est_date) formData.set("est_date", this.editedData.est_date || "");
+      if (this.editedData.fleet_size) formData.set("fleet_size", this.editedData.fleet_size || "");
+      if (this.editedData.company_id) formData.set("id", this.editedData.company_id || "");
       if (this.editedData.image instanceof File) formData.set("image", this.editedData.image || "");
-      formData.set("name", this.editedData.name || "");
-      formData.set("region", this.editedData.region || "");
-      formData.set("shareholder", this.editedData.shareholder || "");
-      formData.set("status", this.editedData.status || "");
-      formData.set("type", this.editedData.type || "");
+      if (this.editedData.name) formData.set("name", this.editedData.name || "");
+      if (this.editedData.region) formData.set("region", this.editedData.region || "");
+      if (this.editedData.shareholder)
+        formData.set("shareholder", this.editedData.shareholder || "");
+      if (this.editedData.status) formData.set("status", this.editedData.status || "");
+      if (this.editedData.type) formData.set("type", this.editedData.type || "");
+
+      let url, msg;
+      if (this.editedData.company_id) {
+        url = "/company/update";
+        msg = "updated";
+      } else {
+        url = "/company/create";
+        msg = "created";
+      }
 
       axios
-        .post("/company/update", formData)
+        .post(url, formData)
         .then(() => {
-          swal("Success", "Company successfully updated", "success");
+          swal("Success", `Company successfully ${msg}`, "success");
           this.getCompanyData();
         })
         .catch(err => {
@@ -334,6 +354,15 @@ export default {
     },
     addCustomer() {
       console.log(this.customerFile);
+    },
+    removeCustomer(customer) {
+      axios
+        .get(`/company/delete/${customer.company_id}`)
+        .then(() => {
+          swal("Success", `Company successfully deleted`, "success");
+          this.getCompanyData();
+        })
+        .catch(() => {});
     }
   },
   computed: {

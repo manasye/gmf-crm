@@ -1,16 +1,11 @@
 <template>
   <b-container fluid class="container-app" data-intro="Non Project New">
-    <Header title="NEW NON-PROJECT FEEDBACK" :breadcrumbs="breadcrumbs"></Header>
+    <Header title="NEW NON-PROJECT FEEDBACK" :breadcrumbs="breadcrumbs" />
     <div class="feedback-wrapper">
       <p class="mb-2">Subject</p>
-      <b-form-input v-model="subject"></b-form-input>
+      <b-form-input v-model="subject" />
       <p class="mb-2 mt-4">Rating</p>
-      <star-rating
-        v-model="rating"
-        :show-rating="false"
-        :star-size="35"
-        :increment="0.5"
-      ></star-rating>
+      <star-rating v-model="rating" :show-rating="true" :star-size="35" :increment="0.5" />
       <p
         class="performance-result mt-2 font-weight-bold"
         v-if="rating"
@@ -19,7 +14,7 @@
         {{ generateResultRating(rating)[0] }}
       </p>
       <p class="mb-2 mt-4">Description</p>
-      <b-form-textarea v-model="description" rows="3" max-rows="6"></b-form-textarea>
+      <b-form-textarea v-model="description" rows="3" max-rows="6" />
       <b-button variant="success" class="mt-4 mb-2" @click="submitProject">SUBMIT</b-button>
     </div>
   </b-container>

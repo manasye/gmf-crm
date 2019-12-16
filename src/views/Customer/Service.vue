@@ -77,11 +77,15 @@
       <b-row>
         <b-col cols="4"> <label class="mt-2">Name</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.name"></b-form-input>
+          <b-form-input v-model="editedData.name" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Detail</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-textarea v-model="editedData.detail" rows="3"></b-form-textarea>
+          <b-form-textarea v-model="editedData.detail" rows="3" />
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Permalink</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.permalink" rows="3" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Large Image</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -89,7 +93,7 @@
             accept="image/*"
             v-model="editedData.large_image"
             placeholder="Choose new image"
-          ></b-form-file>
+          />
         </b-col>
         <b-col cols="4"> <label class="mt-2">First Small Image</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -97,7 +101,7 @@
             accept="image/*"
             v-model="editedData.small_image1"
             placeholder="Choose new image"
-          ></b-form-file>
+          />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Second Small Image</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -105,7 +109,7 @@
             accept="image/*"
             v-model="editedData.small_image2"
             placeholder="Choose new image"
-          ></b-form-file> </b-col
+          /> </b-col
       ></b-row>
     </b-modal>
   </div>
@@ -155,6 +159,7 @@ export default {
         id: 1,
         name: "",
         detail: "",
+        permalink: "",
         large_image: "",
         small_image1: "",
         small_image2: ""
@@ -223,10 +228,6 @@ hr {
 }
 .service-card-wrapper {
   border-top: 1px dotted #95999c;
-  /*h1,*/
-  /*h2 {*/
-  /*  color: #13619a;*/
-  /*}*/
 }
 </style>
 

@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="CUSTOMER FEEDBACK" :breadcrumbs="breadcrumbs"></Header>
+    <Header title="CUSTOMER FEEDBACK" :breadcrumbs="breadcrumbs" />
     <div class="feedback-wrapper">
       <p>What service(s) did your company use for this project?</p>
       <b-form-checkbox-group @input="changeService">
@@ -25,11 +25,11 @@
             <h5 class="performance-title">{{ p.service }}</h5>
             <star-rating
               v-model="p.rating"
-              :show-rating="false"
+              :show-rating="true"
               class="performance-star"
               :star-size="35"
               :increment="0.5"
-            ></star-rating>
+            />
             <p
               class="performance-result mt-2 font-weight-bold"
               v-if="p.rating"
@@ -37,7 +37,7 @@
             >
               {{ generateResultRating(p.rating)[0] }}
             </p>
-            <p class="mt-4"></p>
+            <p class="mt-4" />
             <p>What aspect(s) do you think we could improve?</p>
             <b-form-checkbox-group>
               <b-form-checkbox
@@ -53,7 +53,7 @@
               </b-form-checkbox>
             </b-form-checkbox-group>
             <p class="mt-4">Remark / Other Comments</p>
-            <b-form-textarea v-model="p.remark" rows="3" max-rows="6"></b-form-textarea>
+            <b-form-textarea v-model="p.remark" rows="3" max-rows="6" />
           </div>
         </b-col>
       </b-row>
@@ -98,11 +98,15 @@ export default {
         }
       })
       .catch(() => {});
+
+    departments().then(res => {
+      this.services = res;
+    });
   },
   data() {
     return {
       breadcrumbs: [],
-      services: departments,
+      services: [],
       serviceSelected: null,
       improvements: [
         { name: "Product Quality", value: "Product Quality" },

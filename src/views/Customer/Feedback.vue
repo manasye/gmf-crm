@@ -1,21 +1,21 @@
 <template>
-  <b-container fluid class="container-app" data-intro="Complaint"
-    ><Header title="COMPLAINT LIST"></Header>
+  <b-container fluid class="container-app" data-intro="Complaint">
+    <Header title="COMPLAINT LIST" />
 
     <b-row class="mt-0 mt-md-4">
       <b-col cols="6" md="2">
-        <b-form-select v-model="selectVal.sender" :options="sendersOptions"></b-form-select>
+        <b-form-select v-model="selectVal.sender" :options="sendersOptions" />
       </b-col>
       <b-col cols="6" md="2">
-        <b-form-select v-model="selectVal.service" :options="deptOptions"></b-form-select>
+        <b-form-select v-model="selectVal.service" :options="deptOptions" />
       </b-col>
       <b-col cols="6" md="2" class="mt-3 mt-md-0 mb-3 mb-md-0">
-        <b-form-select v-model="selectVal.status" :options="statusOptions"></b-form-select>
+        <b-form-select v-model="selectVal.status" :options="statusOptions" />
       </b-col>
-      <b-col cols="0" md="1"></b-col>
+      <b-col cols="0" md="1" />
       <b-col cols="8" md="2" class="mt-2 text-md-right">Item per page</b-col>
       <b-col cols="4" md="1">
-        <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
+        <b-form-select v-model="perPage" :options="perPageOptions" />
       </b-col>
       <b-col cols="12" md="2" class="text-md-right mt-3 mt-md-0">
         <b-button variant="success" @click="$store.dispatch('goToPage', '/feedback-customer-new')"
@@ -43,7 +43,7 @@
       </template>
     </b-table>
 
-    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage"></b-pagination>
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" />
   </b-container>
 </template>
 
@@ -83,6 +83,16 @@ export default {
         })
         .catch(() => {});
     }
+
+    departments().then(res => {
+      this.deptOptions = [
+        {
+          value: null,
+          text: "All Services"
+        },
+        ...res
+      ];
+    });
   },
   data() {
     return {
@@ -97,8 +107,7 @@ export default {
         {
           value: null,
           text: "All Services"
-        },
-        ...departments
+        }
       ],
       statusOptions: statusComplaints,
       perPageOptions,
@@ -106,7 +115,7 @@ export default {
       currentPage: 1,
       selectVal: { sender: null, service: null, status: null },
       feedbackFields: [
-        { key: "complaint_id", label: "Id", sortable: true },
+        { key: "complaint_id", label: "Complaint Id", sortable: true },
         { key: "date", sortable: true },
         { key: "sender", sortable: true },
         { key: "service", sortable: true },
@@ -153,4 +162,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped />

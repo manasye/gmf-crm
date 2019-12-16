@@ -3,15 +3,15 @@
     <h5 style="font-weight: bold">FEEDBACK LIST</h5>
     <b-row class="mt-4">
       <b-col cols="6" md="2">
-        <b-form-select v-model="selectVal.sender" :options="sendersOptions"></b-form-select>
+        <b-form-select v-model="selectVal.sender" :options="sendersOptions" />
       </b-col>
       <b-col cols="6" md="2">
-        <b-form-select v-model="selectVal.project_type" :options="projectOptions"></b-form-select>
+        <b-form-select v-model="selectVal.project_type" :options="projectOptions" />
       </b-col>
-      <b-col cols="0" md="5"></b-col>
+      <b-col cols="0" md="5" />
       <b-col cols="8" md="2" class="mt-2 text-md-right">Per page</b-col>
       <b-col cols="4" md="1">
-        <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
+        <b-form-select v-model="perPage" :options="perPageOptions" />
       </b-col>
     </b-row>
 
@@ -31,20 +31,15 @@
         <star-rating
           :rating="+rate.value"
           read-only
-          :show-rating="false"
+          :show-rating="true"
           :star-size="25"
           :increment="0.5"
           v-if="rate.value"
-        ></star-rating>
+        />
       </template>
     </b-table>
 
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      align="right"
-    ></b-pagination>
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="right" />
   </div>
 </template>
 
@@ -69,6 +64,16 @@ export default {
           this.sendersOptions = this.sendersOptions.concat(senders);
         })
         .catch(() => {});
+
+      departments().then(res => {
+        this.projectOptions = [
+          {
+            value: null,
+            text: "All Project Type"
+          },
+          ...res
+        ];
+      });
     }
   },
 
@@ -85,7 +90,6 @@ export default {
           value: null,
           text: "All Project Types"
         },
-        ...departments
       ],
       statusOptions: [],
       perPageOptions,
@@ -134,4 +138,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped />

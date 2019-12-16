@@ -17,14 +17,15 @@
       <b-row align-v="center" class="row-login" @keyup.enter="login">
         <div class="r-container">
           <label for="username">Username</label>
-          <b-form-input id="username" v-model="username"></b-form-input>
+          <b-form-input id="username" v-model="username" @keyup.enter="login" />
           <label for="password" class="mt-4">Password</label>
           <b-form-input
             id="password"
             type="password"
             class="mb-4"
             v-model="password"
-          ></b-form-input>
+            @keyup.enter="login"
+          />
 
           <b-row>
             <b-col cols="12">
