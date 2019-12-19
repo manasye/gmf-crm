@@ -52,6 +52,15 @@
               @click="editService(service)"
               >Edit</b-button
             >
+            <br />
+            <b-button
+              variant="danger"
+              size="sm"
+              class="mt-3"
+              v-if="isAdmin()"
+              @click="removeService(service)"
+              >Delete</b-button
+            >
           </b-carousel-slide>
         </b-carousel>
       </b-col>
@@ -117,6 +126,7 @@
 
 <script>
 import axios from "axios";
+import swal from "sweetalert";
 
 export default {
   mounted() {
@@ -141,19 +151,7 @@ export default {
   },
   data() {
     return {
-      services: [
-        {
-          created_at: "2019-11-11 20:09:10",
-          detail:
-            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. ",
-          large_image: "serviceimage/cC7ljgbFGrZfZYzZK2YWzMgWMikmBM697UrJ7WKA.jpeg",
-          name: "Engineering Service",
-          service_id: 5,
-          small_image1: "serviceimage/s38uRN76MnAg41m8hgi1IwlvEpXmPBJq0NMam3TP.jpeg",
-          small_image2: "serviceimage/sNiSwphCMdXWElBatoB5oCHSd7HdyhvZgBQkG5yn.jpeg",
-          updated_at: "2019-11-13 06:41:25"
-        }
-      ],
+      services: [],
       showModal: false,
       editedData: {
         id: 1,
@@ -179,6 +177,7 @@ export default {
       let formData = new FormData();
       formData.set("name", this.editedData.name);
       formData.set("detail", this.editedData.detail);
+      formData.set("permalink", this.editedData.permalink);
       if (this.editedData.large_image instanceof File)
         formData.set("large_image", this.editedData.large_image);
       if (this.editedData.small_image1 instanceof File)
@@ -188,7 +187,7 @@ export default {
       formData.set("id", this.editedData.service_id);
       axios
         .post(url, formData)
-        .then(res => {
+        .then(() => {
           this.getServices();
         })
         .catch(err => {
@@ -200,6 +199,15 @@ export default {
         .get("/service/read")
         .then(res => {
           this.services = res.data.data;
+        })
+        .catch(() => {});
+    },
+    removeService(service) {
+      axios
+        .get(`/service/delete/${service.service_id}`)
+        .then(() => {
+          swal("Success", "Service successfully deleted", "success");
+          this.getServices();
         })
         .catch(() => {});
     }

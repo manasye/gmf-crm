@@ -5,7 +5,7 @@
         <img src="../assets/img/logo-white.png" alt class="logo-img" />
       </b-navbar-brand>
 
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-navbar-toggle target="nav-collapse" />
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
@@ -20,6 +20,7 @@
             >
               <font-awesome-icon :icon="nav.icon" />
               {{ nav.name }}
+              <!--              <p v-if="nav.notif">1</p>-->
             </b-nav-item>
 
             <b-nav-item-dropdown
@@ -46,7 +47,7 @@
 
         <b-navbar-nav class="ml-auto nav-search">
           <b-nav-form>
-            <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
+            <b-form-input size="sm" class="mr-sm-2" placeholder="Search" />
           </b-nav-form>
 
           <b-nav-item v-if="getRole() === 'Customer'">
@@ -112,7 +113,7 @@
                   icon="pen"
                   style="cursor: pointer; margin-bottom: 16px"
                   @click="showImgModal = true"
-                ></font-awesome-icon>
+                />
               </div>
               <img
                 :src="
@@ -161,11 +162,7 @@
       <b-row>
         <b-col cols="4"> <label class="mt-2">User Image</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-file
-            v-model="userImage"
-            placeholder="Choose new image"
-            accept="image/*"
-          ></b-form-file>
+          <b-form-file v-model="userImage" placeholder="Choose new image" accept="image/*" />
         </b-col> </b-row
     ></b-modal>
   </div>
@@ -191,7 +188,8 @@ export default {
         {
           name: "Information",
           route: "/#/information-customer",
-          icon: "info-circle"
+          icon: "info-circle",
+          notif: true
         },
         { name: "Profile", route: "/#/profile-customer", icon: "users" },
         { name: "GMF Services", route: "/#/services", icon: "tools" },

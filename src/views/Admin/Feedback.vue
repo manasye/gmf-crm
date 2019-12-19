@@ -3,7 +3,7 @@
     <Header title="Feedback List" />
     <b-row>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.company" :options="companyOptions" />
+        <b-form-select v-model="selectVal.company_name" :options="companyOptions" />
       </b-col>
       <b-col cols="2">
         <b-form-select v-model="selectVal.sender" :options="senderOptions" />
@@ -96,13 +96,13 @@ export default {
       selectVal: {
         project_type: null,
         sender: null,
-        company: null
+        company_name: null
       },
       projectOptions: [
         {
           value: null,
           text: "All Project Types"
-        },
+        }
       ],
       senderOptions: [
         {

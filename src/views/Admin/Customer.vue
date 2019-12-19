@@ -15,7 +15,7 @@
       <b-col cols="2"> <b-form-select v-model="selectVal.status" :options="statusOptions"/></b-col>
       <b-col cols="1" class="mt-2 text-right">Per page</b-col>
       <b-col cols="1"> <b-form-select v-model="perPage" :options="perPageOptions"/></b-col>
-      <b-col cols="6" />
+      <b-col cols="4" />
       <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
         ><b-button variant="success" style="width: 100%">Customer Form</b-button></b-col
       >
@@ -25,8 +25,13 @@
         ></b-col
       >
       <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
-        ><b-button variant="success" @click="showModalStatus = true"
+        ><b-button variant="success" @click="showModalStatus = true" style="width: 100%"
           >Add New Customer</b-button
+        ></b-col
+      >
+      <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
+        ><b-button variant="success" @click="showModalAdmin = true" style="width: 100%"
+          >Add Admin / Guest</b-button
         ></b-col
       >
     </b-row>
@@ -148,6 +153,44 @@
         </b-col>
       </b-row>
     </b-modal>
+
+    <b-modal
+      v-model="showModalAdmin"
+      centered
+      @ok="postAdmin"
+      title="Add Admin"
+      v-if="showModalAdmin"
+    >
+      <b-row>
+        <b-col cols="4"> <label class="mt-2">Name</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedDataAdmin.name" />
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Image</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-file
+            accept="image/*"
+            v-model="editedDataAdmin.image"
+            placeholder="Choose new image"
+          />
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Position</label></b-col>
+        <b-col cols="8" class="mb-3"> <b-form-input v-model="editedDataAdmin.position" /> </b-col
+        ><b-col cols="4"> <label class="mt-2">Division</label></b-col>
+        <b-col cols="8" class="mb-3"> <b-form-input v-model="editedDataAdmin.division" /> </b-col
+        ><b-col cols="4"> <label class="mt-2">Username</label></b-col>
+        <b-col cols="8" class="mb-3"> <b-form-input v-model="editedDataAdmin.username" /> </b-col
+        ><b-col cols="4"> <label class="mt-2">Password</label></b-col>
+        <b-col cols="8" class="mb-3"> <b-form-input v-model="editedDataAdmin.password" /> </b-col>
+        <b-col cols="4"> <label class="mt-2">Role</label></b-col>
+        <b-col cols="8" class="mb-3"> <b-form-input v-model="editedDataAdmin.role" /> </b-col>
+        <b-col cols="4"> <label class="mt-2">Status</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-select
+            v-model="editedDataAdmin.status"
+            :options="statusOptions"
+          /> </b-col></b-row
+    ></b-modal>
   </b-container>
 </template>
 
@@ -202,7 +245,7 @@ export default {
       statusOptions: [
         {
           value: null,
-          text: "All status"
+          text: "All Status"
         },
         {
           value: "Active",
@@ -224,12 +267,21 @@ export default {
         business_model: null,
         status: null
       },
+      editedDataAdmin: {
+        name: "",
+        position: "",
+        division: "",
+        username: "",
+        password: "",
+        role: "",
+        status: ""
+      },
       editedData: {
         image: "",
         name: "",
         region: "",
         country: "",
-        company_role: "",
+        company_role: "Customer",
         business_model: "",
         status: "",
         est_date: 0,
@@ -259,6 +311,7 @@ export default {
       ],
       showModalStatus: false,
       showModalAdd: false,
+      showModalAdmin: false,
       customerFile: null
     };
   },
@@ -361,6 +414,14 @@ export default {
         .then(() => {
           swal("Success", `Company successfully deleted`, "success");
           this.getCompanyData();
+        })
+        .catch(() => {});
+    },
+    postAdmin() {
+      axios
+        .post("/user/create", this.editedDataAdmin)
+        .then(() => {
+          swal("Success", `Account successfully created`, "success");
         })
         .catch(() => {});
     }

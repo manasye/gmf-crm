@@ -152,7 +152,7 @@ export default {
         { key: "start", label: "Est Start Date", sortable: true },
         { key: "finish", label: "Est Finish Date", sortable: true },
         { key: "project_type", sortable: true },
-        { key: "status", label: "Status" },
+        { key: "status", label: "Status", sortable: true },
         { key: "quantity", label: "Qty", sortable: true },
         { key: "rating", label: "Rating", sortable: true }
       ],

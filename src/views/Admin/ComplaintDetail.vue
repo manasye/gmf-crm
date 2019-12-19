@@ -43,17 +43,16 @@
         </p>
       </div>
       <div class="file mt-4 mb-4" v-if="complaintDetail.file">
-        <!--        <p v-for="i in 1">-->
         <font-awesome-icon icon="link" />
         <a :href="getBaseStorage() + complaintDetail.file">
           {{ complaintDetail.file_name || "File" }}
           <br />
         </a>
-        <!--        </p>-->
       </div>
       <div class="comments mb-3 mb-md-0" v-for="r in replies" :key="r.reply_complaint_id">
         <h5>
-          <b-badge pill variant="primary">{{ r.sender }}</b-badge>
+          <b-badge pill variant="success" v-if="r.sender_role === 'Admin'">Administrator</b-badge>
+          <b-badge pill variant="primary" v-else>{{ r.sender }}</b-badge>
         </h5>
         <p>
           {{ r.description }}

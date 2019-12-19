@@ -42,7 +42,7 @@
       </div>
       <p class="font-weight-bold mt-4 mb-1">Remark</p>
       <p class="mb-0">
-        {{ details.remark }}
+        {{ details.remark || "-" }}
       </p>
     </div>
   </b-container>

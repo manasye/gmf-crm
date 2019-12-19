@@ -4,13 +4,13 @@
 
     <b-row>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.company" :options="companyOptions" />
+        <b-form-select v-model="selectVal.company_name" :options="companyOptions" />
       </b-col>
       <b-col cols="2">
         <b-form-select v-model="selectVal.sender" :options="senderOptions" />
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.department" :options="deptOptions" />
+        <b-form-select v-model="selectVal.service" :options="deptOptions" />
       </b-col>
       <b-col cols="2">
         <b-form-select v-model="selectVal.status" :options="statusOptions" />
@@ -79,7 +79,7 @@ export default {
       this.deptOptions = [
         {
           value: null,
-          text: "All Departments"
+          text: "All Services"
         },
         ...res
       ];
@@ -90,8 +90,8 @@ export default {
       selectVal: {
         status: null,
         sender: null,
-        company: null,
-        department: null
+        company_name: null,
+        service: null
       },
       statusOptions: statusComplaints,
       senderOptions: [

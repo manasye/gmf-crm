@@ -7,7 +7,7 @@
         <b-form-select v-model="selectVal.company_name" :options="companyOptions" />
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.project_type" :options="projectOptions" />
+        <b-form-select v-model="selectVal.project_type" :options="projectDropdown" />
       </b-col>
       <b-col cols="2">
         <b-form-select v-model="selectVal.status" :options="statusOptions" />
@@ -106,11 +106,11 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Start Date</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.start" placeholder="YYYY-MM-DD" />
+          <datepicker v-model="editedData.start" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Finish Date</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.finish" placeholder="YYYY-MM-DD" />
+          <datepicker v-model="editedData.finish" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Project Type</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -150,6 +150,8 @@ import StarRating from "vue-star-rating";
 import { perPageOptions, departments, statusProjects } from "@/utility/globalVar.js";
 import axios from "axios";
 import swal from "sweetalert";
+import moment from "moment";
+import Datepicker from "vuejs-datepicker";
 
 export default {
   mounted() {
@@ -157,6 +159,13 @@ export default {
 
     departments().then(res => {
       this.projectOptions = res;
+      this.projectDropdown = [
+        {
+          value: null,
+          text: "All Project Types"
+        },
+        ...res
+      ];
     });
   },
   data() {
@@ -167,12 +176,7 @@ export default {
         company_name: null
       },
       statusOptions: statusProjects,
-      projectOptions: [
-        {
-          value: null,
-          text: "All Project Types"
-        }
-      ],
+      projectOptions: [],
       companyOptions: [
         {
           value: null,
@@ -199,10 +203,11 @@ export default {
       newMode: true,
       showModalHistory: false,
       projectChosen: null,
+      projectDropdown: [],
       histories: [{ date: "a", rating: "1" }]
     };
   },
-  components: { StarRating },
+  components: { StarRating, Datepicker },
   computed: {
     rows() {
       return this.projects.length;
@@ -238,8 +243,13 @@ export default {
       const data = this.editedData;
 
       axios
-        .post(url, data)
-        .then(res => {
+        .post(url, {
+          ...data,
+          start: moment(this.editedData.start).format("YYYY-MM-DD"),
+          finish: moment(this.editedData.finish).format("YYYY-MM-DD"),
+          rating: +this.editedData.rating
+        })
+        .then(() => {
           this.getData();
         })
         .catch(err => {
@@ -277,6 +287,9 @@ export default {
     viewHistory(rate) {
       this.projectChosen = rate.item;
       this.showModalHistory = true;
+    },
+    moment: function() {
+      return moment();
     }
   }
 };

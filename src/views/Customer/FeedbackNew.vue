@@ -78,7 +78,7 @@ export default {
         }
       ],
       subject: null,
-      services: [],
+      services: [{ value: null, name: "Loading...", text: "Loading..." }],
       serviceSelected: null,
       description: null,
       files: null,

@@ -137,7 +137,7 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Birthday</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.birthday" />
+          <datepicker v-model="editedData.birthday" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Email</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -189,6 +189,8 @@
 import axios from "axios";
 import swal from "sweetalert";
 import { religions } from "@/utility/globalVar.js";
+import Datepicker from "vuejs-datepicker";
+import moment from "moment";
 
 const initialUser = {
   name: "",
@@ -227,6 +229,11 @@ export default {
       this.getUser();
       this.getCp();
     }
+
+    delete religions[0];
+  },
+  components: {
+    Datepicker
   },
   data() {
     return {
@@ -250,10 +257,6 @@ export default {
       showModalUser: false,
       statusOptions: [
         {
-          value: null,
-          text: "Select status"
-        },
-        {
           value: "Active",
           text: "Active"
         },
@@ -273,6 +276,9 @@ export default {
     };
   },
   methods: {
+    moment: function() {
+      return moment();
+    },
     displayPass(pass, showPass) {
       if (!showPass) {
         return "*".repeat(pass.length);
@@ -296,7 +302,12 @@ export default {
       this.newUserMode = false;
     },
     removePerson(person) {
-      console.log(person);
+      axios
+        .get(`/user/delete/${person.user_id}`)
+        .then(() => {
+          this.getUser();
+        })
+        .catch(() => {});
     },
     editCp(cp) {
       this.editedCp = cp;
@@ -304,7 +315,12 @@ export default {
       this.newCpMode = false;
     },
     removeCp(cp) {
-      console.log(cp);
+      axios
+        .get(`/cp/delete/${cp.gmf_cp_id}`)
+        .then(() => {
+          this.getCp();
+        })
+        .catch(() => {});
     },
     getUser() {
       axios
@@ -350,9 +366,11 @@ export default {
         id: this.editedData.user_id,
         password: this.editedData.pass_raw,
         role: "Customer",
-        company_id: this.$route.params.id
+        company_id: this.$route.params.id,
+        birthday: moment(this.editedData.birthday).format("YYYY-MM-DD")
       };
       delete data.image;
+      delete data.pass_raw;
 
       axios
         .post(url, data)
