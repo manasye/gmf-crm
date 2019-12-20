@@ -27,7 +27,8 @@ import {
   faEyeSlash,
   faCalendar,
   faTrash,
-  faPlusCircle
+  faPlusCircle,
+  faCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
@@ -65,6 +66,7 @@ library.add(faEyeSlash);
 library.add(faCalendar);
 library.add(faTrash);
 library.add(faPlusCircle);
+library.add(faCircle);
 
 axios.defaults.baseURL = "http://172.16.40.180:8080/api";
 axios.defaults.withCredentials = true;

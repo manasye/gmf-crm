@@ -91,6 +91,11 @@ export default {
         })
         .catch(() => {});
     }
+
+    axios
+      .get(`/information/readinformation/${localStorage.getItem("user_customer_id")}`)
+      .then(() => {})
+      .catch(() => {});
   },
   data() {
     return {

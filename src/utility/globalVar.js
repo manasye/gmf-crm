@@ -73,7 +73,7 @@ export const statusProjects = [
     text: "Closed"
   },
   {
-    value: "Ongoing",
+    value: "On Going",
     text: "Ongoing"
   }
 ];

@@ -20,7 +20,8 @@
             >
               <font-awesome-icon :icon="nav.icon" />
               {{ nav.name }}
-              <!--              <p v-if="nav.notif">1</p>-->
+
+              <font-awesome-icon icon="circle" v-if="nav.notif" size="xs" />
             </b-nav-item>
 
             <b-nav-item-dropdown
@@ -173,6 +174,7 @@ import Datepicker from "vuejs-datepicker";
 import axios from "axios";
 import moment from "moment";
 import swal from "sweetalert";
+import { isAdmin } from "../utility/func";
 
 export default {
   mounted() {
@@ -189,7 +191,7 @@ export default {
           name: "Information",
           route: "/#/information-customer",
           icon: "info-circle",
-          notif: true
+          notif: false
         },
         { name: "Profile", route: "/#/profile-customer", icon: "users" },
         { name: "GMF Services", route: "/#/services", icon: "tools" },
@@ -257,6 +259,16 @@ export default {
         };
       })
       .catch(() => {});
+
+    if (!isAdmin()) {
+      this.getNotif();
+      this.notifInterval = setInterval(() => {
+        this.getNotif();
+      }, 5000);
+    }
+  },
+  beforeDestroy() {
+    clearInterval(this.notifInterval);
   },
   data() {
     return {
@@ -271,7 +283,8 @@ export default {
       eventSelected: [],
       completed: false,
       firstTime: true,
-      userImage: null
+      userImage: null,
+      notifInterval: null
     };
   },
   methods: {
@@ -344,6 +357,18 @@ export default {
           swal("Success", "Image updated", "success").then(() => {
             window.location.reload();
           });
+        })
+        .catch(() => {});
+    },
+    getNotif() {
+      axios
+        .get(`/customer/edit/${localStorage.getItem("user_customer_id")}`)
+        .then(res => {
+          const newInfo = res.data.data[0].new_info;
+          console.log(this.navItems);
+          if (newInfo > 0) {
+            this.navItems[1].notif = true;
+          }
         })
         .catch(() => {});
     }
