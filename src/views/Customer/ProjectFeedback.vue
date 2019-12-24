@@ -133,10 +133,13 @@ export default {
         .post("/feedbackproject/create", {
           user_id: this.getUserId(),
           project_id: this.$route.params.id,
-          service: feedbacks
+          service: feedbacks,
+          list_feedback_project_id: `${this.$route.query.list_id}`
         })
         .then(() => {
-          swal("Success", "Feedback submitted successfully", "success");
+          swal("Success", "Feedback submitted successfully", "success").then(() =>
+            this.$store.dispatch("goToPage", "/project-customer")
+          );
         })
         .catch(err => {
           swal("Error", err.response.data.message, "error");

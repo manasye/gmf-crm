@@ -124,7 +124,7 @@ export default {
         { key: "date", sortable: true },
         { key: "company_name", sortable: true },
         { key: "sender", sortable: true },
-        { key: "project_type", sortable: true },
+        { key: "project_type", label: "Project Type", sortable: true },
         { key: "remark", label: "Subject", sortable: true },
         { key: "rating", sortable: true }
       ],

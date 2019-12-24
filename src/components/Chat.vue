@@ -32,31 +32,21 @@ import OpenIcon from "vue-beautiful-chat/src/assets/logo-no-bg.svg";
 import FileIcon from "vue-beautiful-chat/src/assets/file.svg";
 import CloseIconSvg from "vue-beautiful-chat/src/assets/close.svg";
 import axios from "axios";
+
 const TIME_FETCH_INTERVAL = 5000;
 
 export default {
   mounted() {
     this.getChats();
     this.chatInterval = setInterval(this.getChats, TIME_FETCH_INTERVAL);
-
-    // setTimeout(() => {
-    //   const images = document.getElementsByClassName("sc-image") || [];
-    //
-    //   for (let i = 0; i < images.length; i++) {
-    //     images[i].onerror = () => {
-    //       console.log(images[i]);
-    //       images[i].style.display = "none";
-    //     };
-    //   }
-    // }, TIME_FETCH_INTERVAL);
   },
   beforeDestroy() {
     clearInterval(this.chatInterval);
-    clearInterval(this.imageInterval);
   },
   name: "Chat",
   data() {
     return {
+      timeInterval: 5000,
       chatInterval: null,
       imageInterval: null,
       icons: {

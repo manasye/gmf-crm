@@ -22,10 +22,11 @@
             backgroundImage: `url(${p.url})`
           }"
           :key="p.url"
+          @click="explore(p.permalink)"
         >
           <div class="preview-text-ads" v-if="p.type === 'birthday'">
             <h2>Happy Birthday</h2>
-            <h4>Customer Name</h4>
+            <h4>{{ getUsername() }}</h4>
             <p>Wishing you a wonderful birthday and a year filled with success</p>
           </div>
         </div>
@@ -53,14 +54,30 @@ export default {
               const data = res.data;
               let popups = [];
               if (data.popup_birthday) {
-                popups.push({ url: this.getBaseStorage() + data.popup_birthday, type: "birthday" });
+                data.popup_birthday.map(a => {
+                  popups.push({
+                    url: this.getBaseStorage() + a.image,
+                    type: "birthday",
+                    permalink: a.permalink
+                  });
+                });
               }
               if (data.popup_holiday) {
-                popups.push({ url: this.getBaseStorage() + data.popup_holiday, type: "holiday" });
+                data.popup_holiday.map(a => {
+                  popups.push({
+                    url: this.getBaseStorage() + a.image,
+                    type: "holiday",
+                    permalink: a.permalink
+                  });
+                });
               }
               if (data.popup_ads) {
                 data.popup_ads.map(a => {
-                  popups.push({ url: this.getBaseStorage() + a, type: "ads" });
+                  popups.push({
+                    url: this.getBaseStorage() + a.image,
+                    type: "ads",
+                    permalink: a.permalink
+                  });
                 });
               }
 
@@ -99,7 +116,11 @@ export default {
       return this.$route.name || "";
     }
   },
-  methods: {}
+  methods: {
+    explore(link) {
+      if (link) window.location = link;
+    }
+  }
 };
 </script>
 

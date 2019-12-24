@@ -1,10 +1,10 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Holiday Card List"></Header>
+    <Header title="Holiday Card List" />
 
     <b-row>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.religion" :options="religionOptions"></b-form-select>
+        <b-form-select v-model="selectVal.religion" :options="religionOptions" />
       </b-col>
       <b-col cols="4">
         <b-button variant="success" @click="showModal = true">Add New Holiday Card</b-button>
@@ -15,9 +15,11 @@
             <p class="mt-2">Number of items per page</p>
           </b-col>
           <b-col cols="2">
-            <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
-          </b-col> </b-row></b-col
-    ></b-row>
+            <b-form-select v-model="perPage" :options="perPageOptions" />
+          </b-col>
+        </b-row>
+      </b-col>
+    </b-row>
 
     <b-table
       style="margin-top: 20px;"
@@ -40,42 +42,32 @@
       >
     </b-table>
 
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      align="right"
-    ></b-pagination>
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="right" />
 
-    <b-modal centered v-model="showModal" @ok="addCard">
+    <b-modal centered v-model="showModal" @ok="addCard" title="Add Holiday Card">
       <b-row>
         <b-col cols="4"> <label class="mt-2">Subject</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.subject"></b-form-input>
+          <b-form-input v-model="editedData.subject" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Image</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-file
-            v-model="editedData.image"
-            placeholder="Enter image"
-            accept="image/*"
-          ></b-form-file>
+          <b-form-file v-model="editedData.image" placeholder="Enter image" accept="image/*" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Date</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.date" placeholder="YYYY-MM-DD"></b-form-input>
+          <datepicker v-model="editedData.date" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Religion</label></b-col>
         <b-col cols="8" class="mb-3">
           <b-form-select
             v-model="editedData.religion"
-            :options="religionOptions.slice(1, religionOptions.length - 1)"
+            :options="religionOptions.slice(1, religionOptions.length)"
             placeholder="Select religion"
-          ></b-form-select>
+          />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Permalink</label></b-col>
-        <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.permalink"></b-form-input> </b-col
+        <b-col cols="8" class="mb-3"> <b-form-input v-model="editedData.permalink" /> </b-col
       ></b-row>
     </b-modal>
   </b-container>
@@ -85,6 +77,8 @@
 import { perPageOptions, religions } from "@/utility/globalVar.js";
 import axios from "axios";
 import swal from "sweetalert";
+import Datepicker from "vuejs-datepicker";
+import moment from "moment";
 
 export default {
   mounted() {
@@ -118,6 +112,9 @@ export default {
     };
   },
   methods: {
+    moment: function() {
+      return moment();
+    },
     showCard(row) {
       this.$store.dispatch("goToPage", `/information-holiday-card/${row.religion_card_id}`);
     },
@@ -126,7 +123,7 @@ export default {
       const data = this.editedData;
       formData.set("subject", data.subject);
       formData.set("image", data.image);
-      formData.set("date", data.date);
+      formData.set("date", moment(data.date).format("YYYY-MM-DD"));
       formData.set("religion", data.religion);
       formData.set("permalink", data.permalink);
 
@@ -165,8 +162,11 @@ export default {
     fieldKeys() {
       return Object.keys(this.cards[0]);
     }
+  },
+  components: {
+    Datepicker
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped />

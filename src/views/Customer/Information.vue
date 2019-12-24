@@ -1,13 +1,13 @@
 <template>
   <b-container fluid class="container-app" data-intro="Infor">
-    <Header title="INFORMATION LIST"></Header>
+    <Header title="INFORMATION LIST" />
 
     <b-row>
       <b-col cols="6" md="2" class="mt-2">
         <p>Items per page</p>
       </b-col>
       <b-col cols="6" md="1">
-        <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
+        <b-form-select v-model="perPage" :options="perPageOptions" />
       </b-col>
     </b-row>
 
@@ -36,7 +36,28 @@
             <tr v-if="!info.plus" :key="idx">
               <td colspan="12">
                 <div class="detail-info-image">
-                  <img :src="getBaseStorage() + info.image" alt />
+                  <img
+                    :src="getBaseStorage() + info.image"
+                    alt
+                    v-if="info.category !== 'Birthday Card'"
+                    @click="explore(info.permalink)"
+                  />
+                  <div
+                    :style="{
+                      backgroundImage: `url(${getBaseStorage() + info.image})`
+                    }"
+                    class="info-birthday"
+                    v-else
+                    @click="explore(info.permalink)"
+                  >
+                    <div class="info-birthday-text">
+                      <h2>Happy Birthday</h2>
+                      <h4>{{ getUsername() }}</h4>
+                      <p style="word-break: break-all; white-space: normal;">
+                        Wishing you a wonderful birthday and a year filled with success
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </td>
             </tr>
@@ -45,7 +66,7 @@
       </table>
     </div>
 
-    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage"></b-pagination>
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" />
   </b-container>
 </template>
 
@@ -104,7 +125,7 @@ export default {
       perPageOptions,
       currentPage: 1,
       informationFields: ["Category", "Subject", "Date", ""],
-      infos: Array(10).fill(initialInfo),
+      infos: Array(3).fill(initialInfo),
       completed: false
     };
   },
@@ -119,6 +140,9 @@ export default {
     paginate(array, page_size, page_number) {
       --page_number;
       return array.slice(page_number * page_size, (page_number + 1) * page_size);
+    },
+    explore(link) {
+      if (link) window.location = link;
     }
   },
   filters: {
@@ -147,6 +171,16 @@ export default {
 }
 .detail-info-image {
   padding: 0 22vw;
+}
+.info-birthday {
+  position: relative;
+  min-height: 50vh;
+  background-size: cover;
+}
+.info-birthday-text {
+  text-align: center;
+  padding-top: 10vh;
+  color: white;
 }
 @media (max-width: 700px) {
   .detail-info-image {

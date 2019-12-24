@@ -42,7 +42,9 @@
               }}
             </h1>
             <h2>{{ service.name.split(" ")[service.name.split(" ").length - 1] }}</h2>
-            <b-button variant="primary" size="sm" class="mt-4">Explore</b-button>
+            <b-button variant="primary" size="sm" class="mt-4" @click="explore(service.permalink)"
+              >Explore</b-button
+            >
             <br />
             <b-button
               variant="success"
@@ -210,6 +212,9 @@ export default {
           this.getServices();
         })
         .catch(() => {});
+    },
+    explore(link) {
+      if (link) window.location = link;
     }
   }
 };

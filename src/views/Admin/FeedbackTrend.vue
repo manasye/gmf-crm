@@ -152,7 +152,7 @@ export default {
     },
     postFilter(data) {
       axios
-        .post("/complaint/filter", data)
+        .post("/feedbackproject/filter", data)
         .then(res => {
           const data = res.data.trend;
           let keys = [],

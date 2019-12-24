@@ -25,8 +25,16 @@
         ></b-col
       >
       <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
-        ><b-button variant="success" @click="showModalStatus = true" style="width: 100%"
-          >Add New Customer</b-button
+        ><b-button
+          variant="success"
+          @click="
+            () => {
+              editedData = {};
+              showModalStatus = true;
+            }
+          "
+          style="width: 100%"
+          >Add New Company</b-button
         ></b-col
       >
       <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
@@ -87,7 +95,7 @@
       v-model="showModalStatus"
       centered
       @ok="changeStatus"
-      title="Edit Company"
+      title="Manage Company"
       v-if="showModalStatus"
     >
       <b-row>
@@ -107,7 +115,7 @@
         <b-col cols="8" class="mb-3">
           <b-form-input v-model="editedData.country" />
         </b-col>
-        <b-col cols="4"> <label class="mt-2">Role</label></b-col>
+        <b-col cols="4"> <label class="mt-2">Company Role</label></b-col>
         <b-col cols="8" class="mb-3">
           <b-form-input v-model="editedData.company_role" />
         </b-col>
@@ -183,7 +191,9 @@
         ><b-col cols="4"> <label class="mt-2">Password</label></b-col>
         <b-col cols="8" class="mb-3"> <b-form-input v-model="editedDataAdmin.password" /> </b-col>
         <b-col cols="4"> <label class="mt-2">Role</label></b-col>
-        <b-col cols="8" class="mb-3"> <b-form-input v-model="editedDataAdmin.role" /> </b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-select v-model="editedDataAdmin.role" :options="rlOptions" />
+        </b-col>
         <b-col cols="4"> <label class="mt-2">Status</label></b-col>
         <b-col cols="8" class="mb-3">
           <b-form-select
@@ -273,7 +283,7 @@ export default {
         division: "",
         username: "",
         password: "",
-        role: "",
+        role: "Admin",
         status: ""
       },
       editedData: {
@@ -312,7 +322,21 @@ export default {
       showModalStatus: false,
       showModalAdd: false,
       showModalAdmin: false,
-      customerFile: null
+      customerFile: null,
+      rlOptions: [
+        {
+          value: "Admin",
+          text: "Admin"
+        },
+        {
+          value: "Guest",
+          text: "Guest"
+        },
+        {
+          value: "Customer",
+          text: "Customer"
+        }
+      ]
     };
   },
   methods: {

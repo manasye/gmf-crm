@@ -72,6 +72,9 @@
           class="ml-3"
           @click.stop="removeProject(data.item)"
       /></template>
+      <template v-slot:cell(quantity)="data">
+        {{ data.item.done }}/{{ data.item.quantity }}
+      </template>
     </b-table>
 
     <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="right" />
@@ -85,7 +88,7 @@
     >
       <p class="mb-2">{{ projectChosen.project_type }}</p>
       <p class="mb-4">Location &nbsp;&nbsp;&nbsp;&nbsp;{{ projectChosen.location }}</p>
-      <b-table show-empty striped hover :items="histories">
+      <b-table show-empty striped hover :items="histories" :fields="historyField">
         <template v-slot:cell(rating)="rate">
           <star-rating
             :rating="+rate.value"
@@ -93,14 +96,16 @@
             :show-rating="true"
             :star-size="25"
             :increment="0.5"
+            v-if="rate.value"
           />
+          <p class="mb-0" v-else>Not yet rated</p>
         </template>
       </b-table>
     </b-modal>
 
     <b-modal v-model="showModal" centered title="Manage Project" @ok="postProject">
       <b-row>
-        <b-col cols="4"> <label class="mt-2">Name</label></b-col>
+        <b-col cols="4"> <label class="mt-2">Project Name</label></b-col>
         <b-col cols="8" class="mb-3">
           <b-form-input v-model="editedData.name" />
         </b-col>
@@ -126,7 +131,7 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Company Name</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.company_name" />
+          <b-form-select v-model="editedData.company_name" :options="allCompanies" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Location</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -167,6 +172,18 @@ export default {
         ...res
       ];
     });
+
+    axios
+      .get("/company/read")
+      .then(res => {
+        let companies = [];
+        const data = res.data.data;
+        data.map(c => {
+          companies.push({ value: c.name, text: c.name });
+        });
+        this.allCompanies = companies;
+      })
+      .catch(() => {});
   },
   data() {
     return {
@@ -193,7 +210,7 @@ export default {
         { key: "finish", label: "Est Finish Date", sortable: true },
         { key: "project_type", sortable: true },
         { key: "status", sortable: true },
-        { key: "quantity", sortable: true },
+        { key: "quantity", label: "Qty", sortable: true },
         { key: "rating", sortable: true },
         { key: "edit", label: "Edit" }
       ],
@@ -204,7 +221,9 @@ export default {
       showModalHistory: false,
       projectChosen: null,
       projectDropdown: [],
-      histories: [{ date: "a", rating: "1" }]
+      histories: [],
+      allCompanies: [],
+      historyField: ["date", "rating"]
     };
   },
   components: { StarRating, Datepicker },
@@ -285,8 +304,14 @@ export default {
         .catch(() => {});
     },
     viewHistory(rate) {
-      this.projectChosen = rate.item;
-      this.showModalHistory = true;
+      axios
+        .get(`/feedbackproject/list/${rate.item.project_id}`)
+        .then(res => {
+          this.histories = res.data.data;
+          this.projectChosen = rate.item;
+          this.showModalHistory = true;
+        })
+        .catch(() => {});
     },
     moment: function() {
       return moment();

@@ -48,7 +48,13 @@
 
         <b-navbar-nav class="ml-auto nav-search">
           <b-nav-form>
-            <b-form-input size="sm" class="mr-sm-2" placeholder="Search" />
+            <b-form-input
+              size="sm"
+              class="mr-sm-2"
+              placeholder="Search"
+              @keyup.enter="search"
+              v-model="searchQuery"
+            />
           </b-nav-form>
 
           <b-nav-item v-if="getRole() === 'Customer'">
@@ -178,6 +184,14 @@ import { isAdmin } from "../utility/func";
 
 export default {
   mounted() {
+    setTimeout(
+      () =>
+        document.getElementsByClassName("navbar-item")[1].addEventListener("click", () => {
+          this.navItems[1].notif = false;
+        }),
+      1000
+    );
+
     this.$refs.userdropdown.$emit("show");
 
     if (this.getRole() === "Customer") {
@@ -264,7 +278,7 @@ export default {
       this.getNotif();
       this.notifInterval = setInterval(() => {
         this.getNotif();
-      }, 5000);
+      }, 15000);
     }
   },
   beforeDestroy() {
@@ -272,6 +286,7 @@ export default {
   },
   data() {
     return {
+      searchQuery: null,
       showModal: false,
       showImgModal: false,
       navItems: null,
@@ -365,12 +380,14 @@ export default {
         .get(`/customer/edit/${localStorage.getItem("user_customer_id")}`)
         .then(res => {
           const newInfo = res.data.data[0].new_info;
-          console.log(this.navItems);
           if (newInfo > 0) {
             this.navItems[1].notif = true;
           }
         })
         .catch(() => {});
+    },
+    search() {
+      this.$store.dispatch("goToPage", `/search/${this.searchQuery}`);
     }
   },
   computed: {

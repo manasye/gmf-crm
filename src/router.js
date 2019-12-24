@@ -118,6 +118,15 @@ export default new Router({
           "./views/Customer/NonProjectFeedbackDetail.vue"
         )
     },
+    {
+      path: "/search/:query",
+      name: "search query",
+      component: () =>
+        import(
+          /* webpackChunkName: "search-query" */
+          "./views/Search.vue"
+          )
+    },
 
     // Admin Routes
     {

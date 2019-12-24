@@ -44,6 +44,9 @@
           {{ data.value }}
         </b-button>
       </template>
+      <template v-slot:cell(quantity)="data">
+        {{ data.item.done }}/{{ data.item.quantity }}
+      </template>
       <template v-slot:cell(rating)="rate">
         <div @click.stop="viewHistory(rate)" v-if="rate.value && !isNaN(+rate.value)">
           <star-rating
@@ -59,7 +62,12 @@
           variant="primary"
           size="sm"
           v-else
-          @click="$store.dispatch('goToPage', `/project-customer/${rate.item.project_id}/feedback`)"
+          @click="
+            $store.dispatch(
+              'goToPage',
+              `/project-customer/${rate.item.project_id}/feedback?list_id=1`
+            )
+          "
           >Review</b-button
         >
       </template>
@@ -76,7 +84,7 @@
     >
       <p class="mb-2">{{ projectChosen.project_type }}</p>
       <p class="mb-4">Location &nbsp;&nbsp;&nbsp;&nbsp;{{ projectChosen.location }}</p>
-      <b-table show-empty striped hover :items="histories">
+      <b-table show-empty striped hover :items="histories" :fields="historyField">
         <template v-slot:cell(rating)="rate">
           <star-rating
             :rating="+rate.value"
@@ -84,7 +92,20 @@
             :show-rating="true"
             :star-size="25"
             :increment="0.5"
+            v-if="+rate.value"
           />
+          <b-button
+            variant="primary"
+            size="sm"
+            v-else
+            @click="
+              $store.dispatch(
+                'goToPage',
+                `/project-customer/${rate.item.project_id}/feedback?list_id=${rate.item.list_feedback_project_id}`
+              )
+            "
+            >Review</b-button
+          >
         </template>
       </b-table>
     </b-modal>
@@ -156,6 +177,7 @@ export default {
         { key: "quantity", label: "Qty", sortable: true },
         { key: "rating", label: "Rating", sortable: true }
       ],
+      historyField: ["date", "rating"],
       histories: [{ date: "a", rating: "1" }],
       projects: [],
       showModalHistory: false,
@@ -187,8 +209,14 @@ export default {
       this.$store.dispatch("goToPage", `/project-customer/${row.project_id}`);
     },
     viewHistory(rate) {
-      this.projectChosen = rate.item;
-      this.showModalHistory = true;
+      axios
+        .get(`/feedbackproject/list/${rate.item.project_id}`)
+        .then(res => {
+          this.histories = res.data.data;
+          this.projectChosen = rate.item;
+          this.showModalHistory = true;
+        })
+        .catch(() => {});
     }
   }
 };

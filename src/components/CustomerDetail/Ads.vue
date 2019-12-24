@@ -46,17 +46,9 @@
           >Add to active ads</b-button
         >
         &nbsp;&nbsp;
-        <font-awesome-icon
-          style="cursor: pointer;"
-          icon="pen"
-          @click="editAd(data.item)"
-        ></font-awesome-icon>
+        <font-awesome-icon style="cursor: pointer;" icon="pen" @click="editAd(data.item)" />
         &nbsp;&nbsp;
-        <font-awesome-icon
-          style="cursor: pointer;"
-          icon="trash"
-          @click="removeAd(data.item)"
-        ></font-awesome-icon>
+        <font-awesome-icon style="cursor: pointer;" icon="trash" @click="removeAd(data.item)" />
       </template>
     </b-table>
 
@@ -64,19 +56,19 @@
       <b-row>
         <b-col cols="4"> <label class="mt-2">Subject</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.subject"></b-form-input>
+          <b-form-input v-model="editedData.subject" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Image</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-file
-            v-model="editedData.image"
-            placeholder="Choose new image"
-            accept="image/*"
-          ></b-form-file>
+          <b-form-file v-model="editedData.image" placeholder="Choose new image" accept="image/*" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Permalink</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.permalink"></b-form-input>
+          <b-form-input v-model="editedData.permalink" />
+        </b-col>
+        <b-col cols="4"> <label class="mt-2">Ads Interval (in minutes)</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.ads_interval" type="number" />
         </b-col>
       </b-row>
     </b-modal>
@@ -145,11 +137,14 @@ export default {
     submitAd() {
       let formData = new FormData();
       formData.set("subject", this.editedData.subject);
-      formData.set("image", this.editedData.image);
+      if (this.editedData.image instanceof File) formData.set("image", this.editedData.image);
       formData.set("permalink", this.editedData.permalink);
+      formData.set("ads_interval", this.editedData.ads_interval);
+      if (this.editedData.ads_id) formData.set("ads_id", this.editedData.ads_id);
 
+      const url = this.editedData.ads_id ? "/ads/update" : "/ads/create";
       axios
-        .post("/ads/create", formData)
+        .post(url, formData)
         .then(() => {
           this.getAdList();
         })

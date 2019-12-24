@@ -58,8 +58,8 @@ export const religions = [
     text: "Sikhism"
   },
   {
-    value: "Other",
-    text: "Other"
+    value: "Universal",
+    text: "Universal"
   }
 ];
 
