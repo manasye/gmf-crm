@@ -184,6 +184,10 @@ export default {
         this.allCompanies = companies;
       })
       .catch(() => {});
+
+    if (!this.isAdmin()) {
+      this.projectFields.pop();
+    }
   },
   data() {
     return {

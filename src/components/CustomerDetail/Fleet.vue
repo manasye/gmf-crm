@@ -33,6 +33,13 @@
               class="mr-3"
               @click.stop="editFleet(data.item)"
             />
+            <font-awesome-icon
+              v-if="getRole() === 'Admin'"
+              icon="trash"
+              style="cursor: pointer"
+              class="mr-3"
+              @click.stop="removeFleet(data.item)"
+            />
           </template>
           <template v-slot:cell(maint_provider)="data">
             {{ data.value === "null" ? "" : data.value }}
@@ -80,6 +87,7 @@ import swal from "sweetalert";
 export default {
   mounted() {
     this.getFleet();
+    if (!this.isAdmin()) this.itemField.pop();
   },
   data() {
     return {
@@ -179,7 +187,8 @@ export default {
           this.getFleet();
         })
         .catch(() => {});
-    }
+    },
+    removeFleet(fleet) {}
   }
 };
 </script>

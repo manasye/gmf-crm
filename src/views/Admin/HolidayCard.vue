@@ -40,6 +40,14 @@
       <template v-slot:cell(permalink)="data"
         ><a :href="data.value">{{ data.value }}</a></template
       >
+
+      <template v-slot:cell(edit)="data">
+        <font-awesome-icon
+          v-if="getRole() === 'Admin'"
+          icon="trash"
+          style="cursor: pointer"
+          @click.stop="removeCard(data.item)"
+      /></template>
     </b-table>
 
     <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="right" />
@@ -83,6 +91,7 @@ import moment from "moment";
 export default {
   mounted() {
     this.getCards();
+    if (!this.isAdmin()) this.cardField.pop();
   },
   data() {
     return {
@@ -98,7 +107,8 @@ export default {
         { key: "image", sortable: true, class: "w-25" },
         { key: "religion", sortable: true },
         { key: "date", sortable: true },
-        { key: "permalink", sortable: true }
+        { key: "permalink", sortable: true },
+        "edit"
       ],
       cards: [],
       showModal: false,
@@ -143,6 +153,12 @@ export default {
         .then(res => {
           this.cards = res.data.data;
         })
+        .catch(() => {});
+    },
+    removeCard(card) {
+      axios
+        .get(`/religion/delete/${card.religion_card_id}`)
+        .then(() => this.getCards())
         .catch(() => {});
     }
   },
