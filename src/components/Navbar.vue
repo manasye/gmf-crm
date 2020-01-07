@@ -46,15 +46,9 @@
           </div>
         </b-navbar-nav>
 
-        <b-navbar-nav class="ml-auto nav-search">
-          <b-nav-form>
-            <b-form-input
-              size="sm"
-              class="mr-sm-2"
-              placeholder="Search"
-              @keyup.enter="search"
-              v-model="searchQuery"
-            />
+        <b-navbar-nav class="ml-auto">
+          <b-nav-form @submit.prevent="searchPage">
+            <b-form-input size="sm" class="mr-sm-2" placeholder="Search" v-model="searchQuery" />
           </b-nav-form>
 
           <b-nav-item v-if="getRole() === 'Customer'">
@@ -386,7 +380,9 @@ export default {
         })
         .catch(() => {});
     },
-    search() {
+    searchPage() {
+      console.log("search");
+      // window.location.href = `/search/${this.searchQuery}`;
       this.$store.dispatch("goToPage", `/search/${this.searchQuery}`);
     }
   },

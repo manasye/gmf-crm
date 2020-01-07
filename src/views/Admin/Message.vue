@@ -75,7 +75,9 @@
                   <p class="mb-0 ml-3" style="color: #949699">aa</p></b-col
                 >
                 <b-col cols="2" style="text-align: right; margin-top: 10px"
-                  ><b-button variant="danger" size="sm">CLOSE THREAD</b-button></b-col
+                  ><b-button variant="danger" size="sm" @click="closeThread"
+                    >CLOSE THREAD</b-button
+                  ></b-col
                 >
               </b-row>
             </b-col>
@@ -161,6 +163,7 @@
 import swal from "sweetalert";
 import axios from "axios";
 import moment from "moment";
+
 const TIME_FETCH_INTERVAL = 5000;
 
 export default {
@@ -259,6 +262,15 @@ export default {
         .get(`/messages/read/${this.activeChatId}/${this.getUserId()}`)
         .then(() => {
           this.activeChat.unread = 0;
+        })
+        .catch(() => {});
+    },
+    closeThread() {
+      axios
+        .get(`/messages/close/${this.activeChatId}`)
+        .then(() => {
+          swal("Success", `Thread successfully closed`, "success");
+          this.getChats();
         })
         .catch(() => {});
     },

@@ -6,10 +6,6 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: "/",
-      redirect: "/login"
-    },
-    {
       path: "/login",
       name: "login",
       component: () => import(/* webpackChunkName: "login" */ "./views/Login.vue")
@@ -125,7 +121,7 @@ export default new Router({
         import(
           /* webpackChunkName: "search-query" */
           "./views/Search.vue"
-          )
+        )
     },
 
     // Admin Routes

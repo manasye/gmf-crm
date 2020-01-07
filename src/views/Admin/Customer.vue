@@ -17,7 +17,9 @@
       <b-col cols="1"> <b-form-select v-model="perPage" :options="perPageOptions"/></b-col>
       <b-col cols="4" />
       <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
-        ><b-button variant="success" style="width: 100%">Customer Form</b-button></b-col
+        ><b-button variant="success" style="width: 100%" @click="downloadForm"
+          >Customer Form</b-button
+        ></b-col
       >
       <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
         ><b-button variant="success" @click="showModalAdd = true" style="width: 100%"
@@ -430,7 +432,14 @@ export default {
         .catch(() => {});
     },
     addCustomer() {
-      console.log(this.customerFile);
+      let form = new FormData();
+      form.set("file", this.customerFile);
+      axios
+        .post("/company/import", form)
+        .then(() => {
+          swal("Success", `Company added`, "success");
+        })
+        .catch(() => {});
     },
     removeCustomer(customer) {
       axios
@@ -447,6 +456,12 @@ export default {
         .then(() => {
           swal("Success", `Account successfully created`, "success");
         })
+        .catch(() => {});
+    },
+    downloadForm() {
+      axios
+        .get("/company/export")
+        .then(() => {})
         .catch(() => {});
     }
   },
