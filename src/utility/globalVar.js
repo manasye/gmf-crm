@@ -1,5 +1,5 @@
 import axios from "axios";
-axios.defaults.baseURL = "http://172.16.40.180:8080/api";
+axios.defaults.baseURL = "http://172.16.41.180:8080/api";
 axios.defaults.withCredentials = true;
 
 export const perPageOptions = [
