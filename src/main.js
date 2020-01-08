@@ -68,7 +68,7 @@ library.add(faTrash);
 library.add(faPlusCircle);
 library.add(faCircle);
 
-axios.defaults.baseURL = "http://172.16.40.180:8080/api";
+axios.defaults.baseURL = "http://172.16.41.180:8080/api";
 axios.defaults.withCredentials = true;
 
 Vue.mixin({
