@@ -5,33 +5,6 @@
     </div>
     <router-view />
     <chat v-if="getRole() === 'Customer'" />
-
-    <b-modal
-      centered
-      v-model="showModalAds"
-      hide-footer
-      hide-header
-      body-class="modal-no-padding"
-      v-if="popups.length > 0"
-    >
-      <slick ref="slick" :options="slickOptions">
-        <div
-          class="preview-popup"
-          v-for="p in popups"
-          :style="{
-            backgroundImage: `url(${p.url})`
-          }"
-          :key="p.url"
-          @click="explore(p.permalink)"
-        >
-          <div class="preview-text-ads" v-if="p.type === 'birthday'">
-            <h2>Happy Birthday</h2>
-            <h4>{{ getUsername() }}</h4>
-            <p>Wishing you a wonderful birthday and a year filled with success</p>
-          </div>
-        </div>
-      </slick>
-    </b-modal>
   </div>
 </template>
 
@@ -39,86 +12,22 @@
 import Navbar from "@/components/Navbar.vue";
 import Chat from "@/components/Chat.vue";
 import axios from "axios";
-import Slick from "vue-slick";
 
 export default {
   name: "app",
   mounted() {
-    axios
-      .get("/login")
-      .then(() => {
-        if (!this.isAdmin() && this.$store.getters.firstTime) {
-          axios
-            .get(`/popup/read/${this.getUserId()}`)
-            .then(res => {
-              const data = res.data;
-              let popups = [];
-              if (data.popup_birthday) {
-                data.popup_birthday.map(a => {
-                  popups.push({
-                    url: this.getBaseStorage() + a.image,
-                    type: "birthday",
-                    permalink: a.permalink
-                  });
-                });
-              }
-              if (data.popup_holiday) {
-                data.popup_holiday.map(a => {
-                  popups.push({
-                    url: this.getBaseStorage() + a.image,
-                    type: "holiday",
-                    permalink: a.permalink
-                  });
-                });
-              }
-              if (data.popup_ads) {
-                data.popup_ads.map(a => {
-                  popups.push({
-                    url: this.getBaseStorage() + a.image,
-                    type: "ads",
-                    permalink: a.permalink
-                  });
-                });
-              }
 
-              this.popups = popups;
-              this.showModalAds = true;
-              this.$store.commit("changeFirstTime", false);
-            })
-            .catch(() => {});
-        }
-      })
-      .catch(err => {
-        if (!err.response.data.auth) {
-          this.$store.dispatch("goToPage", "/login");
-          localStorage.removeItem("role");
-        }
-      });
   },
   data() {
-    return {
-      popups: [],
-      showModalAds: false,
-      slickOptions: {
-        slidesToShow: 1,
-        infinite: false,
-        arrows: true
-      }
-    };
+    return {};
   },
   components: {
     Navbar,
-    Chat,
-    Slick
+    Chat
   },
   computed: {
     activeRoute() {
       return this.$route.name || "";
-    }
-  },
-  methods: {
-    explore(link) {
-      if (link) window.location = link;
     }
   }
 };
