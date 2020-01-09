@@ -145,7 +145,7 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Customer Role</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.customer_role" />
+          <b-form-select v-model="editedData.customer_role" :options="custRoleOptions" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Username</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -237,6 +237,16 @@ export default {
   },
   data() {
     return {
+      custRoleOptions: [
+        {
+          value: "Key Person",
+          text: "Key Person"
+        },
+        {
+          value: "Tech",
+          text: "Tech"
+        }
+      ],
       details: { company: "Garuda" },
       personField: [
         "name",

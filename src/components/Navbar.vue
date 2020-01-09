@@ -381,9 +381,7 @@ export default {
         .catch(() => {});
     },
     searchPage() {
-      console.log("search");
-      // window.location.href = `/search/${this.searchQuery}`;
-      this.$store.dispatch("goToPage", `/search/${this.searchQuery}`);
+      if (this.searchQuery) this.$store.dispatch("goToPage", `/search/${this.searchQuery}`);
     }
   },
   computed: {
