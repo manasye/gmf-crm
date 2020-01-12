@@ -147,7 +147,7 @@ export default {
       return this.complaints.filter(item => {
         let keep = true;
         this.fieldKeys.forEach(key => {
-          keep = keep && (!this.selectVal[key] || item[key] === this.selectVal[key]);
+          keep = keep && (!this.selectVal[key] || item[key].includes(this.selectVal[key]));
         });
         return keep;
       });
