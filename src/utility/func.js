@@ -42,5 +42,5 @@ export const getUserImage = () => {
 };
 
 export const getBaseStorage = () => {
-  return "http://172.16.40.180:8080/storage/";
+  return "http://172.16.41.180:8080/storage/";
 };

@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header :title="`Search Result - ${this.$route.params.query}`" />
+    <Header :title="`Search Result - '${this.$route.params.query}'`" />
     <h5 v-if="project.length > 0">Project</h5>
     <b-table
       v-if="project.length > 0"
@@ -112,6 +112,21 @@
       @row-clicked="showCustomer"
       show-empty
     />
+
+    <h5
+      v-if="
+        project.length === 0 &&
+          name.length === 0 &&
+          username.length === 0 &&
+          service.length === 0 &&
+          complaint.length === 0 &&
+          feedback.length === 0 &&
+          holiday.length === 0 &&
+          customer.length === 0
+      "
+    >
+      No Result Found
+    </h5>
   </b-container>
 </template>
 

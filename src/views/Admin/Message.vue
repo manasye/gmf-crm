@@ -244,7 +244,7 @@ export default {
           .catch(() => {});
     },
     sendNewMessage() {
-      if (this.chat)
+      if (this.editedData.message)
         axios
           .post("/messages/send", {
             user_id: this.getUserId(),

@@ -15,8 +15,15 @@
       <b-col cols="2"> <b-form-select v-model="selectVal.status" :options="statusOptions"/></b-col>
       <b-col cols="1" class="mt-2 text-right">Per page</b-col>
       <b-col cols="1"> <b-form-select v-model="perPage" :options="perPageOptions"/></b-col>
-      <b-col cols="4" />
       <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
+        ><b-button variant="success" style="width: 100%" @click="showModalCust = true"
+          >Add Cust Type</b-button
+        ></b-col
+      ><b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
+        ><b-button variant="success" style="width: 100%" @click="showModalAlliance = true"
+          >Add Alliance</b-button
+        ></b-col
+      ><b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
         ><b-button variant="success" style="width: 100%" @click="downloadForm"
           >Customer Form</b-button
         ></b-col
@@ -81,6 +88,32 @@
     <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" />
 
     <b-modal
+      v-model="showModalCust"
+      centered
+      title="Add Customer Type"
+      v-if="showModalCust"
+      @ok="addCustomerType"
+    >
+      <b-row>
+        <b-col cols="4"> <label class="mt-2">Customer Type</label></b-col>
+        <b-col cols="8" class="mb-3"> <b-form-input v-model="customerType" /> </b-col
+      ></b-row>
+    </b-modal>
+
+    <b-modal
+      v-model="showModalAlliance"
+      centered
+      title="Add Alliance"
+      v-if="showModalAlliance"
+      @ok="addAlliance"
+    >
+      <b-row>
+        <b-col cols="4"> <label class="mt-2">Alliance</label></b-col>
+        <b-col cols="8" class="mb-3"> <b-form-input v-model="alliance" /> </b-col
+      ></b-row>
+    </b-modal>
+
+    <b-modal
       v-model="showModalAdd"
       centered
       title="Add Customer"
@@ -135,7 +168,7 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Customer Type</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.customer_type" />
+          <b-form-select v-model="editedData.customer_type" :options="custTypeOptions" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Shareholder</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -143,7 +176,7 @@
         </b-col>
         <b-col cols="4"> <label class="mt-2">Alliance</label></b-col>
         <b-col cols="8" class="mb-3">
-          <b-form-input v-model="editedData.alliance" />
+          <b-form-select v-model="editedData.alliance" :options="allianceOptions" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">MRO</label></b-col>
         <b-col cols="8" class="mb-3">
@@ -226,6 +259,9 @@ export default {
     if (!this.$store.getters.walkthrough) {
       this.getCompanyData();
     }
+
+    this.getAllianceOptions();
+    this.getCustTypeOptions();
   },
 
   data() {
@@ -324,7 +360,11 @@ export default {
       showModalStatus: false,
       showModalAdd: false,
       showModalAdmin: false,
+      showModalCust: false,
+      showModalAlliance: false,
       customerFile: null,
+      customerType: null,
+      alliance: null,
       rlOptions: [
         {
           value: "Admin",
@@ -338,7 +378,9 @@ export default {
           value: "Customer",
           text: "Customer"
         }
-      ]
+      ],
+      allianceOptions: [],
+      custTypeOptions: []
     };
   },
   methods: {
@@ -462,6 +504,46 @@ export default {
       axios
         .get("/company/export")
         .then(() => {})
+        .catch(() => {});
+    },
+    addCustomerType() {
+      axios
+        .post("/ctype/create", { name: this.customerType })
+        .then(() => {
+          this.getCustTypeOptions();
+        })
+        .catch(() => {});
+    },
+    addAlliance() {
+      axios
+        .post("/alliance/create", { name: this.alliance })
+        .then(() => {
+          this.getAllianceOptions();
+        })
+        .catch(() => {});
+    },
+    getAllianceOptions() {
+      axios
+        .get("/alliance/read")
+        .then(res => {
+          let alliances = [];
+          res.data.data.map(a => {
+            alliances.push({ value: a.name, text: a.name });
+          });
+          this.allianceOptions = alliances;
+        })
+        .catch(() => {});
+    },
+    getCustTypeOptions() {
+      axios
+        .get("/ctype/read")
+        .then(res => {
+          let ctypes = [];
+          res.data.data.map(c => {
+            ctypes.push({ value: c.name, text: c.name });
+          });
+          this.custTypeOptions = ctypes;
+        })
         .catch(() => {});
     }
   },
