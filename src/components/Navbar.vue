@@ -220,7 +220,8 @@ export default {
                   popups.push({
                     url: this.getBaseStorage() + a.image,
                     type: "birthday",
-                    permalink: a.permalink
+                    permalink: a.permalink,
+                    interval: a.interval
                   });
                 });
               }
@@ -229,7 +230,8 @@ export default {
                   popups.push({
                     url: this.getBaseStorage() + a.image,
                     type: "holiday",
-                    permalink: a.permalink
+                    permalink: a.permalink,
+                    interval: a.interval
                   });
                 });
               }
@@ -238,14 +240,21 @@ export default {
                   popups.push({
                     url: this.getBaseStorage() + a.image,
                     type: "ads",
-                    permalink: a.permalink
+                    permalink: a.permalink,
+                    interval: a.interval
                   });
                 });
               }
 
+              popups.map(p => {
+                setInterval(() => {
+                  this.popups = [p];
+                  this.showModalAds = true;
+                }, p.interval * 60 * 1000);
+              });
+
               this.popups = popups;
               this.showModalAds = true;
-              this.$store.commit("changeFirstTime", false);
             })
             .catch(() => {});
         }
