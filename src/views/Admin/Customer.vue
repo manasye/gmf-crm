@@ -501,10 +501,7 @@ export default {
         .catch(() => {});
     },
     downloadForm() {
-      axios
-        .get("/company/export")
-        .then(() => {})
-        .catch(() => {});
+      window.location = axios.defaults.baseURL + "/company/export";
     },
     addCustomerType() {
       axios

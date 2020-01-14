@@ -89,7 +89,7 @@ export default {
         {
           value: null,
           text: "All Project Types"
-        },
+        }
       ],
       statusOptions: [],
       perPageOptions,

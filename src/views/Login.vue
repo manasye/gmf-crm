@@ -73,7 +73,11 @@ export default {
   },
   methods: {
     login() {
-      const dataLogin = { username: this.username, password: this.password };
+      const dataLogin = {
+        username: this.username,
+        password: this.password,
+        remember_me: this.remember ? 1 : 0
+      };
 
       axios
         .post("/auth", dataLogin)

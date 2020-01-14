@@ -17,6 +17,7 @@
       <template v-slot:cell(permalink)="data">
         <a :href="data.value">{{ data.value }}</a>
       </template>
+      <template v-slot:cell(ads_interval)="data"> {{ data.value }} min(s) </template>
       <template v-slot:cell(action)="data">
         <b-button size="sm" variant="success" @click="removeFromActive(data.item)" v-if="isAdmin()"
           >Remove from active ads</b-button
@@ -41,6 +42,7 @@
       <template v-slot:cell(permalink)="data">
         <a :href="data.value">{{ data.value }}</a>
       </template>
+      <template v-slot:cell(ads_interval)="data"> {{ data.value }} min(s) </template>
       <template v-slot:cell(action)="data">
         <b-button size="sm" variant="success" @click="addToActive(data.item)" v-if="isAdmin()"
           >Add to active ads</b-button

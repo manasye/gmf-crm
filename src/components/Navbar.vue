@@ -21,7 +21,7 @@
               <font-awesome-icon :icon="nav.icon" />
               {{ nav.name }}
 
-              <font-awesome-icon icon="circle" v-if="nav.notif" size="xs" />
+              <font-awesome-icon icon="circle" v-if="nav.notif" size="xs" class="blinker-notif" />
             </b-nav-item>
 
             <b-nav-item-dropdown
@@ -35,6 +35,7 @@
               <template v-slot:button-content>
                 <font-awesome-icon :icon="nav.icon" />
                 {{ nav.name }}
+                <font-awesome-icon icon="circle" v-if="nav.notif" size="xs" class="blinker-notif" />
               </template>
               <b-dropdown-item
                 v-for="children in nav.childrens"
@@ -248,8 +249,10 @@ export default {
 
               popups.map(p => {
                 setInterval(() => {
-                  this.popups = [p];
-                  this.showModalAds = true;
+                  if (!this.showModalAds) {
+                    this.popups = [p];
+                    this.showModalAds = true;
+                  }
                 }, p.interval * 60 * 1000);
               });
 
@@ -311,11 +314,12 @@ export default {
       this.navItems = [
         { name: "Customer", route: "/#/customer", icon: "users" },
         { name: "Project", route: "/#/project", icon: "tasks" },
-        { name: "Message", route: "/#/messages", icon: "comment-dots" },
+        { name: "Message", route: "/#/messages", icon: "comment-dots", notif: false },
         {
           name: "Complaint",
           route: "/#/complaint-list",
           icon: "comment-slash",
+          notif: true,
           childrens: [
             { name: "Complaint List", route: "/#/complaint-list" },
             { name: "Complaint Trend", route: "/#/complaint-trend" }
@@ -325,6 +329,7 @@ export default {
           name: "Feedback",
           route: "/#/feedback",
           icon: "retweet",
+          notif: false,
           childrens: [
             { name: "Feedback List", route: "/#/feedback-list" },
             { name: "Feedback Trend", route: "/#/feedback-trend" }
@@ -361,6 +366,11 @@ export default {
       this.notifInterval = setInterval(() => {
         this.getNotif();
       }, 15000);
+    } else {
+      this.getAdminNotif();
+      this.notifInterval = setInterval(() => {
+        this.getAdminNotif();
+      }, 5000);
     }
   },
   beforeDestroy() {
@@ -478,6 +488,17 @@ export default {
         })
         .catch(() => {});
     },
+    getAdminNotif() {
+      axios
+        .get(`/admin/read/${this.getUserId()}`)
+        .then(res => {
+          const data = res.data.data[0];
+          this.navItems[2].notif = data.not_read_msg > 0;
+          this.navItems[3].notif = data.not_read_complaint > 0;
+          this.navItems[4].notif = data.not_read_feedback > 0;
+        })
+        .catch(() => {});
+    },
     searchPage() {
       if (this.searchQuery) this.$store.dispatch("goToPage", `/search/${this.searchQuery}`);
     }
@@ -525,6 +546,9 @@ export default {
 .info-event {
   overflow-y: auto;
   height: 250px;
+}
+.blinker-notif {
+  max-width: 7px;
 }
 </style>
 

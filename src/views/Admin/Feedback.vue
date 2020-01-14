@@ -90,6 +90,11 @@ export default {
         ...res
       ];
     });
+
+    axios
+      .get("/admin/readfeedback")
+      .then(() => {})
+      .catch(() => {});
   },
   data() {
     return {

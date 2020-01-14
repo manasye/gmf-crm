@@ -15,9 +15,7 @@ import axios from "axios";
 
 export default {
   name: "app",
-  mounted() {
-
-  },
+  mounted() {},
   data() {
     return {};
   },

@@ -84,6 +84,11 @@ export default {
         ...res
       ];
     });
+
+    axios
+      .get("/admin/readcomplaint")
+      .then(() => {})
+      .catch(() => {});
   },
   data() {
     return {
