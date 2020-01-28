@@ -129,13 +129,15 @@ export default {
         aspect_to_improve: p.aspect_to_improve.join(",")
       }));
 
+      const data = {
+        user_id: this.getUserId(),
+        project_id: this.$route.params.id,
+        service: feedbacks,
+        list_feedback_project_id: `${this.$route.query.list_id}`
+      };
+
       axios
-        .post("/feedbackproject/create", {
-          user_id: this.getUserId(),
-          project_id: this.$route.params.id,
-          service: feedbacks,
-          list_feedback_project_id: `${this.$route.query.list_id}`
-        })
+        .post("/feedbackproject/create", data)
         .then(() => {
           swal("Success", "Feedback submitted successfully", "success").then(() =>
             this.$store.dispatch("goToPage", "/project-customer")

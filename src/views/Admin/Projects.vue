@@ -55,7 +55,7 @@
             :show-rating="true"
             :star-size="25"
             :increment="0.5"
-            v-if="!isNaN(+rate.value)"
+            v-if="!isNaN(+rate.value) && rate.item.done > 0"
           />
         </div>
       </template>

@@ -48,7 +48,10 @@
         {{ data.item.done }}/{{ data.item.quantity }}
       </template>
       <template v-slot:cell(rating)="rate">
-        <div @click.stop="viewHistory(rate)" v-if="rate.value && !isNaN(+rate.value)">
+        <div
+          @click.stop="viewHistory(rate)"
+          v-if="rate.value && !isNaN(+rate.value) && rate.item.done > 0"
+        >
           <star-rating
             :rating="+rate.value"
             read-only
@@ -58,18 +61,7 @@
           />
         </div>
 
-        <b-button
-          variant="primary"
-          size="sm"
-          v-else
-          @click="
-            $store.dispatch(
-              'goToPage',
-              `/project-customer/${rate.item.project_id}/feedback?list_id=1`
-            )
-          "
-          >Review</b-button
-        >
+        <b-button variant="primary" size="sm" v-else @click="reviewProject(rate)">Review</b-button>
       </template>
     </b-table>
 
@@ -217,6 +209,13 @@ export default {
           this.showModalHistory = true;
         })
         .catch(() => {});
+    },
+    reviewProject(item) {
+      if (item.item.quantity > 1) {
+        this.viewHistory(item);
+      } else {
+        this.$store.dispatch("goToPage", `/project-customer/${item.item.project_id}/feedback`);
+      }
     }
   }
 };
