@@ -5,7 +5,7 @@
       <b-row>
         <b-col
           cols="4"
-          md="2"
+          :md="name === 'location' || name === 'type' ? 1 : 2"
           v-for="(value, name, i) in header"
           class="mb-md-0"
           :class="{ 'mb-3': i === 1 }"
@@ -21,18 +21,18 @@
         <b-col cols="12" md="6" class="mb-4">
           <p class="font-weight-bold">JOB CARD STATUS</p>
           <div class="chart-wrapper">
-            <doughnut :chart-data="chartData" :options="options"></doughnut>
+            <doughnut :chart-data="jobChartData" :options="options"></doughnut>
           </div>
         </b-col>
         <b-col cols="12" md="6" class="mb-4">
           <p class="font-weight-bold">MDR STATUS</p>
           <div class="chart-wrapper">
-            <doughnut :chart-data="chartData" :options="options"></doughnut>
+            <doughnut :chart-data="mdrChartData" :options="options"></doughnut>
           </div>
         </b-col>
-        <b-col cols="12" md="6" class="mb-4">
-          <p class="font-weight-bold">MRM STATUS</p>
-        </b-col>
+        <!--        <b-col cols="12" md="6" class="mb-4">-->
+        <!--          <p class="font-weight-bold">MRM STATUS</p>-->
+        <!--        </b-col>-->
       </b-row>
     </div>
   </b-container>
@@ -86,11 +86,42 @@ export default {
           ];
           this.header = {
             company: data.company_name,
+            "A/C Reg": data.ac_reg,
             est_start_date: data.start,
             est_finish_date: data.finish,
             location: data.location,
-            quantity: data.quantity,
+            type: data.type,
             project_type: data.project_type
+          };
+          const job = [
+            data.jobcard_open || 0,
+            data.jobcard_pending || 0,
+            data.jobcard_progress || 0,
+            data.jobcard_closed || 0
+          ];
+          const mdr = [
+            data.mdr_open || 0,
+            data.mdr_pending || 0,
+            data.mdr_progress || 0,
+            data.mdr_closed || 0
+          ];
+          this.jobChartData = {
+            ...this.jobChartData,
+            datasets: [
+              {
+                ...this.jobChartData.datasets[0],
+                data: job
+              }
+            ]
+          };
+          this.mdrChartData = {
+            ...this.mdrChartData,
+            datasets: [
+              {
+                ...this.mdrChartData.datasets[0],
+                data: mdr
+              }
+            ]
           };
         })
         .catch(() => {});
@@ -100,18 +131,28 @@ export default {
     return {
       breadcrumbs: [],
       options,
-      chartData: {
-        labels: ["skill1"],
+      jobChartData: {
+        labels: ["Open", "Pending", "Progress", "Closed"],
         datasets: [
           {
-            backgroundColor: ["#000"],
-            data: [1]
+            backgroundColor: ["#FF0000", "#FFA500", "#13619A", "#00ff00"],
+            data: [0, 0, 0, 0]
+          }
+        ]
+      },
+      mdrChartData: {
+        labels: ["Open", "Pending", "Progress", "Closed"],
+        datasets: [
+          {
+            backgroundColor: ["#FF0000", "#FFA500", "#13619A", "#00ff00"],
+            data: [0, 0, 0, 0]
           }
         ]
       },
       title: "",
       header: {
         company: "",
+        "A/C Reg": "",
         est_start_date: "",
         est_finish_date: "",
         location: "",
