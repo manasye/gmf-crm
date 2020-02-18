@@ -74,7 +74,7 @@ export const statusProjects = [
   },
   {
     value: "On Going",
-    text: "Ongoing"
+    text: "On Going"
   }
 ];
 
@@ -92,8 +92,8 @@ export const statusComplaints = [
     text: "Receive"
   },
   {
-    value: "Onprogress",
-    text: "Onprogress"
+    value: "On Progress",
+    text: "On Progress"
   },
   {
     value: "Closed",

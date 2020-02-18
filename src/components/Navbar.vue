@@ -247,17 +247,28 @@ export default {
                 });
               }
 
-              popups.map(p => {
-                setInterval(() => {
-                  if (!this.showModalAds) {
+              popups.map((p, idx) => {
+                const key = "_timeInMs_" + (idx + 1);
+                const timeInMs = localStorage.getItem(key);
+                if (!timeInMs) {
+                  if (idx === 0) {
                     this.popups = [p];
                     this.showModalAds = true;
                   }
-                }, p.interval * 60 * 1000);
+                  this.setupInterval(
+                    () => {
+                      if (!this.showModalAds) {
+                        this.popups = [p];
+                        this.showModalAds = true;
+                      }
+                    },
+                    p.interval * 60 * 1000,
+                    idx + 1
+                  );
+                }
               });
 
               this.popups = popups;
-              this.showModalAds = true;
             })
             .catch(() => {});
         }
@@ -350,7 +361,6 @@ export default {
     }
 
     const now = new Date();
-
     axios
       .get(`/calendar/${now.getMonth() + 1}/${now.getFullYear()}`)
       .then(res => {
@@ -433,6 +443,9 @@ export default {
         .then(() => {
           localStorage.removeItem("role");
           this.$store.dispatch("goToPage", "/login");
+          this.popups.map((p, idx) => {
+            localStorage.removeItem("_timeInMs_" + (idx + 1));
+          });
         })
         .catch(() => {});
     },
@@ -466,7 +479,6 @@ export default {
       let form = new FormData();
       form.append("id", this.getUserId());
       form.append("image", this.userImage);
-
       axios
         .post("/user/update", form)
         .then(res => {
@@ -501,6 +513,30 @@ export default {
     },
     searchPage() {
       if (this.searchQuery) this.$store.dispatch("goToPage", `/search/${this.searchQuery}`);
+    },
+    setupInterval(callback, interval, name) {
+      const key = "_timeInMs_" + (name || "");
+      const now = Date.now();
+      const timeInMs = localStorage.getItem(key);
+      const executeCallback = function() {
+        localStorage.setItem(key, Date.now());
+        callback();
+      };
+      if (timeInMs) {
+        const time = parseInt(timeInMs);
+        const delta = now - time;
+        if (delta > interval) {
+          setInterval(executeCallback, interval);
+        } else {
+          setTimeout(function() {
+            setInterval(executeCallback, interval);
+            executeCallback();
+          }, interval - delta);
+        }
+      } else {
+        setInterval(executeCallback, interval);
+      }
+      localStorage.setItem(key, now);
     }
   },
   computed: {
