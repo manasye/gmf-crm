@@ -50,10 +50,19 @@
         </a>
       </div>
       <div class="comments mb-3 mb-md-0" v-for="r in replies" :key="r.reply_complaint_id">
-        <h5>
-          <b-badge pill variant="success" v-if="r.sender_role === 'Admin'">Administrator</b-badge>
-          <b-badge pill variant="primary" v-else>{{ r.sender }}</b-badge>
-        </h5>
+        <b-row>
+          <b-col cols="5">
+            <h5>
+              <b-badge pill variant="success" v-if="r.sender_role === 'Admin'"
+                >Administrator</b-badge
+              >
+              <b-badge pill variant="primary" v-else>{{ r.sender }}</b-badge>
+            </h5></b-col
+          >
+          <b-col cols="7" class="text-right">
+            <p class="mb-0 text-secondary">{{ moment(new Date()).format("lll") }}</p></b-col
+          ></b-row
+        >
         <p>
           {{ r.description }}
         </p>
@@ -70,7 +79,6 @@
         >REPLY</b-button
       >
       <b-button variant="success" v-else @click="submitReply">SUBMIT</b-button>
-
       <b-modal v-model="showModal" centered title="Edit Status" @ok="changeStatus">
         <b-row>
           <b-col cols="4"> <label class="mt-2">Status</label></b-col>
@@ -88,6 +96,7 @@
 import axios from "axios";
 import swal from "sweetalert";
 import { statusComplaints } from "@/utility/globalVar.js";
+import moment from "moment";
 
 export default {
   mounted() {
@@ -122,6 +131,9 @@ export default {
     };
   },
   methods: {
+    moment: function() {
+      return moment();
+    },
     getVariantBadge(status) {
       switch (status) {
         case "Closed":

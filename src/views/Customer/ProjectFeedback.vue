@@ -112,7 +112,10 @@ export default {
         { name: "Product Quality", value: "Product Quality" },
         { name: "Quality Assurance Team", value: "Quality Assurance Team" },
         { name: "On Team Delivery", value: "On Team Delivery" },
-        { name: "Personnel Competency & Capability", value: "Personnel Competency & Capability" },
+        {
+          name: "Personnel Competency & Availability",
+          value: "Personnel Competency & Availability"
+        },
         { name: "Communication", value: "Communication" }
       ],
       performances: [],
@@ -129,12 +132,18 @@ export default {
         aspect_to_improve: p.aspect_to_improve.join(",")
       }));
 
-      const data = {
+      let data = {
         user_id: this.getUserId(),
         project_id: this.$route.params.id,
-        service: feedbacks,
-        list_feedback_project_id: `${this.$route.query.list_id}`
+        service: feedbacks
       };
+
+      if (this.$route.query.list_id) {
+        data = {
+          ...data,
+          list_feedback_project_id: `${this.$route.query.list_id}`
+        };
+      }
 
       axios
         .post("/feedbackproject/create", data)

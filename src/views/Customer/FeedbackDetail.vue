@@ -36,18 +36,25 @@
       </div>
       <div class="file mt-4 mb-4" v-if="detail.file">
         <font-awesome-icon icon="link" />
-        <!--        <p v-for="i in 1">-->
         <a :href="getBaseStorage() + detail.file">
           {{ detail.file_name || "File" }}
           <br />
         </a>
-        <!--        </p>-->
       </div>
       <div class="comments mb-3 mb-md-0" v-for="r in replies" :key="r.reply_complaint_id">
-        <h5>
-          <b-badge pill variant="success" v-if="r.sender_role === 'Admin'">Administrator</b-badge>
-          <b-badge pill variant="primary" v-else>{{ r.sender }}</b-badge>
-        </h5>
+        <b-row>
+          <b-col cols="5">
+            <h5>
+              <b-badge pill variant="success" v-if="r.sender_role === 'Admin'"
+                >Administrator</b-badge
+              >
+              <b-badge pill variant="primary" v-else>{{ r.sender }}</b-badge>
+            </h5></b-col
+          >
+          <b-col cols="7" class="text-right">
+            <p class="mb-0 text-secondary">{{ moment(new Date()).format("lll") }}</p></b-col
+          >
+        </b-row>
         <p>
           {{ r.description }}
         </p>
@@ -70,6 +77,7 @@
 
 <script>
 import axios from "axios";
+import moment from "moment";
 
 export default {
   mounted() {
@@ -145,6 +153,9 @@ export default {
           swal("Error", err.response.data.message, "error");
           this.showReplyTextArea = false;
         });
+    },
+    moment: function() {
+      return moment();
     }
   }
 };
