@@ -382,6 +382,8 @@ export default {
         this.getAdminNotif();
       }, 5000);
     }
+
+    this.idleTimer();
   },
   beforeDestroy() {
     clearInterval(this.notifInterval);
@@ -408,7 +410,8 @@ export default {
         slidesToShow: 1,
         infinite: false,
         arrows: true
-      }
+      },
+      timeOutLogout: null
     };
   },
   methods: {
@@ -537,6 +540,20 @@ export default {
         setInterval(executeCallback, interval);
       }
       localStorage.setItem(key, now);
+    },
+    idleTimer() {
+      const self = this;
+      window.onload = resetTimer;
+      window.onmousemove = resetTimer; // catches mouse movements
+      window.onmousedown = resetTimer; // catches mouse movements
+      window.onclick = resetTimer; // catches mouse clicks
+      window.onscroll = resetTimer; // catches scrolling
+      window.onkeypress = resetTimer; //catches keyboard actions
+
+      function resetTimer() {
+        clearTimeout(this.timeOutLogout);
+        this.timeOutLogout = setTimeout(self.logout, 15 * 60 * 1000);
+      }
     }
   },
   computed: {
