@@ -83,7 +83,6 @@ export default {
         })
         .catch(() => {});
     }
-
     departments().then(res => {
       this.deptOptions = [
         {

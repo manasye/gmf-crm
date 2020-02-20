@@ -211,7 +211,7 @@ export default {
         { key: "company_name", label: "Company", sortable: true },
         { key: "name", label: "Project Name", sortable: true },
         { key: "start", label: "Est Start Date", sortable: true },
-        { key: "finish", label: "Est Finish Date", sortable: true },
+        { key: "end", label: "Est Finish Date", sortable: true },
         { key: "project_type", sortable: true },
         { key: "status", sortable: true },
         { key: "quantity", label: "Qty", sortable: true },
@@ -281,15 +281,15 @@ export default {
     },
     getData() {
       axios
-        .get("/project/read")
+        .get("/project/fetch")
         .then(res => {
-          this.projects = res.data.data.map(el => {
+          this.projects = res.data.map(el => {
             let o = Object.assign({}, el);
             if (this.isAdmin()) o.edit = "a";
             return o;
           });
           let companies = [];
-          res.data.data.map(p => {
+          res.data.map(p => {
             if (!companies.find(l => l.value === p.company_name) && p.company_name) {
               companies.push({ value: p.company_name, text: p.company_name });
             }
@@ -308,14 +308,17 @@ export default {
         .catch(() => {});
     },
     viewHistory(rate) {
-      axios
-        .get(`/feedbackproject/list/${rate.item.project_id}`)
-        .then(res => {
-          this.histories = res.data.data;
-          this.projectChosen = rate.item;
-          this.showModalHistory = true;
-        })
-        .catch(() => {});
+      console.log(rate);
+      if (rate.item.quantity <= 1) return;
+      else
+        axios
+          .get(`/feedbackproject/list/${rate.item.project_id}`)
+          .then(res => {
+            this.histories = res.data.data;
+            this.projectChosen = rate.item;
+            this.showModalHistory = true;
+          })
+          .catch(() => {});
     },
     moment: function() {
       return moment();

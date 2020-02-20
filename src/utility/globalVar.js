@@ -206,6 +206,17 @@ export const rangeOptions = [
   }
 ];
 
+export const semesterOptions = [
+  {
+    value: 1,
+    text: "1"
+  },
+  {
+    value: 2,
+    text: "2"
+  }
+];
+
 export const trendOption = {
   responsive: true,
   maintainAspectRatio: false,

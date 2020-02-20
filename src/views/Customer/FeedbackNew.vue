@@ -105,6 +105,7 @@ export default {
         .post("/complaint/create", formData)
         .then(() => {
           swal("Success!", "You have successfully submitted a complaint!", "success");
+          this.$store.dispatch("goToPage", "/feedback-customer");
         })
         .catch(err => {
           swal("Error", err.response.data.message, "error");

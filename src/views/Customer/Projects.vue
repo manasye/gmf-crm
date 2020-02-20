@@ -201,14 +201,16 @@ export default {
       this.$store.dispatch("goToPage", `/project-customer/${row.project_id}`);
     },
     viewHistory(rate) {
-      axios
-        .get(`/feedbackproject/list/${rate.item.project_id}`)
-        .then(res => {
-          this.histories = res.data.data;
-          this.projectChosen = rate.item;
-          this.showModalHistory = true;
-        })
-        .catch(() => {});
+      if (rate.item.quantity <= 1) return;
+      else
+        axios
+          .get(`/feedbackproject/list/${rate.item.project_id}`)
+          .then(res => {
+            this.histories = res.data.data;
+            this.projectChosen = rate.item;
+            this.showModalHistory = true;
+          })
+          .catch(() => {});
     },
     reviewProject(item) {
       if (item.item.quantity > 1) {

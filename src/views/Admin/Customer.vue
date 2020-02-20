@@ -484,13 +484,22 @@ export default {
         .catch(() => {});
     },
     removeCustomer(customer) {
-      axios
-        .get(`/company/delete/${customer.company_id}`)
-        .then(() => {
-          swal("Success", `Company successfully deleted`, "success");
-          this.getCompanyData();
-        })
-        .catch(() => {});
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this company!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+      }).then(willRemove => {
+        if (willRemove)
+          axios
+            .get(`/company/delete/${customer.company_id}`)
+            .then(() => {
+              swal("Success", `Company successfully deleted`, "success");
+              this.getCompanyData();
+            })
+            .catch(() => {});
+      });
     },
     postAdmin() {
       axios

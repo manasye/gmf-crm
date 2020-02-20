@@ -36,18 +36,10 @@
         ></b-form-select>
       </b-col>
       <b-col cols="2" v-if="!selectVal.range">
-        <label>Month</label>
+        <label>Semester</label>
         <b-form-select
-          v-model="selectVal.month"
-          :options="monthOptions"
-          @input="filtering"
-        ></b-form-select>
-      </b-col>
-      <b-col cols="2">
-        <label>Range</label>
-        <b-form-select
-          v-model="selectVal.range"
-          :options="rangeOptions"
+          v-model="selectVal.semester"
+          :options="semesterOptions"
           @input="filtering"
         ></b-form-select>
       </b-col>
@@ -59,7 +51,7 @@
 
 <script>
 import LineChart from "@/components/LineChart.vue";
-import { rangeOptions, trendOption } from "@/utility/globalVar.js";
+import { rangeOptions, trendOption, semesterOptions, departments } from "@/utility/globalVar.js";
 import axios from "axios";
 
 export default {
@@ -69,7 +61,15 @@ export default {
       .then(res => {
         const filters = res.data;
         this.companyOptions = this.companyOptions.concat(filters.company_name);
-        this.deptOptions = this.deptOptions.concat(filters.service);
+        departments().then(res => {
+          this.deptOptions = [
+            {
+              value: null,
+              text: "All Departments"
+            },
+            ...res
+          ];
+        });
         this.yearOptions = this.yearOptions.concat(filters.year);
         this.monthOptions = this.monthOptions.concat(filters.month);
         this.statusOptions = this.statusOptions.concat(filters.status);
@@ -86,8 +86,7 @@ export default {
         year: null,
         company: null,
         department: null,
-        month: null,
-        range: null
+        semester: null
       },
       statusOptions: [
         {
@@ -120,6 +119,13 @@ export default {
         }
       ],
       rangeOptions,
+      semesterOptions: [
+        {
+          value: null,
+          text: "All Semesters"
+        },
+        ...semesterOptions
+      ],
       chartData: null
     };
   },
