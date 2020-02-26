@@ -552,7 +552,7 @@ export default {
       function resetTimer() {
         clearTimeout(this.timeOutLogout);
         this.timeOutLogout = setTimeout(() => {
-          swal("Timeout", "You have been inactive for 15 minutes", "error");
+          if (this.getRole()) swal("Timeout", "You have been inactive for 15 minutes", "error");
           self.logout();
         }, 15 * 60 * 1000);
       }

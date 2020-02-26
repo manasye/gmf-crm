@@ -141,7 +141,8 @@ export default {
         project_type: this.selectVal.project_type,
         range: this.selectVal.range,
         aspect_to_improve: this.selectVal.feedback_component,
-        rating: +this.selectVal.rating
+        rating: +this.selectVal.rating,
+        semester: this.selectVal.semester
       };
       if (!this.selectVal.range) {
         data = { ...data, year: +this.selectVal.year, month: +this.selectVal.month };
