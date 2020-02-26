@@ -544,15 +544,17 @@ export default {
     idleTimer() {
       const self = this;
       window.onload = resetTimer;
-      window.onmousemove = resetTimer; // catches mouse movements
-      window.onmousedown = resetTimer; // catches mouse movements
-      window.onclick = resetTimer; // catches mouse clicks
-      window.onscroll = resetTimer; // catches scrolling
-      window.onkeypress = resetTimer; //catches keyboard actions
-
+      window.onmousemove = resetTimer;
+      window.onmousedown = resetTimer;
+      window.onclick = resetTimer;
+      window.onscroll = resetTimer;
+      window.onkeypress = resetTimer;
       function resetTimer() {
         clearTimeout(this.timeOutLogout);
-        this.timeOutLogout = setTimeout(self.logout, 15 * 60 * 1000);
+        this.timeOutLogout = setTimeout(() => {
+          swal("Timeout", "You have been inactive for 15 minutes", "error");
+          self.logout();
+        }, 15 * 60 * 1000);
       }
     }
   },
