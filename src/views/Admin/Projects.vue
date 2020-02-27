@@ -208,10 +208,10 @@ export default {
       perPageOptions,
       perPage: "10",
       projectFields: [
-        { key: "company_name", label: "Company", sortable: true },
+        { key: "company_id", label: "Company Id", sortable: true },
         { key: "name", label: "Project Name", sortable: true },
         { key: "start", label: "Est Start Date", sortable: true },
-        { key: "end", label: "Est Finish Date", sortable: true },
+        { key: "finish", label: "Est Finish Date", sortable: true },
         { key: "project_type", sortable: true },
         { key: "status", sortable: true },
         { key: "quantity", label: "Qty", sortable: true },
@@ -281,15 +281,15 @@ export default {
     },
     getData() {
       axios
-        .get("/project/fetch")
+        .get("/project/read")
         .then(res => {
-          this.projects = res.data.map(el => {
+          this.projects = res.data.data.map(el => {
             let o = Object.assign({}, el);
             if (this.isAdmin()) o.edit = "a";
             return o;
           });
           let companies = [];
-          res.data.map(p => {
+          res.data.data.map(p => {
             if (!companies.find(l => l.value === p.company_name) && p.company_name) {
               companies.push({ value: p.company_name, text: p.company_name });
             }
