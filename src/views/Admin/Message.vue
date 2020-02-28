@@ -191,7 +191,7 @@ import swal from "sweetalert";
 import axios from "axios";
 import moment from "moment";
 
-const TIME_FETCH_INTERVAL = 5000 * 100;
+const TIME_FETCH_INTERVAL = 5000;
 
 export default {
   mounted() {
