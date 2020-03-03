@@ -351,6 +351,7 @@ export default {
       customersFields: [
         // { key: "customer_id", sortable: true },
         { key: "name", label: "Company Name", sortable: true },
+        { key: "company_sap_code", label: "SAP Code", sortable: true },
         { key: "region", sortable: true },
         { key: "country", sortable: true },
         { key: "company_role", sortable: true },
