@@ -325,7 +325,16 @@ export default {
       this.navItems = [
         { name: "Customer", route: "/#/customer", icon: "users" },
         { name: "Project", route: "/#/project", icon: "tasks" },
-        { name: "Message", route: "/#/messages", icon: "comment-dots", notif: false },
+        {
+          name: "Message",
+          route: "/#/messages",
+          icon: "comment-dots",
+          notif: false,
+          childrens: [
+            { name: "Message", route: "/#/messages" },
+            { name: "Message History", route: "/#/messages-history" }
+          ]
+        },
         {
           name: "Complaint",
           route: "/#/complaint-list",
@@ -552,7 +561,7 @@ export default {
       function resetTimer() {
         clearTimeout(this.timeOutLogout);
         this.timeOutLogout = setTimeout(() => {
-          if (this.getRole()) swal("Timeout", "You have been inactive for 15 minutes", "error");
+          if (self.getRole()) swal("Timeout", "You have been inactive for 15 minutes", "error");
           self.logout();
         }, 15 * 60 * 1000);
       }

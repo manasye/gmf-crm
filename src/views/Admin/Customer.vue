@@ -129,11 +129,15 @@
     <b-modal
       v-model="showModalStatus"
       centered
-      @ok="changeStatus"
+      @ok="changeCustomer"
       title="Manage Company"
       v-if="showModalStatus"
     >
-      <b-row>
+      <b-row
+        ><b-col cols="4"> <label class="mt-2">SAP Code</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.company_sap_code" />
+        </b-col>
         <b-col cols="4"> <label class="mt-2">Name</label></b-col>
         <b-col cols="8" class="mb-3">
           <b-form-input v-model="editedData.name" />
@@ -398,9 +402,11 @@ export default {
       this.editedId = rowData.company_id;
       this.editedData = rowData;
     },
-    changeStatus() {
+    changeCustomer() {
       let formData = new FormData();
       if (this.editedData.MRO) formData.set("MRO", this.editedData.MRO || "");
+      if (this.editedData.company_sap_code)
+        formData.set("company_sap_code", this.editedData.company_sap_code || "");
       if (this.editedData.alliance) formData.set("alliance", this.editedData.alliance || "");
       if (this.editedData.business_model)
         formData.set("business_model", this.editedData.business_model || "");

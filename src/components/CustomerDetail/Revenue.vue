@@ -5,15 +5,20 @@
         >NEW</b-button
       >
       <h5 class="mb-4">Revenue Highlight</h5>
-      <b-row>
-        <b-col cols="6" class="mt-2">
+      <b-row align-v="end">
+        <b-col cols="5" class="mt-2">
           <p class="mb-2">Start Date</p>
           <datepicker v-model="startDate" />
         </b-col>
-        <b-col cols="6" class="mt-2">
+        <b-col cols="5" class="mt-2">
           <p class="mb-2">End Date</p>
           <datepicker v-model="endDate"
         /></b-col>
+        <b-col cols="2" class="mt-2">
+          <b-button size="sm" variant="primary" @click="getRevs" :disabled="!startDate || !endDate"
+            >Filter</b-button
+          >
+        </b-col>
       </b-row>
 
       <b-table class="mt-4" striped hover :fields="revenueFields" :items="revenues" show-empty>
@@ -72,6 +77,8 @@
         <b-col cols="8" class="mb-3"> <b-form-input v-model="editedRev.product" /> </b-col
         ><b-col cols="4"> <label class="mt-2">Sales</label></b-col>
         <b-col cols="8" class="mb-3"> <b-form-input v-model="editedRev.sales" type="number"/></b-col
+        ><b-col cols="4"> <label class="mt-2">Date</label></b-col>
+        <b-col cols="8" class="mb-3"><datepicker v-model="editedAct.datetime" /> </b-col
       ></b-row>
     </b-modal>
 
@@ -120,7 +127,7 @@ export default {
     return {
       startDate: null,
       endDate: null,
-      revenueFields: ["product", "sales", "edit"],
+      revenueFields: ["product", "sales"],
       revenues: [],
       activites: [],
       activityFields: ["date", "activity", "remarks", "edit"],
@@ -142,6 +149,7 @@ export default {
     postRev() {
       this.editedRev.id = this.editedRev.revenue_id;
       this.editedRev.company_id = this.$route.params.id;
+      this.editedRev.datetime = moment(this.editedRev.datetime).format("YYYY-MM-DD");
 
       const url = this.editedRev.revenue_id ? "/revenue/update" : "/revenue/create";
       axios
@@ -206,8 +214,11 @@ export default {
         .catch(() => {});
     },
     getRevs() {
+      let params = "";
+      if (this.startDate) params += `start_date=${moment(this.startDate).format("YYYY-MM-DD")}`;
+      if (this.endDate) params += `&end_date=${moment(this.endDate).format("YYYY-MM-DD")}`;
       axios
-        .get(`/revenue/read/${this.$route.params.id}`)
+        .get(`/revenue/read/${this.$route.params.id}?${params}`)
         .then(res => {
           this.revenues = res.data.data;
         })

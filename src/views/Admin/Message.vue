@@ -2,11 +2,6 @@
   <b-container fluid class="container-app">
     <b-row>
       <b-col cols="6"> <Header title="Messages"/></b-col>
-      <b-col cols="6" class="text-right">
-        <b-button variant="primary" @click="showModalHistory = true"
-          >History <font-awesome-icon icon="history" />
-        </b-button>
-      </b-col>
     </b-row>
 
     <div class="chat-container">
@@ -164,25 +159,6 @@
         ><b-col cols="4"> <label class="mt-2">Message</label></b-col>
         <b-col cols="8" class="mb-3"> <b-form-input v-model="editedData.message" /> </b-col></b-row
     ></b-modal>
-
-    <b-modal
-      v-model="showModalHistory"
-      centered
-      title="History Chat"
-      v-if="showModalHistory && histories.length > 0"
-      hide-footer
-      size="lg"
-    >
-      <div v-for="h in histories" :key="h.name">
-        <p>Name : {{ h.name }}</p>
-        <b-table :fields="historyField" :items="h.messages" class="mb-3" show-empty>
-          <template v-slot:cell(message)="msg">
-            <p v-if="msg.item.type === 'text'">{{ msg.value }}</p>
-            <a :href="getBaseStorage() + msg.value" v-else target="_blank">File</a>
-          </template>
-        </b-table>
-      </div>
-    </b-modal>
   </b-container>
 </template>
 
@@ -337,20 +313,6 @@ export default {
             }
           });
           this.chats = m;
-        })
-        .catch(() => {});
-    },
-    getHistoryChats() {
-      axios
-        .get(`/messages/get/${this.getUserId()}?thread=close`)
-        .then(res => {
-          let histories = [];
-          res.data[0].map(u => {
-            for (const k in u) {
-              histories.push({ name: u[k].name, messages: u[k].messages });
-            }
-          });
-          this.histories = histories;
         })
         .catch(() => {});
     }

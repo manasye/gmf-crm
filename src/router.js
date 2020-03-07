@@ -148,6 +148,20 @@ export default new Router({
       component: () => import(/* webpackChunkName: "message" */ "./views/Admin/Message.vue")
     },
     {
+      path: "/messages-history",
+      name: "messages-history",
+      component: () =>
+        import(/* webpackChunkName: "message-history" */ "./views/Admin/MessageHistory.vue")
+    },
+    {
+      path: "/messages-history/:id",
+      name: "messages-history-detail",
+      component: () =>
+        import(
+          /* webpackChunkName: "message-history-detail" */ "./views/Admin/MessageHistoryDetail.vue"
+        )
+    },
+    {
       path: "/complaint-list",
       name: "complaint list",
       component: () =>

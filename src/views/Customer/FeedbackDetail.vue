@@ -52,7 +52,7 @@
             </h5></b-col
           >
           <b-col cols="7" class="text-right">
-            <p class="mb-0 text-secondary">{{ moment(new Date()).format("lll") }}</p></b-col
+            <p class="mb-0 text-secondary">{{ formatDate(r.created_at) }}</p></b-col
           >
         </b-row>
         <p>
@@ -156,6 +156,10 @@ export default {
     },
     moment: function() {
       return moment();
+    },
+    formatDate(date) {
+      if (!date) date = new Date();
+      return moment(date).format("lll");
     }
   }
 };
