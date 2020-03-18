@@ -111,7 +111,21 @@
       responsive
       @row-clicked="showCustomer"
       show-empty
-    />
+    >
+      <template v-slot:cell(status)="data">
+        <b-badge :variant="getBadgesVariant(data.value)" style="margin-right: 30px">
+          <p class="status-badges" :class="getBadgesVariant(data.value)">{{ data.value }}</p>
+        </b-badge>
+      </template>
+
+      <template v-slot:cell(edit)="data"
+        ><font-awesome-icon
+          v-if="getRole() === 'Admin'"
+          icon="pen"
+          style="cursor: pointer"
+          class="mr-3"
+          @click.stop="editStatus(data.item)"/></template
+    ></b-table>
 
     <h5
       v-if="
@@ -127,11 +141,27 @@
     >
       No Result Found
     </h5>
+
+    <b-modal
+      v-model="showModalStatus"
+      centered
+      title="Edit Status"
+      v-if="showModalStatus && customerSelected"
+      @ok="changeStatus"
+      ><b-row>
+        <b-col cols="4"> <label class="mt-2">Status</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-select
+            v-model="customerSelected.status"
+            :options="statusOptions"
+          /> </b-col></b-row
+    ></b-modal>
   </b-container>
 </template>
 
 <script>
 import axios from "axios";
+import swal from "sweetalert";
 
 export default {
   mounted() {
@@ -207,7 +237,24 @@ export default {
         { key: "country" },
         { key: "company_role" },
         { key: "business_model" },
-        { key: "status", label: "Status" }
+        { key: "status", label: "Status" },
+        "edit"
+      ],
+      customerSelected: null,
+      showModalStatus: false,
+      statusOptions: [
+        {
+          value: "Active",
+          text: "Active"
+        },
+        {
+          value: "Inactive",
+          text: "Inactive"
+        },
+        {
+          value: "Obsolete",
+          text: "Obsolete"
+        }
       ]
     };
   },
@@ -260,6 +307,26 @@ export default {
     },
     showCustomer(row) {
       this.$store.dispatch("goToPage", `/customer/${row.company_id}/Overview`);
+    },
+    editStatus(item) {
+      this.customerSelected = item;
+      this.showModalStatus = true;
+    },
+    changeStatus() {
+      let form = new FormData();
+      form.set("id", this.customerSelected.company_id);
+      form.set("status", this.customerSelected.status);
+      axios
+        .post("/company/update", form)
+        .then(() => {})
+        .catch(err => {
+          swal("Error", err.response.data.message, "error");
+        });
+    },
+    getBadgesVariant(val) {
+      if (val === "Inactive") return "warning";
+      else if (val === "Active") return "success";
+      else return "secondary";
     }
   },
   watch: {
@@ -270,4 +337,10 @@ export default {
 };
 </script>
 
-<style scoped />
+<style lang="scss" scoped>
+.status-badges {
+  margin: 5px;
+  text-transform: capitalize;
+  color: white;
+}
+</style>

@@ -158,7 +158,7 @@ export default {
       return moment();
     },
     formatDate(date) {
-      if (!date) date = new Date();
+      if (!date) return "";
       return moment(date).format("lll");
     }
   }
