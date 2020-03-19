@@ -352,7 +352,8 @@ export default {
           notif: false,
           childrens: [
             { name: "Feedback List", route: "/#/feedback-list" },
-            { name: "Feedback Trend", route: "/#/feedback-trend" }
+            { name: "Feedback Trend", route: "/#/feedback-trend" },
+            { name: "Non Project Feedback", route: "/#/feedback-customer-nonproject" }
           ]
         },
         {

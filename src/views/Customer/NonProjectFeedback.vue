@@ -14,6 +14,7 @@
       <b-col cols="12" md="2" class="text-md-right mt-3 mt-md-0">
         <b-button
           variant="success"
+          v-if="!isAdmin()"
           @click="$store.dispatch('goToPage', '/feedback-customer-new-nonproject')"
           >Add New Feedback</b-button
         >
@@ -74,8 +75,10 @@ export default {
           this.$store.commit("changeWalkthrough", true);
         });
     } else {
+      let url = `/feedbacknonproject/read/${this.getCompanyId()}`;
+      if (this.isAdmin()) url = "/feedbacknonproject/read";
       axios
-        .get(`/feedbacknonproject/read/${this.getCompanyId()}`)
+        .get(url)
         .then(res => {
           this.feedbacks = res.data.data;
           let senders = [];
