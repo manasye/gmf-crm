@@ -38,7 +38,7 @@
               {{ generateResultRating(p.rating)[0] }}
             </p>
             <p class="mt-4" />
-            <p>What aspect(s) do you think we could improve?</p>
+            <p>{{ renderLabelFeedback(p.rating) }}</p>
             <b-form-checkbox-group>
               <b-form-checkbox
                 v-for="i in improvements"
@@ -174,6 +174,13 @@ export default {
         else performances.push(performance);
       });
       this.performances = performances;
+    },
+    renderLabelFeedback(rate) {
+      if (rate >= 4) {
+        return "What aspect(s) do you satisfied with?";
+      } else {
+        return "What aspect(s) do you think we could improve?";
+      }
     }
   }
 };

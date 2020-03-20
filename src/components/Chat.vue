@@ -16,12 +16,6 @@
       :colors="colors"
       :alwaysScrollToBottom="alwaysScrollToBottom"
       @edit="editMessage"
-      ><template v-slot:header>
-        <img
-          :src="participants[0].imageUrl"
-          alt=""
-          class="sc-header--img thumbnail-chat"
-        /> </template
     ></beautiful-chat>
   </div>
 </template>
@@ -39,6 +33,14 @@ export default {
   mounted() {
     this.getChats();
     this.chatInterval = setInterval(this.getChats, TIME_FETCH_INTERVAL);
+  },
+  created() {
+    setInterval(() => {
+      const scImage = document.getElementsByClassName("sc-image");
+      for (let i = 0; i < scImage.length; i++) {
+        scImage[i].src = "https://pngimage.net/wp-content/uploads/2018/06/file-logo-png-5.png";
+      }
+    }, 1000);
   },
   beforeDestroy() {
     clearInterval(this.chatInterval);
@@ -133,7 +135,7 @@ export default {
             } else {
               data = {
                 file: {
-                  name: "File",
+                  name: "Open Here",
                   url: this.getBaseStorage() + m.message
                 }
               };
@@ -222,7 +224,11 @@ export default {
 .sc-message--file-text {
   padding: 5px 20px !important;
 }
-.sc-message--file-icon {
-  display: none;
+.sc-image {
+  width: 30px;
+  padding: 5px;
+}
+.sc-header--img {
+  width: 50px;
 }
 </style>

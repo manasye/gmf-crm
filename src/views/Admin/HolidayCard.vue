@@ -44,6 +44,11 @@
       <template v-slot:cell(edit)="data">
         <font-awesome-icon
           v-if="getRole() === 'Admin'"
+          icon="pen"
+          style="cursor: pointer"
+          @click.stop="editCard(data.item)"/>&nbsp;&nbsp;
+        <font-awesome-icon
+          v-if="getRole() === 'Admin'"
           icon="trash"
           style="cursor: pointer"
           @click.stop="removeCard(data.item)"
@@ -131,14 +136,19 @@ export default {
     addCard() {
       let formData = new FormData();
       const data = this.editedData;
+      let url = "/religion/create";
       formData.set("subject", data.subject);
-      formData.set("image", data.image);
+      if (data.image instanceof File) formData.set("image", data.image);
       formData.set("date", moment(data.date).format("YYYY-MM-DD"));
       formData.set("religion", data.religion);
       formData.set("permalink", data.permalink);
+      if (data.religion_card_id) {
+        url = "/religion/update";
+        formData.set("religion_card_id", data.religion_card_id);
+      }
 
       axios
-        .post("/religion/create", formData)
+        .post(url, formData)
         .then(() => {
           swal("Success", "Holiday card successfully created", "success");
           this.getCards();
@@ -160,6 +170,10 @@ export default {
         .get(`/religion/delete/${card.religion_card_id}`)
         .then(() => this.getCards())
         .catch(() => {});
+    },
+    editCard(card) {
+      this.showModal = true;
+      this.editedData = card;
     }
   },
   computed: {
