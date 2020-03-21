@@ -209,7 +209,6 @@ export default {
       perPage: "10",
       projectFields: [
         { key: "company_id", label: "Company Id", sortable: true },
-        { key: "project_id", sortable: true },
         { key: "name", label: "Project Name", sortable: true },
         { key: "start", label: "Est Start Date", sortable: true },
         { key: "finish", label: "Est Finish Date", sortable: true },

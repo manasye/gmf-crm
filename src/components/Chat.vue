@@ -33,6 +33,7 @@ export default {
   mounted() {
     this.getChats();
     this.chatInterval = setInterval(this.getChats, TIME_FETCH_INTERVAL);
+    document.getElementsByClassName("sc-header--title")[0].innerHTML = "Admin";
   },
   created() {
     setInterval(() => {

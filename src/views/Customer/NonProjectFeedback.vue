@@ -105,7 +105,6 @@ export default {
       perPage: "10",
       currentPage: 1,
       feedbackFields: [
-        { key: "feedback_nonproject_id", label: "Feedback ID", sortable: true },
         { key: "date", sortable: true },
         { key: "sender", sortable: true },
         { key: "subject", label: "Subject", sortable: true },
@@ -118,10 +117,7 @@ export default {
   components: { StarRating },
   methods: {
     showFeedback(row) {
-      this.$store.dispatch(
-        "goToPage",
-        `/feedback-customer-nonproject/${row.feedback_nonproject_id}`
-      );
+      this.$store.dispatch("goToPage", `/feedback-nonproject/${row.feedback_nonproject_id}`);
     }
   },
   computed: {

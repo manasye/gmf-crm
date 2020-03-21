@@ -17,7 +17,7 @@
       <b-col cols="1"> <b-form-select v-model="perPage" :options="perPageOptions"/></b-col>
       <b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
         ><b-button variant="success" style="width: 100%" @click="showModalCust = true"
-          >Add Cust Type</b-button
+          >Add Customer Type</b-button
         ></b-col
       ><b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
         ><b-button variant="success" style="width: 100%" @click="showModalAlliance = true"

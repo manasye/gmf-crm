@@ -71,11 +71,11 @@ export default new Router({
         import(/* webpackChunkName: "feedback-customer" */ "./views/Customer/Feedback.vue")
     },
     {
-      path: "/feedback-customer-nonproject",
-      name: "your feedback customer nonproj",
+      path: "/feedback-nonproject",
+      name: "your feedback nonproj",
       component: () =>
         import(
-          /* webpackChunkName: "feedback-customer-non-project" */ "./views/Customer/NonProjectFeedback.vue"
+          /* webpackChunkName: "feedback-non-project" */ "./views/Customer/NonProjectFeedback.vue"
         )
     },
     {
@@ -106,11 +106,11 @@ export default new Router({
         )
     },
     {
-      path: "/feedback-customer-nonproject/:id",
-      name: "your feedback customer detail nonproj",
+      path: "/feedback-nonproject/:id",
+      name: "your feedback detail nonproj",
       component: () =>
         import(
-          /* webpackChunkName: "feedback-customer-detail-non-project" */
+          /* webpackChunkName: "feedback-detail-non-project" */
           "./views/Customer/NonProjectFeedbackDetail.vue"
         )
     },

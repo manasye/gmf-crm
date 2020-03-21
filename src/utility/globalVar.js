@@ -88,8 +88,8 @@ export const statusComplaints = [
     text: "Open"
   },
   {
-    value: "Receive",
-    text: "Receive"
+    value: "Received",
+    text: "Received"
   },
   {
     value: "On Progress",

@@ -123,7 +123,7 @@ export default {
           return "success";
         case "Open":
           return "danger";
-        case "Receive":
+        case "Received":
           return "warning";
         default:
           return "primary";

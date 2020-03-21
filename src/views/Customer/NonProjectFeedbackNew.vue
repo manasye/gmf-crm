@@ -49,7 +49,7 @@ export default {
       breadcrumbs: [
         {
           text: "Non Project Feedback",
-          href: `/#/feedback-customer-nonproject`
+          href: `/#/feedback-nonproject`
         },
         {
           text: "New Feedback",
@@ -82,7 +82,7 @@ export default {
         .post("/feedbacknonproject/create", data)
         .then(() => {
           swal("Success!", "You have successfully submitted a non project feedback!", "success");
-          this.$store.dispatch("goToPage", "/feedback-customer-nonproject");
+          this.$store.dispatch("goToPage", "/feedback-nonproject");
         })
         .catch(() => {});
     }

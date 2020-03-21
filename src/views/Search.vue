@@ -1,105 +1,6 @@
 <template>
   <b-container fluid class="container-app">
     <Header :title="`Search Result - '${this.$route.params.query}'`" />
-    <h5 v-if="project.length > 0">Project</h5>
-    <b-table
-      v-if="project.length > 0"
-      striped
-      hover
-      :items="project"
-      :fields="projectField"
-      responsive
-      @row-clicked="showProject"
-      show-empty
-    />
-
-    <h5 v-if="name.length > 0">Name</h5>
-    <b-table
-      v-if="name.length > 0"
-      striped
-      hover
-      :fields="nameField"
-      :items="name"
-      responsive
-      @row-clicked="showName"
-      show-empty
-    >
-      <template v-slot:cell(email)="data"
-        ><a :href="data.value">{{ data.value }}</a></template
-      ></b-table
-    >
-
-    <h5 v-if="username.length > 0">Username</h5>
-    <b-table
-      v-if="username.length > 0"
-      striped
-      hover
-      :fields="usernameField"
-      :items="username"
-      responsive
-      @row-clicked="showUsername"
-      show-empty
-    >
-      <template v-slot:cell(email)="data"
-        ><a :href="data.value">{{ data.value }}</a></template
-      >
-    </b-table>
-
-    <h5 v-if="service.length > 0">Service</h5>
-    <b-table
-      v-if="service.length > 0"
-      striped
-      hover
-      :fields="serviceField"
-      :items="service"
-      responsive
-      @row-clicked="showService"
-      show-empty
-    >
-      <template v-slot:cell(permalink)="data"
-        ><a :href="data.value">{{ data.value }}</a></template
-      ></b-table
-    >
-
-    <h5 v-if="complaint.length > 0">Complaint</h5>
-    <b-table
-      v-if="complaint.length > 0"
-      striped
-      hover
-      :fields="complaintField"
-      :items="complaint"
-      responsive
-      @row-clicked="showComplaint"
-      show-empty
-    />
-
-    <h5 v-if="feedback.length > 0">Feedback Non Project</h5>
-    <b-table
-      v-if="feedback.length > 0"
-      striped
-      hover
-      :fields="feedbackField"
-      :items="feedback"
-      responsive
-      @row-clicked="showFeedback"
-      show-empty
-    />
-
-    <h5 v-if="holiday.length > 0">Holiday Card</h5>
-    <b-table
-      v-if="holiday.length > 0"
-      striped
-      hover
-      :fields="holidayField"
-      :items="holiday"
-      responsive
-      @row-clicked="showHoliday"
-      show-empty
-    >
-      <template v-slot:cell(permalink)="data"
-        ><a :href="data.value">{{ data.value }}</a></template
-      ></b-table
-    >
 
     <h5 v-if="customer.length > 0">Customer</h5>
     <b-table
@@ -108,6 +9,8 @@
       hover
       :fields="customerField"
       :items="customer"
+      :current-page="currentPageCustomer"
+      :per-page="5"
       responsive
       @row-clicked="showCustomer"
       show-empty
@@ -126,6 +29,176 @@
           class="mr-3"
           @click.stop="editStatus(data.item)"/></template
     ></b-table>
+    <b-pagination
+      v-model="currentPageCustomer"
+      :total-rows="rowsCustomer"
+      :per-page="5"
+      class="justify-content-end"
+      v-if="customer.length > 0"
+    />
+
+    <h5 v-if="project.length > 0">Project</h5>
+    <b-table
+      v-if="project.length > 0"
+      striped
+      hover
+      :items="project"
+      :fields="projectField"
+      :current-page="currentPageProject"
+      :per-page="5"
+      responsive
+      @row-clicked="showProject"
+      show-empty
+    />
+    <b-pagination
+      v-model="currentPageProject"
+      :total-rows="rowsProject"
+      :per-page="5"
+      class="justify-content-end"
+      v-if="project.length > 0"
+    />
+
+    <h5 v-if="name.length > 0">Name</h5>
+    <b-table
+      v-if="name.length > 0"
+      striped
+      hover
+      :fields="nameField"
+      :items="name"
+      :current-page="currentPageName"
+      :per-page="5"
+      responsive
+      @row-clicked="showName"
+      show-empty
+    >
+      <template v-slot:cell(email)="data"
+        ><a :href="data.value">{{ data.value }}</a></template
+      ></b-table
+    >
+    <b-pagination
+      v-model="currentPageName"
+      :total-rows="rowsName"
+      :per-page="5"
+      class="justify-content-end"
+      v-if="name.length > 0"
+    />
+
+    <h5 v-if="username.length > 0">Username</h5>
+    <b-table
+      v-if="username.length > 0"
+      striped
+      hover
+      :fields="usernameField"
+      :items="username"
+      :current-page="currentPageUsername"
+      :per-page="5"
+      responsive
+      @row-clicked="showUsername"
+      show-empty
+    >
+      <template v-slot:cell(email)="data"
+        ><a :href="data.value">{{ data.value }}</a></template
+      >
+    </b-table>
+    <b-pagination
+      v-model="currentPageUsername"
+      :total-rows="rowsUsername"
+      :per-page="5"
+      class="justify-content-end"
+      v-if="username.length > 0"
+    />
+
+    <h5 v-if="service.length > 0">Service</h5>
+    <b-table
+      v-if="service.length > 0"
+      striped
+      hover
+      :fields="serviceField"
+      :items="service"
+      :current-page="currentPageService"
+      :per-page="5"
+      responsive
+      @row-clicked="showService"
+      show-empty
+    >
+      <template v-slot:cell(permalink)="data"
+        ><a :href="data.value">{{ data.value }}</a></template
+      ></b-table
+    >
+    <b-pagination
+      v-model="currentPageService"
+      :total-rows="rowsService"
+      :per-page="5"
+      class="justify-content-end"
+      v-if="service.length > 0"
+    />
+
+    <h5 v-if="complaint.length > 0">Complaint</h5>
+    <b-table
+      v-if="complaint.length > 0"
+      striped
+      hover
+      :fields="complaintField"
+      :items="complaint"
+      :current-page="currentPageComplaint"
+      :per-page="5"
+      responsive
+      @row-clicked="showComplaint"
+      show-empty
+    />
+    <b-pagination
+      v-model="currentPageComplaint"
+      :total-rows="rowsComplaint"
+      :per-page="5"
+      class="justify-content-end"
+      v-if="complaint.length > 0"
+    />
+
+    <h5 v-if="feedback.length > 0">Feedback</h5>
+    <b-table
+      v-if="feedback.length > 0"
+      striped
+      hover
+      :fields="feedbackField"
+      :items="feedback"
+      :current-page="currentPageFeedback"
+      :per-page="5"
+      responsive
+      @row-clicked="showFeedback"
+      show-empty
+    />
+    <b-pagination
+      v-model="currentPageFeedback"
+      :total-rows="rowsFeedback"
+      :per-page="5"
+      class="justify-content-end"
+      v-if="feedback.length > 0"
+    />
+
+    <h5 v-if="holiday.length > 0">Holiday Card</h5>
+    <b-table
+      v-if="holiday.length > 0"
+      striped
+      hover
+      :fields="holidayField"
+      :items="holiday"
+      :current-page="currentPageHoliday"
+      :per-page="5"
+      responsive
+      @row-clicked="showHoliday"
+      show-empty
+    >
+      <template v-slot:cell(permalink)="data"
+        ><a :href="data.value">{{ data.value }}</a></template
+      ></b-table
+    >
+    <b-pagination
+      v-model="currentPageHoliday"
+      :total-rows="rowsHoliday"
+      :per-page="5"
+      class="justify-content-end"
+      v-if="holiday.length > 0"
+    />
 
     <h5
       v-if="
@@ -136,11 +209,14 @@
           complaint.length === 0 &&
           feedback.length === 0 &&
           holiday.length === 0 &&
-          customer.length === 0
+          customer.length === 0 &&
+          !loading
       "
     >
       No Result Found
     </h5>
+
+    <div class="loader" v-if="loading">Loading...</div>
 
     <b-modal
       v-model="showModalStatus"
@@ -255,11 +331,47 @@ export default {
           value: "Obsolete",
           text: "Obsolete"
         }
-      ]
+      ],
+      currentPageCustomer: 1,
+      currentPageProject: 1,
+      currentPageName: 1,
+      currentPageUsername: 1,
+      currentPageService: 1,
+      currentPageComplaint: 1,
+      currentPageFeedback: 1,
+      currentPageHoliday: 1,
+      loading: false
     };
+  },
+  computed: {
+    rowsCustomer() {
+      return this.customer.length;
+    },
+    rowsProject() {
+      return this.project.length;
+    },
+    rowsName() {
+      return this.name.length;
+    },
+    rowsService() {
+      return this.service.length;
+    },
+    rowsFeedback() {
+      return this.feedback.length;
+    },
+    rowsHoliday() {
+      return this.holiday.length;
+    },
+    rowsUsername() {
+      return this.username.length;
+    },
+    rowsComplaint() {
+      return this.complaint.length;
+    }
   },
   methods: {
     getSearch() {
+      this.loading = true;
       const url = this.isAdmin()
         ? `/searchadmin/${this.$route.params.query}`
         : `/search/${this.$route.params.query}/${this.getCompanyId()}`;
@@ -275,8 +387,11 @@ export default {
           this.feedback = res.data.data.feedback_nonproject || [];
           this.holiday = res.data.data.holiday_card || [];
           this.customer = res.data.data.customer || [];
+          this.loading = false;
         })
-        .catch(() => {});
+        .catch(() => {
+          this.loading = false;
+        });
     },
     showProject(row) {
       this.$store.dispatch("goToPage", `/project-customer/${row.project_id}`);
@@ -297,10 +412,7 @@ export default {
       this.$store.dispatch("goToPage", url);
     },
     showFeedback(row) {
-      this.$store.dispatch(
-        "goToPage",
-        `/feedback-customer-nonproject/${row.feedback_nonproject_id}`
-      );
+      this.$store.dispatch("goToPage", `/feedback-nonproject/${row.feedback_nonproject_id}`);
     },
     showHoliday(row) {
       this.$store.dispatch("goToPage", `/information-holiday-card/${row.religion_card_id}`);
@@ -342,5 +454,64 @@ export default {
   margin: 5px;
   text-transform: capitalize;
   color: white;
+}
+.loader,
+.loader:before,
+.loader:after {
+  background: #000000;
+  -webkit-animation: load1 1s infinite ease-in-out;
+  animation: load1 1s infinite ease-in-out;
+  width: 1em;
+  height: 4em;
+}
+.loader {
+  color: #000000;
+  text-indent: -9999em;
+  margin: 88px auto;
+  position: relative;
+  font-size: 11px;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+.loader:before,
+.loader:after {
+  position: absolute;
+  top: 0;
+  content: "";
+}
+.loader:before {
+  left: -1.5em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.loader:after {
+  left: 1.5em;
+}
+@-webkit-keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em;
+    height: 5em;
+  }
+}
+@keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em;
+    height: 5em;
+  }
 }
 </style>

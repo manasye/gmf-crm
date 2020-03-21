@@ -56,7 +56,7 @@ export default {
         })
         .oncomplete(() => {
           this.completed = true;
-          window.location.href = "/#/feedback-customer-nonproject";
+          window.location.href = "/#/feedback-nonproject";
           this.$store.commit("changeWalkthrough", true);
         });
     }

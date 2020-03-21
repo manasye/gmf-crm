@@ -316,7 +316,7 @@ export default {
             },
             {
               name: "Non-project Feedback",
-              route: "/#/feedback-customer-nonproject"
+              route: "/#/feedback-nonproject"
             }
           ]
         }
@@ -353,7 +353,7 @@ export default {
           childrens: [
             { name: "Feedback List", route: "/#/feedback-list" },
             { name: "Feedback Trend", route: "/#/feedback-trend" },
-            { name: "Non Project Feedback", route: "/#/feedback-customer-nonproject" }
+            { name: "Non Project Feedback", route: "/#/feedback-nonproject" }
           ]
         },
         {

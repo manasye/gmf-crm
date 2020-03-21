@@ -57,7 +57,7 @@ export default {
       breadcrumbs: [
         {
           text: "Non Project Feedback",
-          href: `/#/feedback-customer-nonproject`
+          href: `/#/feedback-nonproject`
         },
         {
           text: `Feedback ${this.$route.params.id}`,

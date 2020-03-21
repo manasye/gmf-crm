@@ -116,7 +116,6 @@ export default {
       perPageOptions,
       perPage: "10",
       complaintFields: [
-        { key: "complaint_id", label: "Id", sortable: true },
         { key: "date", sortable: true },
         { key: "company_name", label: "Company", sortable: true },
         { key: "sender", sortable: true },
@@ -137,7 +136,7 @@ export default {
           return "success";
         case "Open":
           return "danger";
-        case "Receive":
+        case "Received":
           return "warning";
         default:
           return "primary";

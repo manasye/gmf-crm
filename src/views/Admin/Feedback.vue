@@ -125,7 +125,6 @@ export default {
       perPageOptions,
       perPage: "10",
       feedbackFields: [
-        { key: "feedback_project_id", label: "Feedback ID", sortable: true },
         { key: "date", sortable: true },
         { key: "company_name", sortable: true },
         { key: "sender", sortable: true },
@@ -146,7 +145,7 @@ export default {
           return "success";
         case "Open":
           return "danger";
-        case "Receive":
+        case "Received":
           return "warning";
         default:
           return "primary";

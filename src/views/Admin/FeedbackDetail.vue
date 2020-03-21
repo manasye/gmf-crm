@@ -35,7 +35,9 @@
     <div class="detail-info">
       <div class="detail mt-3 mt-md-0">
         <h5 class="title">{{ details.project_type }}</h5>
-        <p class="dept mb-2">Aspect(s) to improve</p>
+        <p class="dept mb-2">
+          {{ details.rating > 4 ? "Aspect(s) satisfied" : "Aspect(s) to improve" }}
+        </p>
         <ul style="padding-left: 16px">
           <li v-for="a in aspects" :key="a">{{ a }}</li>
         </ul>

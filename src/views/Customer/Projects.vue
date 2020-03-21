@@ -160,8 +160,6 @@ export default {
       perPage: "10",
       currentPage: 1,
       projectFields: [
-        { key: "project_id", sortable: true },
-        { key: "project_id", sortable: true },
         { key: "name", label: "Project Name", sortable: true },
         { key: "start", label: "Est Start Date", sortable: true },
         { key: "finish", label: "Est Finish Date", sortable: true },

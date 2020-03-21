@@ -139,7 +139,7 @@ export default {
         company_name: this.selectVal.company,
         service: this.selectVal.department,
         range: this.selectVal.range,
-        semester: this.selectVal.semester,
+        semester: this.selectVal.semester
       };
       if (!this.selectVal.range) {
         data = { ...data, year: +this.selectVal.year, month: +this.selectVal.month };

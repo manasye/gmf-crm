@@ -186,8 +186,6 @@ export default {
         this.customers = customerOptions;
       })
       .catch(() => {});
-
-    this.getHistoryChats();
   },
   beforeDestroy() {
     clearInterval(this.chatInterval);
@@ -214,6 +212,9 @@ export default {
       document.getElementById("file").click();
     },
     uploadFileChat(file) {
+      if (file.size > 50 * 1000000) {
+        swal("Error", `File size exceeded 50MB`, "error");
+      }
       let form = new FormData();
       form.set("user_id", this.getUserId());
       form.set("file", file);
