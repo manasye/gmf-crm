@@ -137,20 +137,24 @@ export default {
       let formData = new FormData();
       const data = this.editedData;
       let url = "/religion/create";
+      let action = "created";
+
       formData.set("subject", data.subject);
       if (data.image instanceof File) formData.set("image", data.image);
       formData.set("date", moment(data.date).format("YYYY-MM-DD"));
       formData.set("religion", data.religion);
       formData.set("permalink", data.permalink);
+
       if (data.religion_card_id) {
         url = "/religion/update";
         formData.set("religion_card_id", data.religion_card_id);
+        action = "updated";
       }
 
       axios
         .post(url, formData)
         .then(() => {
-          swal("Success", "Holiday card successfully created", "success");
+          swal("Success", `Holiday card successfully ${action}`, "success");
           this.getCards();
         })
         .catch(err => {

@@ -82,7 +82,7 @@
                 </p>
                 <hr style="margin: 8px 0" />
                 <div v-for="e in eventSelected" :key="e.event">
-                  <p class="mb-2">
+                  <p class="mb-2" style="color: #13619a">
                     {{ e.event }}
                     <span v-if="e.company" style="color: #949699">{{ e.company }} </span>
                   </p>

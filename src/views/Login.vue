@@ -9,7 +9,13 @@
           <h5 class="text-italic">Login to get going</h5>
           <hr align="left" />
           <h5>Development Environment</h5>
-          <p class="text-italic">Please contact email to access the site</p>
+          <p class="text-italic">
+            Please contact
+            <a href="mailto: marketing@gmf-aeroasia.co.id" style="color: white"
+              >marketing@gmf-aeroasia.co.id</a
+            >
+            to access the site
+          </p>
         </div>
       </b-row>
     </b-col>
