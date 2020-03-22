@@ -100,7 +100,6 @@ export default {
         project_type: null
       },
       feedbackFields: [
-        { key: "feedback_project_id", label: "Id", sortable: true },
         { key: "date", sortable: true },
         { key: "sender", sortable: true },
         { key: "location", sortable: true },

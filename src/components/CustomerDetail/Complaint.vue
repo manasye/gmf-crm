@@ -97,7 +97,6 @@ export default {
         status: null
       },
       complaintFields: [
-        { key: "complaint_id", label: "Id", sortable: true },
         { key: "date", sortable: true },
         { key: "sender", sortable: true },
         { key: "service", sortable: true },

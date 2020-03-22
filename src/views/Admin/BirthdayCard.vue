@@ -13,15 +13,21 @@
 
           <b-row>
             <b-col cols="6">
-              <p class="mb-2 mt-4">Background</p>
-              <img :src="urlBg" alt="" class="d-block" id="backgroundImage" @load="getSize" />
+              <p class="mt-4 mb-2">Background</p>
               <b-form-file
                 v-model="editedData.image"
                 placeholder="Upload Background"
                 accept="image/*"
                 @change="onFileChange"
-                class="mt-2"
                 v-if="isAdmin()"
+              />
+              <img
+                :src="urlBg"
+                alt=""
+                class="d-block"
+                id="backgroundImage"
+                @load="getSize"
+                style="opacity: 0"
               />
             </b-col>
             <b-col cols="6" v-if="urlBg">
