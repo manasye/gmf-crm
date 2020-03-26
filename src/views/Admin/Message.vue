@@ -15,7 +15,7 @@
                     :src="
                       getUserImage()
                         ? getBaseStorage() + getUserImage()
-                        : 'https://image.flaticon.com/icons/svg/172/172163.svg'
+                        : require('../../assets/img/default_profile.png')
                     "
                     alt=""
                   />
@@ -90,12 +90,19 @@
                   <p v-if="c.type === 'text'">
                     {{ c.message }}
                   </p>
+                  <img
+                    src="https://pngimage.net/wp-content/uploads/2018/06/file-logo-png-5.png"
+                    v-if="c.type === 'file'"
+                    alt=""
+                    style="width: 40px; margin-bottom: 6px"
+                  />
+                  <br />
                   <a
                     :href="getBaseStorage() + c.message"
-                    v-else
+                    v-if="c.type === 'file'"
                     target="_blank"
-                    style="color: white"
-                    >File</a
+                    style="color: white; text-align: center"
+                    >Open</a
                   >
                 </div>
                 <br v-if="c.sender === 'admin'" :key="c.message_id" />
@@ -104,7 +111,16 @@
                     <p v-if="c.type === 'text'">
                       {{ c.message }}
                     </p>
-                    <a :href="getBaseStorage() + c.message" v-else target="_blank">File</a>
+                    <img
+                      src="https://pngimage.net/wp-content/uploads/2018/06/file-logo-png-5.png"
+                      v-if="c.type === 'file'"
+                      alt=""
+                      style="width: 40px; margin-bottom: 6px"
+                    />
+                    <br />
+                    <a :href="getBaseStorage() + c.message" v-if="c.type === 'file'" target="_blank"
+                      >Open</a
+                    >
                   </div>
                 </div>
               </template>

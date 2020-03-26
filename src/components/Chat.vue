@@ -26,6 +26,7 @@ import OpenIcon from "vue-beautiful-chat/src/assets/logo-no-bg.svg";
 import FileIcon from "vue-beautiful-chat/src/assets/file.svg";
 import CloseIconSvg from "vue-beautiful-chat/src/assets/close.svg";
 import axios from "axios";
+import swal from "sweetalert";
 
 const TIME_FETCH_INTERVAL = 5000;
 
@@ -74,10 +75,10 @@ export default {
         {
           id: "admin",
           name: "Admin",
-          imageUrl: "https://image.flaticon.com/icons/svg/172/172163.svg"
+          imageUrl: require("../assets/img/default_profile.png")
         }
       ],
-      titleImageUrl: "https://image.flaticon.com/icons/svg/172/172163.svg",
+      titleImageUrl: require("../assets/img/default_profile.png"),
       messageList: [],
       newMessagesCount: 0,
       isChatOpen: false,
@@ -150,6 +151,7 @@ export default {
         .catch(() => {});
     },
     sendMessage(text) {
+      console.log(text);
       if (text.length > 0) {
         this.newMessagesCount = this.isChatOpen ? this.newMessagesCount : this.newMessagesCount + 1;
         this.onMessageWasSent({
@@ -163,11 +165,14 @@ export default {
       let data;
 
       if (message.type === "file") {
+        if (message.data.file.size > 50 * 1000000) {
+          swal("Error", `File size exceeded 50MB`, "error");
+          return;
+        }
         let formData = new FormData();
         formData.set("user_id", this.getUserId());
         formData.set("file", message.data.file);
         formData.set("type", "file");
-
         data = formData;
       } else {
         data = {
@@ -226,8 +231,8 @@ export default {
   padding: 5px 20px !important;
 }
 .sc-image {
-  width: 30px;
-  padding: 5px;
+  width: 25px;
+  padding: 5px 15px;
 }
 .sc-header--img {
   width: 50px;

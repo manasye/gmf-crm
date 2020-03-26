@@ -103,7 +103,7 @@
                 :src="
                   getUserImage()
                     ? getBaseStorage() + getUserImage()
-                    : 'https://ra.ac.ae/wp-content/uploads/2017/02/user-icon-placeholder.png'
+                    : require('../assets/img/default_profile.png')
                 "
                 alt
                 class="navbar-img"
@@ -121,7 +121,7 @@
                 :src="
                   getUserImage()
                     ? getBaseStorage() + getUserImage()
-                    : 'https://ra.ac.ae/wp-content/uploads/2017/02/user-icon-placeholder.png'
+                    : require('../assets/img/default_profile.png')
                 "
                 alt
                 class="navbar-img-expand mb-3"
