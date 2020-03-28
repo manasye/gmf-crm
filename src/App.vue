@@ -93,6 +93,11 @@ img {
   padding: 0 !important;
 }
 
+.b-table td,
+.b-table th {
+  white-space: nowrap;
+}
+
 @media (max-width: 700px) {
   html,
   body {

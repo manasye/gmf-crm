@@ -75,9 +75,7 @@
         max-rows="6"
         class="mb-4"
       />
-      <b-button variant="success" @click="showReplyTextArea = true" v-if="!showReplyTextArea"
-        >REPLY</b-button
-      >
+      <b-button variant="success" @click="replyAction" v-if="!showReplyTextArea">REPLY</b-button>
       <b-button variant="success" v-else @click="submitReply">SUBMIT</b-button>
       <b-modal v-model="showModal" centered title="Edit Status" @ok="changeStatus">
         <b-row>
@@ -144,6 +142,15 @@ export default {
           return "warning";
         default:
           return "primary";
+      }
+    },
+    replyAction() {
+      if (this.complaintDetail.status === "Closed") {
+        swal("Status is closed, do you want to open again?").then(res => {
+          if (res) {
+            this.showReplyTextArea = true;
+          }
+        });
       }
     },
     changeStatus() {

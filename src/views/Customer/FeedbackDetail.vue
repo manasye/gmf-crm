@@ -67,9 +67,7 @@
         max-rows="6"
         class="mb-4"
       />
-      <b-button variant="success" @click="showReplyTextArea = true" v-if="!showReplyTextArea"
-        >REPLY</b-button
-      >
+      <b-button variant="success" @click="replyAction" v-if="!showReplyTextArea">REPLY</b-button>
       <b-button variant="success" v-else @click="submitReply">SUBMIT</b-button>
     </div>
   </b-container>
@@ -78,6 +76,7 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import swal from "sweetalert";
 
 export default {
   mounted() {
@@ -136,6 +135,15 @@ export default {
           this.replies = res.data.data;
         })
         .catch(() => {});
+    },
+    replyAction() {
+      if (this.detail.status === "Closed") {
+        swal("Status is closed, do you want to open again?").then(res => {
+          if (res) {
+            this.showReplyTextArea = true;
+          }
+        });
+      }
     },
     submitReply() {
       axios

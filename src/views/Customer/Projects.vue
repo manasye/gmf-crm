@@ -65,7 +65,7 @@
       </template>
     </b-table>
 
-    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" />
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="right" />
 
     <b-modal
       v-model="showModalHistory"
@@ -76,7 +76,7 @@
     >
       <p class="mb-2">{{ projectChosen.project_type }}</p>
       <p class="mb-4">Location &nbsp;&nbsp;&nbsp;&nbsp;{{ projectChosen.location }}</p>
-      <b-table show-empty striped hover :items="histories" :fields="historyField">
+      <b-table show-empty striped hover :items="histories" :fields="historyField" responsive>
         <template v-slot:cell(rating)="rate">
           <star-rating
             :rating="+rate.value"
@@ -168,7 +168,7 @@ export default {
         { key: "quantity", label: "Qty", sortable: true },
         { key: "rating", label: "Rating", sortable: true }
       ],
-      historyField: ["date", "rating"],
+      historyField: ["date", "rating", { key: "date", label: "Aspects" }],
       histories: [{ date: "a", rating: "1" }],
       projects: [],
       showModalHistory: false,

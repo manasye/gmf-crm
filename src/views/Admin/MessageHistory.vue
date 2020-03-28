@@ -8,6 +8,7 @@
       show-empty
       @row-clicked="showDetail"
       striped
+      responsive
     >
       <template v-slot:cell(last_message)="msg">
         <p v-if="msg.value.type === 'text'">{{ msg.value.message }}</p>

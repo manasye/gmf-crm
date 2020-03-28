@@ -21,7 +21,15 @@
         </b-col>
       </b-row>
 
-      <b-table class="mt-4" striped hover :fields="revenueFields" :items="revenues" show-empty>
+      <b-table
+        class="mt-4"
+        striped
+        hover
+        :fields="revenueFields"
+        :items="revenues"
+        show-empty
+        responsive
+      >
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
             v-if="getRole() === 'Admin'"
@@ -48,7 +56,15 @@
         >NEW</b-button
       >
       <h5>Past Marketing Activities</h5>
-      <b-table class="mt-4" striped hover :fields="activityFields" :items="activites" show-empty>
+      <b-table
+        class="mt-4"
+        striped
+        hover
+        :fields="activityFields"
+        :items="activites"
+        show-empty
+        responsive
+      >
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
             v-if="getRole() === 'Admin'"

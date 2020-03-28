@@ -48,7 +48,7 @@
       </template>
     </b-table>
 
-    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" />
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="right" />
   </b-container>
 </template>
 
