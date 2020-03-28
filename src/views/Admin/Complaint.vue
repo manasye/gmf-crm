@@ -44,6 +44,9 @@
           <p style="margin: 5px">{{ data.value }}</p>
         </b-badge>
       </template>
+      <template v-slot:cell(have_new_activity)="data"
+        ><font-awesome-icon icon="circle" v-if="data.value" size="xs" style="color: #00a65a"
+      /></template>
     </b-table>
 
     <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="right" />
@@ -121,7 +124,8 @@ export default {
         { key: "sender", sortable: true },
         { key: "service", sortable: true },
         { key: "subject", sortable: true },
-        { key: "status", sortable: true }
+        { key: "status", sortable: true },
+        { key: "have_new_activity", label: "New", sortable: true }
       ],
       complaints: []
     };

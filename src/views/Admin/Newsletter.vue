@@ -63,6 +63,10 @@ export default {
   },
   methods: {
     sendNews() {
+      if (this.image.size > 1000000) {
+        swal("Error", `File size exceeded 1MB`, "error");
+        return;
+      }
       let formData = new FormData();
       formData.set("subject", this.subject);
       formData.set("image", this.image);

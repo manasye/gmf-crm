@@ -125,7 +125,7 @@ export default {
       perPageOptions,
       currentPage: 1,
       informationFields: ["Category", "Subject", "Date", ""],
-      infos: Array(3).fill(initialInfo),
+      infos: [],
       completed: false
     };
   },

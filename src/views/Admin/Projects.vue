@@ -100,6 +100,16 @@
           />
           <p class="mb-0" v-else>Not yet rated</p>
         </template>
+        <template v-slot:cell(aspect)="data">
+          {{
+            data.item.rating
+              ? +data.item.rating >= 4
+                ? "Satisfied aspects : "
+                : "Aspects to improve : "
+              : ""
+          }}
+          {{ data.value }}
+        </template>
       </b-table>
     </b-modal>
 
@@ -227,7 +237,7 @@ export default {
       projectDropdown: [],
       histories: [],
       allCompanies: [],
-      historyField: ["date", "rating", { key: "date", label: "Aspects" }]
+      historyField: ["date", "rating", { key: "aspect", label: "Aspects" }]
     };
   },
   components: { StarRating, Datepicker },
@@ -308,7 +318,6 @@ export default {
         .catch(() => {});
     },
     viewHistory(rate) {
-      console.log(rate);
       if (rate.item.quantity <= 1) return;
       else
         axios

@@ -99,6 +99,16 @@
             >Review</b-button
           >
         </template>
+        <template v-slot:cell(aspect)="data">
+          {{
+            data.item.rating
+              ? +data.item.rating >= 4
+                ? "Satisfied aspects : "
+                : "Aspects to improve : "
+              : ""
+          }}
+          {{ data.value }}
+        </template>
       </b-table>
     </b-modal>
   </b-container>
@@ -168,7 +178,7 @@ export default {
         { key: "quantity", label: "Qty", sortable: true },
         { key: "rating", label: "Rating", sortable: true }
       ],
-      historyField: ["date", "rating", { key: "date", label: "Aspects" }],
+      historyField: ["date", "rating", { key: "aspect", label: "Aspects" }],
       histories: [{ date: "a", rating: "1" }],
       projects: [],
       showModalHistory: false,

@@ -230,6 +230,7 @@ export default {
     uploadFileChat(file) {
       if (file.size > 50 * 1000000) {
         swal("Error", `File size exceeded 50MB`, "error");
+        return;
       }
       let form = new FormData();
       form.set("user_id", this.getUserId());
