@@ -57,7 +57,8 @@
         <b-button variant="success" size="sm" @click="postBirthday">Send</b-button>
         <p style="font-size: .8rem" class="mt-3 ">
           *Birthday card will be sent automatically according to the customer's birthday. The
-          customer's name will be taken from the name when registering customer's account.
+          customer's name will be taken from the name when registering customer's account. Maximum
+          file size is 1 MB.
         </p>
       </b-col>
     </b-row>
@@ -107,6 +108,10 @@ export default {
   },
   methods: {
     postBirthday() {
+      if (this.editedData.image.size > 1000000) {
+        swal("Error", `File size exceeded 1MB`, "error");
+        return;
+      }
       let data = new FormData();
       data.set("subject", this.editedData.subject);
       data.set("image", this.editedData.image);

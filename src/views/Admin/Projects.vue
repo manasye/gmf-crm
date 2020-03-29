@@ -312,8 +312,14 @@ export default {
     },
     getCompanyFilter() {
       axios
-        .get("")
-        .then(res => {})
+        .get("/company/projectoption")
+        .then(res => {
+          this.companyOptions = this.companyOptions.concat(
+            res.data.data.map(c => {
+              return { value: c.company_id, text: c.name };
+            })
+          );
+        })
         .catch(() => {});
     },
     showProjectDetail(row) {

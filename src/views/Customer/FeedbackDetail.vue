@@ -143,6 +143,8 @@ export default {
             this.showReplyTextArea = true;
           }
         });
+      } else {
+        this.showReplyTextArea = true;
       }
     },
     submitReply() {

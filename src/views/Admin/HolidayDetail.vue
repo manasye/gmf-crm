@@ -94,6 +94,10 @@ export default {
   },
   methods: {
     editCard() {
+      if (this.detail.image.size > 1000000) {
+        swal("Error", `File size exceeded 1MB`, "error");
+        return;
+      }
       let data = new FormData();
       if (this.detail.image instanceof File) data.set("image", this.detail.image);
       data.set("date", moment(this.sendDate).format("YYYY-MM-DD"));

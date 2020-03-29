@@ -94,7 +94,9 @@ img {
 }
 
 .b-table td,
-.b-table th {
+.b-table th,
+.table td,
+.table th {
   white-space: nowrap;
 }
 

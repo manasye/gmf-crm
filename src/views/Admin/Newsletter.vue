@@ -40,7 +40,8 @@
         <!--        <br />-->
         <b-button variant="success" size="sm" @click="sendNews">Send</b-button>
         <p style="font-size: .8rem" class="mt-3 ">
-          *The newsletter will be sent immediately to customer's CRM application and email.
+          *The newsletter will be sent immediately to customer's CRM application and email. Maximum
+          file size is 1 MB.
         </p>
       </b-col>
     </b-row>

@@ -146,7 +146,7 @@ export default {
     return {
       startDate: null,
       endDate: null,
-      revenueFields: ["product", "sales"],
+      revenueFields: ["product", "sales", "currency"],
       revenues: [],
       activites: [],
       activityFields: ["date", "activity", "remarks", "edit"],

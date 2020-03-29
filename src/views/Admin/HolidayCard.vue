@@ -136,6 +136,10 @@ export default {
     addCard() {
       let formData = new FormData();
       const data = this.editedData;
+      if (data.image.size > 1000000) {
+        swal("Error", `File size exceeded 1MB`, "error");
+        return;
+      }
       let url = "/religion/create";
       let action = "created";
 
