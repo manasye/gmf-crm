@@ -4,13 +4,17 @@
 
     <b-row>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.company_name" :options="companyOptions" />
+        <b-form-select v-model="selectVal.company_id" :options="companyOptions" @input="getData" />
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.project_type" :options="projectDropdown" />
+        <b-form-select
+          v-model="selectVal.project_type"
+          :options="projectDropdown"
+          @input="getData"
+        />
       </b-col>
       <b-col cols="2">
-        <b-form-select v-model="selectVal.status" :options="statusOptions" />
+        <b-form-select v-model="selectVal.status" :options="statusOptions" @input="getData" />
       </b-col>
       <b-col cols="2">
         <b-button variant="success" @click="addProject">Add New Project</b-button>
@@ -27,17 +31,20 @@
       </b-col>
     </b-row>
 
+    <loader v-if="isLoading"></loader>
     <b-table
       style="margin-top: 20px;"
       striped
       hover
-      :items="filteredItems"
+      :items="projects"
       :fields="projectFields"
       :per-page="perPage"
-      :current-page="currentPage"
       responsive
       @row-clicked="showProjectDetail"
       show-empty
+      @sort-changed="sortingChanged"
+      :no-local-sorting="true"
+      :style="{ opacity: isLoading ? '0' : '1' }"
     >
       <template v-slot:cell(status)="data">
         <b-button v-if="data.value === 'Closed'" variant="primary" size="sm">
@@ -77,7 +84,13 @@
       </template>
     </b-table>
 
-    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="right" />
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="maxPage"
+      :per-page="perPage"
+      align="right"
+      @input="changePage"
+    />
 
     <b-modal
       v-model="showModalHistory"
@@ -85,6 +98,7 @@
       centered
       :title="projectChosen.name"
       hide-footer
+      size="lg"
     >
       <p class="mb-2">{{ projectChosen.project_type }}</p>
       <p class="mb-4">Location &nbsp;&nbsp;&nbsp;&nbsp;{{ projectChosen.location }}</p>
@@ -101,14 +115,14 @@
           <p class="mb-0" v-else>Not yet rated</p>
         </template>
         <template v-slot:cell(aspect)="data">
-          {{
-            data.item.rating
-              ? +data.item.rating >= 4
-                ? "Satisfied aspects : "
-                : "Aspects to improve : "
-              : ""
-          }}
-          {{ data.value }}
+          <div v-for="(s, idx) in data.value" :key="s.id">
+            Service : {{ s.service }}<br />
+            {{
+              s.rating ? (+s.rating >= 4 ? "Satisfied aspects : " : "Aspects to improve : ") : ""
+            }}
+            {{ s.aspect }}
+            <hr class="mb-2 mt-2" v-if="idx !== data.value.length - 1" />
+          </div>
         </template>
       </b-table>
     </b-modal>
@@ -167,11 +181,11 @@ import axios from "axios";
 import swal from "sweetalert";
 import moment from "moment";
 import Datepicker from "vuejs-datepicker";
+import Loader from "@/components/Loader.vue";
 
 export default {
   mounted() {
     this.getData();
-
     departments().then(res => {
       this.projectOptions = res;
       this.projectDropdown = [
@@ -182,7 +196,10 @@ export default {
         ...res
       ];
     });
-
+    if (!this.isAdmin()) {
+      this.projectFields.pop();
+    }
+    this.getCompanyFilter();
     axios
       .get("/company/read")
       .then(res => {
@@ -194,17 +211,13 @@ export default {
         this.allCompanies = companies;
       })
       .catch(() => {});
-
-    if (!this.isAdmin()) {
-      this.projectFields.pop();
-    }
   },
   data() {
     return {
       selectVal: {
         status: null,
         project_type: null,
-        company_name: null
+        company_id: null
       },
       statusOptions: statusProjects,
       projectOptions: [],
@@ -237,10 +250,14 @@ export default {
       projectDropdown: [],
       histories: [],
       allCompanies: [],
-      historyField: ["date", "rating", { key: "aspect", label: "Aspects" }]
+      historyField: ["date", "rating", { key: "aspect", label: "Aspects" }],
+      sortBy: null,
+      sortDirection: null,
+      maxPage: 1,
+      isLoading: false
     };
   },
-  components: { StarRating, Datepicker },
+  components: { StarRating, Datepicker, Loader },
   computed: {
     rows() {
       return this.projects.length;
@@ -259,6 +276,46 @@ export default {
     }
   },
   methods: {
+    sortingChanged(ctx) {
+      this.sortBy = ctx.sortBy;
+      this.sortDirection = ctx.sortDesc;
+      this.getData();
+    },
+    changePage() {
+      this.getData();
+    },
+    getData() {
+      this.isLoading = true;
+      const params = {
+        page: +this.currentPage,
+        per_page: +this.perPage,
+        sort: {
+          by: this.sortBy,
+          sort: this.sortDirection ? "desc" : "asc"
+        },
+        filters: this.selectVal
+      };
+      axios
+        .get("/project/read", { params })
+        .then(res => {
+          this.projects = res.data.data.map(el => {
+            let o = Object.assign({}, el);
+            if (this.isAdmin()) o.edit = "a";
+            return o;
+          });
+          this.maxPage = Math.ceil(res.data.total / +this.perPage);
+          this.isLoading = false;
+        })
+        .catch(() => {
+          this.isLoading = false;
+        });
+    },
+    getCompanyFilter() {
+      axios
+        .get("")
+        .then(res => {})
+        .catch(() => {});
+    },
     showProjectDetail(row) {
       this.$store.dispatch("goToPage", `/project-customer/${row.project_id}`);
     },
@@ -274,7 +331,6 @@ export default {
     postProject() {
       const url = this.newMode ? "/project/create" : "/project/update";
       const data = this.editedData;
-
       axios
         .post(url, {
           ...data,
@@ -288,25 +344,6 @@ export default {
         .catch(err => {
           swal("Error", err.response.data.message, "error");
         });
-    },
-    getData() {
-      axios
-        .get("/project/read")
-        .then(res => {
-          this.projects = res.data.data.map(el => {
-            let o = Object.assign({}, el);
-            if (this.isAdmin()) o.edit = "a";
-            return o;
-          });
-          let companies = [];
-          res.data.data.map(p => {
-            if (!companies.find(l => l.value === p.company_name) && p.company_name) {
-              companies.push({ value: p.company_name, text: p.company_name });
-            }
-          });
-          this.companyOptions = this.companyOptions.concat(companies);
-        })
-        .catch(() => {});
     },
     removeProject(project) {
       axios

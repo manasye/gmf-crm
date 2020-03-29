@@ -98,6 +98,15 @@ img {
   white-space: nowrap;
 }
 
+.p-link {
+  color: #13619a;
+  cursor: pointer;
+}
+
+.p-link:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 700px) {
   html,
   body {

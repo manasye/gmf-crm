@@ -52,7 +52,7 @@
         ></b-col
       >
     </b-row>
-
+    <loader v-if="isLoading"></loader>
     <b-table
       style="margin-top: 20px;"
       striped
@@ -64,6 +64,7 @@
       responsive
       @row-clicked="showCustomer"
       show-empty
+      :style="{ opacity: isLoading ? '0' : '1' }"
     >
       <template v-slot:cell(status)="data">
         <b-badge :variant="getBadgesVariant(data.value)" style="margin-right: 30px">
@@ -97,7 +98,10 @@
       <b-row>
         <b-col cols="4"> <label class="mt-2">Customer Type</label></b-col>
         <b-col cols="8" class="mb-3"> <b-form-input v-model="customerType" /> </b-col
-      ></b-row>
+        ><b-col cols="12">
+          <p class="mb-0 p-link" @click="showModalListCust = true">Remove Customer Type</p>
+        </b-col></b-row
+      >
     </b-modal>
 
     <b-modal
@@ -110,7 +114,64 @@
       <b-row>
         <b-col cols="4"> <label class="mt-2">Alliance</label></b-col>
         <b-col cols="8" class="mb-3"> <b-form-input v-model="alliance" /> </b-col
-      ></b-row>
+        ><b-col cols="12">
+          <p class="mb-0 p-link" @click="showModalListAlliance = true">Remove Alliance</p>
+        </b-col></b-row
+      >
+    </b-modal>
+
+    <b-modal
+      v-model="showModalListAlliance"
+      centered
+      title="Remove Alliance"
+      v-if="showModalListAlliance"
+    >
+      <b-table
+        striped
+        hover
+        :items="
+          allianceOptions.map(e => {
+            return { id: e.id, name: e.value };
+          })
+        "
+        :fields="allianceFields"
+        responsive
+        show-empty
+        ><template v-slot:cell(delete)="data">
+          <font-awesome-icon
+            v-if="getRole() === 'Admin'"
+            icon="trash"
+            style="cursor: pointer"
+            @click.stop="removeAlliance(data.item)"
+        /></template>
+      </b-table>
+    </b-modal>
+
+    <b-modal
+      v-model="showModalListCust"
+      centered
+      title="Remove Customer Type"
+      v-if="showModalListCust"
+    >
+      <b-table
+        striped
+        hover
+        :items="
+          custTypeOptions.map(e => {
+            return { id: e.id, name: e.value };
+          })
+        "
+        :fields="allianceFields"
+        responsive
+        show-empty
+        ><template v-slot:cell(delete)="data">
+          <font-awesome-icon
+            v-if="getRole() === 'Admin'"
+            icon="trash"
+            style="cursor: pointer"
+            @click.stop="removeCustType(data.item)"
+        /></template>
+      </b-table>
     </b-modal>
 
     <b-modal
@@ -198,6 +259,10 @@
         <b-col cols="8" class="mb-3">
           <b-form-input v-model="editedData.customer_since" type="number" />
         </b-col>
+        <b-col cols="4"> <label class="mt-2">Currency</label></b-col>
+        <b-col cols="8" class="mb-3">
+          <b-form-input v-model="editedData.currency" type="text" />
+        </b-col>
       </b-row>
     </b-modal>
 
@@ -247,6 +312,7 @@
 import { perPageOptions } from "@/utility/globalVar";
 import axios from "axios";
 import swal from "sweetalert";
+import Loader from "@/components/Loader.vue";
 
 const dummyCustomer = {
   customer_id: "DGIA10291",
@@ -263,11 +329,10 @@ export default {
     if (!this.$store.getters.walkthrough) {
       this.getCompanyData();
     }
-
     this.getAllianceOptions();
     this.getCustTypeOptions();
   },
-
+  components: { Loader },
   data() {
     return {
       regionOptions: [
@@ -353,7 +418,6 @@ export default {
       currentPage: 1,
       customers: [],
       customersFields: [
-        // { key: "customer_id", sortable: true },
         { key: "name", label: "Company Name", sortable: true },
         { key: "company_sap_code", label: "SAP Code", sortable: true },
         { key: "region", sortable: true },
@@ -367,6 +431,8 @@ export default {
       showModalAdmin: false,
       showModalCust: false,
       showModalAlliance: false,
+      showModalListCust: false,
+      showModalListAlliance: false,
       customerFile: null,
       customerType: null,
       alliance: null,
@@ -385,7 +451,9 @@ export default {
         }
       ],
       allianceOptions: [],
-      custTypeOptions: []
+      custTypeOptions: [],
+      allianceFields: ["name", "delete"],
+      isLoading: false
     };
   },
   methods: {
@@ -430,6 +498,7 @@ export default {
         formData.set("shareholder", this.editedData.shareholder || "");
       if (this.editedData.status) formData.set("status", this.editedData.status || "");
       if (this.editedData.type) formData.set("type", this.editedData.type || "");
+      if (this.editedData.currency) formData.set("currency", this.editedData.currency || "");
 
       let url, msg;
       if (this.editedData.company_id) {
@@ -451,6 +520,7 @@ export default {
         });
     },
     getCompanyData() {
+      this.isLoading = true;
       axios
         .get("/company/read")
         .then(res => {
@@ -477,6 +547,7 @@ export default {
           this.roleOptions = this.roleOptions.concat(roles);
           this.bmOptions = this.bmOptions.concat(businessModels);
           this.regionOptions = this.regionOptions.concat(regions);
+          this.isLoading = false;
         })
         .catch(() => {});
     },
@@ -541,7 +612,7 @@ export default {
         .then(res => {
           let alliances = [];
           res.data.data.map(a => {
-            alliances.push({ value: a.name, text: a.name });
+            alliances.push({ value: a.name, text: a.name, id: a.alliance_id });
           });
           this.allianceOptions = alliances;
         })
@@ -553,9 +624,25 @@ export default {
         .then(res => {
           let ctypes = [];
           res.data.data.map(c => {
-            ctypes.push({ value: c.name, text: c.name });
+            ctypes.push({ value: c.name, text: c.name, id: c.customer_type_id });
           });
           this.custTypeOptions = ctypes;
+        })
+        .catch(() => {});
+    },
+    removeAlliance(item) {
+      axios
+        .get(`/alliance/delete/${item.id}`)
+        .then(() => {
+          this.getAllianceOptions();
+        })
+        .catch(() => {});
+    },
+    removeCustType(item) {
+      axios
+        .get(`/ctype/delete/${item.id}`)
+        .then(() => {
+          this.getCustTypeOptions();
         })
         .catch(() => {});
     }

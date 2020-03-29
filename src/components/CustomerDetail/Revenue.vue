@@ -30,6 +30,9 @@
         show-empty
         responsive
       >
+        <template v-slot:cell(sales)="data">
+          {{ Math.abs(data.value) }}
+        </template>
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
             v-if="getRole() === 'Admin'"

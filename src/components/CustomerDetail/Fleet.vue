@@ -5,8 +5,12 @@
       :options="options"
       style="width: 20%"
       @input="getFleet"
-      class="mt-2"
+      class="mt-2 mr-4"
     />
+
+    <b-button class="mt-2" variant="success" @click="showModalFleet = true"
+      >Add Fleet Type</b-button
+    >
 
     <b-row class="mt-4">
       <b-col cols="6">
@@ -77,6 +81,39 @@
           <b-form-select v-model="editedData.suitable" :options="suitableOptions" /> </b-col
       ></b-row>
     </b-modal>
+
+    <b-modal
+      v-model="showModalFleet"
+      centered
+      title="Add Alliance"
+      v-if="showModalFleet"
+      @ok="addFleetType"
+    >
+      <b-row>
+        <b-col cols="4"> <label class="mt-2">Fleet Type</label></b-col>
+        <b-col cols="8" class="mb-3"> <b-form-input v-model="fleetType" /> </b-col
+        ><b-col cols="12">
+          <p class="mb-0 p-link" @click="showModalFleetDelete = true">Remove Fleet Type</p>
+        </b-col></b-row
+      >
+    </b-modal>
+
+    <b-modal
+      v-model="showModalFleetDelete"
+      centered
+      title="Remove Alliance"
+      v-if="showModalFleetDelete"
+    >
+      <b-table striped hover :items="fleetTypeItems" :fields="fleetTypeFields" responsive show-empty
+        ><template v-slot:cell(delete)="data">
+          <font-awesome-icon
+            v-if="getRole() === 'Admin'"
+            icon="trash"
+            style="cursor: pointer"
+            @click.stop="removeFleetType(data.item)"
+        /></template>
+      </b-table>
+    </b-modal>
   </div>
 </template>
 
@@ -87,6 +124,7 @@ import swal from "sweetalert";
 export default {
   mounted() {
     this.getFleet();
+    this.getFleetType();
     if (!this.isAdmin()) this.itemField.pop();
   },
   data() {
@@ -125,27 +163,14 @@ export default {
         }
       ],
       itemField: ["type", "quantity", "maint_provider", "edit"],
-      items: [
-        {
-          type: "a",
-          quantity: "a",
-          maint_provider: "a",
-          _rowVariant: "primary"
-        },
-        {
-          type: "a",
-          quantity: "a",
-          maint_provider: "a"
-        },
-        {
-          type: "a",
-          quantity: "a",
-          maint_provider: "a",
-          _rowVariant: "warning"
-        }
-      ],
+      items: [],
       showModal: false,
-      editedData: {}
+      editedData: {},
+      showModalFleet: false,
+      showModalFleetDelete: false,
+      fleetType: "",
+      fleetTypeFields: ["type", "delete"],
+      fleetTypeItems: []
     };
   },
   methods: {
@@ -154,7 +179,6 @@ export default {
         .get(`/fleet/readcompanyproduct/${this.$route.params.id}/${this.selected}`)
         .then(res => {
           const data = res.data.data;
-
           let item = [];
           data.map(d => {
             if (d.suitable === "current") {
@@ -165,7 +189,6 @@ export default {
               item.push({ ...d, edit: true });
             }
           });
-
           this.items = item;
         })
         .catch(() => {});
@@ -181,14 +204,45 @@ export default {
     postFleet() {
       let url = this.editedData.fleet_maint_id ? "/fleet/update" : "/fleet/create";
       axios
-        .post(url, { ...this.editedData, company_id: this.$route.params.id })
+        .post(url, { ...this.editedData, company_id: +this.$route.params.id })
         .then(() => {
           swal("Success", `Fleet successfully managed`, "success");
           this.getFleet();
         })
         .catch(() => {});
     },
-    removeFleet(fleet) {}
+    removeFleet(fleet) {
+      axios
+        .get("/fleet/delete/" + fleet.fleet_maint_id)
+        .then(() => {
+          this.getFleet();
+        })
+        .catch(() => {});
+    },
+    getFleetType() {
+      axios
+        .get("/aircraft_type/read")
+        .then(res => {
+          this.fleetTypeItems = res.data.data;
+        })
+        .catch(() => {});
+    },
+    addFleetType() {
+      axios
+        .post("/aircraft_type/create", { type: this.fleetType })
+        .then(() => {
+          this.getFleetType();
+        })
+        .catch(() => {});
+    },
+    removeFleetType(item) {
+      axios
+        .get(`/aircraft_type/delete/${item.id}`)
+        .then(() => {
+          this.getFleetType();
+        })
+        .catch(() => {});
+    }
   }
 };
 </script>

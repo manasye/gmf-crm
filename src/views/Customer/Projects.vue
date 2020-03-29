@@ -73,6 +73,7 @@
       centered
       :title="projectChosen.name"
       hide-footer
+      size="lg"
     >
       <p class="mb-2">{{ projectChosen.project_type }}</p>
       <p class="mb-4">Location &nbsp;&nbsp;&nbsp;&nbsp;{{ projectChosen.location }}</p>
@@ -100,14 +101,14 @@
           >
         </template>
         <template v-slot:cell(aspect)="data">
-          {{
-            data.item.rating
-              ? +data.item.rating >= 4
-                ? "Satisfied aspects : "
-                : "Aspects to improve : "
-              : ""
-          }}
-          {{ data.value }}
+          <div v-for="(s, idx) in data.value" :key="s.id">
+            Service : {{ s.service }}<br />
+            {{
+              s.rating ? (+s.rating >= 4 ? "Satisfied aspects : " : "Aspects to improve : ") : ""
+            }}
+            {{ s.aspect }}
+            <hr class="mb-2 mt-2" v-if="idx !== data.value.length - 1" />
+          </div>
         </template>
       </b-table>
     </b-modal>
