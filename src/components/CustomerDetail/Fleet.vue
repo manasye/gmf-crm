@@ -70,7 +70,8 @@
           <b-form-select v-model="editedData.product" :options="options" />
         </b-col>
         <b-col cols="4"> <label class="mt-2">Type</label></b-col>
-        <b-col cols="8" class="mb-3"> <b-form-input v-model="editedData.type" /> </b-col
+        <b-col cols="8" class="mb-3">
+          <b-form-select v-model="editedData.type" :options="fleetTypeOptions" /> </b-col
         ><b-col cols="4"> <label class="mt-2">Quantity</label></b-col>
         <b-col cols="8" class="mb-3">
           <b-form-input v-model="editedData.quantity" type="number" /> </b-col
@@ -170,7 +171,8 @@ export default {
       showModalFleetDelete: false,
       fleetType: "",
       fleetTypeFields: ["type", "delete"],
-      fleetTypeItems: []
+      fleetTypeItems: [],
+      fleetTypeOptions: []
     };
   },
   methods: {
@@ -224,6 +226,9 @@ export default {
         .get("/aircraft_type/read")
         .then(res => {
           this.fleetTypeItems = res.data.data;
+          this.fleetTypeOptions = res.data.data.map(f => {
+            return { value: f.type, text: f.type };
+          });
         })
         .catch(() => {});
     },
