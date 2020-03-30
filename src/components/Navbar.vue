@@ -9,7 +9,7 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <div v-for="nav in navItems" :key="nav.name" :data-intro="nav.intro">
+          <div v-for="nav in navItems" :key="nav.name">
             <b-nav-item
               v-if="!nav.childrens"
               :href="nav.route"
@@ -49,7 +49,12 @@
 
         <b-navbar-nav class="ml-auto">
           <b-nav-form @submit.prevent="searchPage">
-            <b-form-input size="sm" class="mr-sm-2" placeholder="Search" v-model="searchQuery" />
+            <b-form-input
+              size="sm"
+              class="mr-sm-2"
+              placeholder="Search"
+              v-model="searchQuery"
+            />
           </b-nav-form>
 
           <b-nav-item v-if="getRole() === 'Customer'">
@@ -91,13 +96,7 @@
             </div>
           </b-nav-item-dropdown>
 
-          <b-nav-item-dropdown
-            ref="userdropdown"
-            right
-            class="user-navbar"
-            id="icon-user"
-            :data-intro="firstTime ? 'User' : null"
-          >
+          <b-nav-item-dropdown ref="userdropdown" right class="user-navbar" id="icon-user">
             <template v-slot:button-content>
               <img
                 :src="
@@ -445,7 +444,7 @@ export default {
           .oncomplete(() => {
             this.firstTime = false;
             this.completed = true;
-            window.location.href = "/#/project-customer/a";
+            window.location.href = "/#/project-customer/a/feedback";
             this.$store.commit("changeWalkthrough", true);
           });
       }, 1000);
@@ -489,6 +488,10 @@ export default {
       return moment();
     },
     changeImage() {
+      if (this.userImage.size > 500000) {
+        swal("Error", `File size exceeded 500KB`, "error");
+        return;
+      }
       let form = new FormData();
       form.append("id", this.getUserId());
       form.append("image", this.userImage);

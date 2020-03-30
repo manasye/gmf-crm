@@ -1,5 +1,9 @@
 <template>
-  <b-container fluid class="container-app">
+  <b-container
+    fluid
+    class="container-app"
+    data-intro="You can input Feedback review about your current Project"
+  >
     <Header title="CUSTOMER FEEDBACK" :breadcrumbs="breadcrumbs" />
     <div class="feedback-wrapper">
       <p>What service(s) did your company use for this project?</p>
@@ -74,34 +78,51 @@ import axios from "axios";
 
 export default {
   mounted() {
-    axios
-      .get(`/project/edit/${this.$route.params.id}`)
-      .then(res => {
-        const data = res.data.data[0];
-        this.breadcrumbs = [
-          {
-            text: "Project List",
-            href: "/#/project-customer"
-          },
-          {
-            text: data.name,
-            href: `/#/project-customer/${this.$route.params.id}`
-          },
-          {
-            text: "Customer Feedback",
-            active: true
+    if (this.$store.getters.walkthrough) {
+      this.completed = false;
+      const introJS = require("intro.js");
+      introJS
+        .introJs()
+        .setOption("doneLabel", "Next page")
+        .start()
+        .onexit(() => {
+          if (!this.completed) this.$store.commit("changeWalkthrough", false);
+        })
+        .oncomplete(() => {
+          this.completed = true;
+          window.location.href = "/#/information-customer";
+          this.$store.commit("changeWalkthrough", true);
+        });
+    } else {
+      axios
+        .get(`/project/edit/${this.$route.params.id}`)
+        .then(res => {
+          const data = res.data.data[0];
+          this.breadcrumbs = [
+            {
+              text: "Project List",
+              href: "/#/project-customer"
+            },
+            {
+              text: data.name,
+              href: `/#/project-customer/${this.$route.params.id}`
+            },
+            {
+              text: "Customer Feedback",
+              active: true
+            }
+          ];
+          this.projectType = data.project_type;
+          if (this.projectType === "Line Maintenance") {
+            this.serviceSelected = ["Outstation Line Maintenance", "Component Services"];
           }
-        ];
-        this.projectType = data.project_type;
-        if (this.projectType === "Line Maintenance") {
-          this.serviceSelected = ["Outstation Line Maintenance", "Component Services"];
-        }
-      })
-      .catch(() => {});
+        })
+        .catch(() => {});
 
-    departments().then(res => {
-      this.services = res;
-    });
+      departments().then(res => {
+        this.services = res;
+      });
+    }
   },
   data() {
     return {
@@ -119,7 +140,8 @@ export default {
         { name: "Communication", value: "Communication" }
       ],
       performances: [],
-      projectType: ""
+      projectType: "",
+      completed: false
     };
   },
   components: {

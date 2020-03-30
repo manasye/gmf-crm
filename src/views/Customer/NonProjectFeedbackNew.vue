@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="container-app" data-intro="Non Project New">
+  <b-container fluid class="container-app">
     <Header title="NEW NON-PROJECT FEEDBACK" :breadcrumbs="breadcrumbs" />
     <div class="feedback-wrapper">
       <p class="mb-2">Subject</p>
@@ -15,7 +15,13 @@
       </p>
       <p class="mb-2 mt-4">Description</p>
       <b-form-textarea v-model="description" rows="3" max-rows="6" />
-      <b-button variant="success" class="mt-4 mb-2" @click="submitProject">SUBMIT</b-button>
+      <b-button
+        variant="success"
+        class="mt-4 mb-2"
+        @click="submitProject"
+        data-intro="You can submit your new Non-Project Feedback "
+        >SUBMIT</b-button
+      >
     </div>
   </b-container>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="container-app" data-intro="Infor">
+  <b-container fluid class="container-app">
     <Header
       title="INFORMATION LIST"
       subtitle="List of Most update notice from Garuda Maintenance Facility"
@@ -14,7 +14,11 @@
       </b-col>
     </b-row>
 
-    <div class="table-responsive" style="margin-top: 20px">
+    <div
+      class="table-responsive"
+      style="margin-top: 20px"
+      data-intro="You can view the notification from Garuda Maintenance Facility"
+    >
       <table class="table table-striped">
         <thead>
           <tr>
@@ -100,7 +104,7 @@ export default {
         })
         .oncomplete(() => {
           this.completed = true;
-          window.location.href = "/#/services";
+          window.location.href = "/#/profile-customer";
           this.$store.commit("changeWalkthrough", true);
         });
     } else {
@@ -128,7 +132,7 @@ export default {
       perPageOptions,
       currentPage: 1,
       informationFields: ["Category", "Subject", "Date", ""],
-      infos: [],
+      infos: Array(5).fill(initialInfo),
       completed: false
     };
   },

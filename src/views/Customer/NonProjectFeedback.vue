@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="container-app" data-intro="Non Project">
+  <b-container fluid class="container-app">
     <Header
       title="NON-PROJECT FEEDBACK"
       subtitle="List of Feedback about Garuda Maintenance Facility Performance Not related on Project"
@@ -19,6 +19,7 @@
           variant="success"
           v-if="!isAdmin()"
           @click="$store.dispatch('goToPage', '/feedback-customer-new-nonproject')"
+          data-intro="You can add new Feedback to GMF"
           >Add New Feedback</b-button
         >
       </b-col>
@@ -35,6 +36,7 @@
       responsive
       @row-clicked="showFeedback"
       show-empty
+      data-intro="You can view all your company Non-Project Feedback about GMF service performance Not Related to your company project"
     >
       <template v-slot:cell(remark)="data">
         {{ shortenText(data.value, 30) }}

@@ -1,5 +1,8 @@
 <template>
-  <div style="margin-top: 65px">
+  <div
+    style="margin-top: 65px"
+    data-intro="You can view Garuda Maintenance Facility Client Services Ability"
+  >
     <div class="add-service">
       <b-row>
         <b-col :cols="isAdmin() ? '8' : '12'">

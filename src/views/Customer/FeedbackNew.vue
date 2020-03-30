@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="container-app" data-intro="Complaint New">
+  <b-container fluid class="container-app">
     <Header title="NEW COMPLAINT" :breadcrumbs="breadcrumbs"></Header>
     <div class="feedback-wrapper">
       <p class="mb-2">Subject / Complaint</p>
@@ -31,7 +31,13 @@
 
       <br />
       <br />
-      <b-button variant="success" class="mb-2" @click="submitComplaint">SUBMIT</b-button>
+      <b-button
+        variant="success"
+        class="mb-2"
+        @click="submitComplaint"
+        data-intro="You can submit your new complaint along with attachment (Max:50mb)"
+        >SUBMIT</b-button
+      >
     </div>
   </b-container>
 </template>
@@ -59,11 +65,11 @@ export default {
           window.location.href = "/#/feedback-nonproject";
           this.$store.commit("changeWalkthrough", true);
         });
+    } else {
+      departments().then(res => {
+        this.services = res;
+      });
     }
-
-    departments().then(res => {
-      this.services = res;
-    });
   },
   data() {
     return {

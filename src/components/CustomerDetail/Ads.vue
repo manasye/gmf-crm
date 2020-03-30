@@ -7,6 +7,7 @@
       striped
       hover
       :items="activeAds"
+      :fields="adsField"
       responsive
       class="mb-5"
       show-empty
@@ -35,7 +36,15 @@
     >
     <h5>Ads List</h5>
 
-    <b-table style="margin-top: 20px;" striped hover :items="adList" responsive show-empty>
+    <b-table
+      style="margin-top: 20px;"
+      striped
+      hover
+      :items="adList"
+      responsive
+      show-empty
+      :fields="adsField"
+    >
       <template v-slot:cell(image)="data">
         <img :src="getBaseStorage() + data.value" alt="" />
       </template>
@@ -98,7 +107,8 @@ export default {
         subject: "",
         image: "",
         permalink: ""
-      }
+      },
+      adsField: ["subject", "image", "permalink", "ads_interval", "action"]
     };
   },
   methods: {

@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="container-app" data-intro="Complaint">
+  <b-container fluid class="container-app">
     <Header
       title="COMPLAINT LIST"
       subtitle="List of Your Complaint about Garuda Maintenance Facility Performance"
@@ -21,7 +21,10 @@
         <b-form-select v-model="perPage" :options="perPageOptions" />
       </b-col>
       <b-col cols="12" md="2" class="text-md-right mt-3 mt-md-0">
-        <b-button variant="success" @click="$store.dispatch('goToPage', '/feedback-customer-new')"
+        <b-button
+          variant="success"
+          @click="$store.dispatch('goToPage', '/feedback-customer-new')"
+          data-intro="You can add new Complaint to GMF related to your project with GMF"
           >Add New Complaint</b-button
         >
       </b-col>
@@ -38,6 +41,7 @@
       responsive
       @row-clicked="showFeedback"
       show-empty
+      data-intro="You can view all your company complaint about GMF service performance related to project"
     >
       <template v-slot:cell(status)="data">
         <b-badge :variant="getVariantBadge(data.value)">

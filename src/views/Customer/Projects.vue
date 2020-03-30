@@ -1,11 +1,11 @@
 <template>
-  <b-container fluid class="container-app" data-intro="PRoject">
+  <b-container fluid class="container-app">
     <Header
       title="PROJECT LIST"
       subtitle="List of Your Current Project with Garuda Maintenance Facility"
     />
 
-    <b-row>
+    <b-row data-intro="You can filter the Project list">
       <b-col cols="6" md="2" class="mb-3 mb-md-0">
         <b-form-select v-model="selectVal.location" :options="locationOptions" />
       </b-col>
@@ -38,6 +38,7 @@
       responsive
       @row-clicked="showProjectDetail"
       show-empty
+      data-intro="Show all of your Current project with Garuda Maintenance Facility. You can sort by pressing the arrow up and arrow down."
     >
       <template v-slot:cell(status)="data">
         <b-button v-if="data.value === 'Closed'" variant="primary" size="sm">

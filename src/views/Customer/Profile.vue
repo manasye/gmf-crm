@@ -12,7 +12,11 @@
         </b-col>
 
         <b-col cols="12" md="4" class="mt-4 mt-md-0">
-          <h5>CUSTOMER ACCOUNT</h5>
+          <h5
+            data-intro="You can view your Colleague Account Registerd Account in this Application"
+          >
+            CUSTOMER ACCOUNT
+          </h5>
           <hr align="left" />
           <div v-for="c in customers" :key="c.user_customer_id" class="mb-3">
             <b-row>
@@ -28,7 +32,7 @@
         </b-col>
 
         <b-col cols="12" md="4" class="mt-4 mt-md-0">
-          <h5>GMF CONTACT PERSON</h5>
+          <h5 data-intro="You can view GMF Contact person">GMF CONTACT PERSON</h5>
           <hr style="width:10%" align="left" />
           <div v-for="c in contactPersons" :key="c.gmf_cp_id" class="mb-3">
             <b-row>
@@ -58,27 +62,43 @@ export default {
         this.companyImg = res.data.data[0].image;
       })
       .catch(() => {});
-
     axios
       .get(`/company/read/${this.getCompanyId()}`)
       .then(res => {
         this.customers = res.data.data;
       })
       .catch(() => {});
-
     axios
       .get(`/cp/read/${this.getCompanyId()}`)
       .then(res => {
         this.contactPersons = res.data.data;
       })
       .catch(() => {});
+
+    if (this.$store.getters.walkthrough) {
+      this.completed = false;
+      const introJS = require("intro.js");
+      introJS
+        .introJs()
+        .setOption("doneLabel", "Next page")
+        .start()
+        .onexit(() => {
+          if (!this.completed) this.$store.commit("changeWalkthrough", false);
+        })
+        .oncomplete(() => {
+          this.completed = true;
+          window.location.href = "/#/services";
+          this.$store.commit("changeWalkthrough", true);
+        });
+    }
   },
   data() {
     return {
       customers: [],
       contactPersons: [],
       companyName: "",
-      companyImg: ""
+      companyImg: "",
+      completed: false
     };
   }
 };
