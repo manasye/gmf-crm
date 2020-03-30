@@ -53,12 +53,12 @@
           </b-nav-form>
 
           <b-nav-item v-if="getRole() === 'Customer'">
-            <!--            <img-->
-            <!--              src="../assets/img/help.png"-->
-            <!--              class="navbar-img"-->
-            <!--              alt-->
-            <!--              @click="showModal = !showModal"-->
-            <!--            />-->
+            <img
+              src="../assets/img/help.png"
+              class="navbar-img"
+              alt
+              @click="showModal = !showModal"
+            />
           </b-nav-item>
 
           <b-nav-item-dropdown v-else right class="no-icon-dropdown">

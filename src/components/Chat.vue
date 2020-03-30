@@ -232,7 +232,7 @@ export default {
 }
 .sc-image {
   width: 25px;
-  padding: 5px 15px;
+  padding: 0 32px;
 }
 .sc-header--img {
   width: 50px;

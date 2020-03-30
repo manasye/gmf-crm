@@ -51,10 +51,9 @@
                   <b-col cols="2"> <img :src="chat.user_img" alt=""/></b-col>
                   <b-col cols="8"
                     ><p class="mb-0 ml-3">{{ chat.user_name }}</p>
-                    <p class="mb-0 ml-3" style="color: #949699" v-if="chat.type === 'text'">
-                      {{ chat.last_message }}
+                    <p class="mb-0 ml-3" style="color: #949699">
+                      {{ shortenText(chat.company, 20) }}
                     </p>
-                    <p class="mb-0 ml-3" style="color: #949699" v-else>File</p>
                   </b-col>
                   <b-col cols="2" style="text-align: right">
                     <p class="mb-0" :class="{ 'text-success': chat.unread }">{{ chat.time }}</p>
@@ -75,7 +74,7 @@
                 </b-col>
                 <b-col cols="9"
                   ><p class="mt-1 mb-0 ml-3">{{ activeChat.user_name }}</p>
-                  <p class="mb-0 ml-3" style="color: #949699">aa</p></b-col
+                  <p class="mb-0 ml-3" style="color: #949699">{{ activeChat.company }}</p></b-col
                 >
                 <b-col cols="2" style="text-align: right; margin-top: 10px"
                   ><b-button variant="danger" size="sm" @click="closeThread"
@@ -182,6 +181,7 @@
 import swal from "sweetalert";
 import axios from "axios";
 import moment from "moment";
+import { shortenText } from "../../utility/func";
 
 const TIME_FETCH_INTERVAL = 5000;
 
@@ -220,7 +220,8 @@ export default {
       customers: [],
       showModalHistory: false,
       histories: [],
-      historyField: ["sender", "receiver", "message"]
+      historyField: ["sender", "receiver", "message"],
+      shortenText
     };
   },
   methods: {
@@ -322,7 +323,8 @@ export default {
                 time: moment(d[k].last_message.created_at).format("h:mm"),
                 unread: d[k].unread_count,
                 messages: d[k].messages,
-                type: d[k].last_message.type
+                type: d[k].last_message.type,
+                company: d[k].company
               };
               if (this.activeChatId === k) {
                 this.activeChat = chatData;
