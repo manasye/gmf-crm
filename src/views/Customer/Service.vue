@@ -1,12 +1,13 @@
 <template>
   <div style="margin-top: 65px">
-    <div class="add-service" v-if="isAdmin()">
+    <div class="add-service">
       <b-row>
-        <b-col cols="6">
-          <p class="mb-2">List of Garuda Maintenance Facility Client Services Ability</p>
-          <p class="mb-0 mt-1">GMF Services</p></b-col
-        >
-        <b-col cols="6" style="text-align: right" align-self="end">
+        <b-col :cols="isAdmin() ? '8' : '12'">
+          <Header
+            title="GMF Services"
+            subtitle="List of Garuda Maintenance Facility Client Services Ability"
+        /></b-col>
+        <b-col cols="4" style="text-align: right" v-if="isAdmin()" align-self="center">
           <b-button
             variant="success"
             size="sm"
@@ -20,14 +21,6 @@
           >
         </b-col>
       </b-row>
-    </div>
-
-    <div class="add-service" v-if="!isAdmin()">
-      <b-row>
-        <b-col cols="6">
-          <p class="mb-0">List of Garuda Maintenance Facility Client Services Ability</p>
-        </b-col></b-row
-      >
     </div>
 
     <b-row
@@ -248,7 +241,7 @@ hr {
   border-top: 1px dotted #016299;
 }
 .add-service {
-  padding: 15px 30px 12px;
+  padding: 15px 30px 0;
 }
 .service-card-wrapper {
   border-top: 1px dotted #95999c;

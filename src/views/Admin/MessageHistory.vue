@@ -1,6 +1,9 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Message History" />
+    <Header
+      title="Message History"
+      subtitle="Show all of your chat with Garuda Maintenance Facility Client"
+    />
     <b-table
       :fields="historyField"
       :items="histories"
