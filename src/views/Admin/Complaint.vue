@@ -1,6 +1,9 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Complaint List" />
+    <Header
+      title="Complaint List"
+      subtitle="List of Client Complaint about Garuda Maintenance Facility Performance"
+    />
 
     <b-row>
       <b-col cols="2">

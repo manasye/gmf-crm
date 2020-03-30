@@ -1,6 +1,9 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="PROFILE"></Header>
+    <Header
+      title="PROFILE"
+      subtitle="Your Company users Profile and Garuda Maintenance Facility Contact Person"
+    ></Header>
     <div class="profile-wrapper mt-md-4">
       <b-row>
         <b-col cols="12" md="4" class="mt-4 mt-md-0">

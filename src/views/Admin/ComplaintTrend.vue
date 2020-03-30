@@ -1,6 +1,9 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Complaint Trend"></Header>
+    <Header
+      title="Complaint Trend"
+      subtitle="Garuda Maintenance Facility Performance Graph by Client Complaint"
+    ></Header>
 
     <b-row>
       <b-col cols="2">

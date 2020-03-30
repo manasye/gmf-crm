@@ -1,6 +1,9 @@
 <template>
   <b-container fluid class="container-app" data-intro="Non Project">
-    <Header title="NON-PROJECT FEEDBACK" />
+    <Header
+      title="NON-PROJECT FEEDBACK"
+      subtitle="List of Feedback about Garuda Maintenance Facility Performance Not related on Project"
+    />
 
     <b-row class="mt-0 mt-md-4">
       <b-col cols="6" md="2" class="mb-3 mb-md-0">

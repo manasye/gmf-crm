@@ -1,6 +1,9 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Holiday Card List" />
+    <Header
+      title="Holiday Card List"
+      subtitle="Congratulate Garuda Maintenance Facility Client on their Holiday"
+    />
 
     <b-row>
       <b-col cols="2">

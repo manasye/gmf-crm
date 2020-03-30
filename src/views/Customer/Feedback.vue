@@ -1,6 +1,9 @@
 <template>
   <b-container fluid class="container-app" data-intro="Complaint">
-    <Header title="COMPLAINT LIST" />
+    <Header
+      title="COMPLAINT LIST"
+      subtitle="List of Your Complaint about Garuda Maintenance Facility Performance"
+    />
 
     <b-row class="mt-0 mt-md-4">
       <b-col cols="6" md="2">

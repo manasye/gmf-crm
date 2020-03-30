@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Customer List" subtitle="" />
+    <Header title="Customer List" subtitle="List of Garuda Maintenance Facility Client Company" />
     <b-row>
       <b-col cols="2"> <b-form-select v-model="selectVal.region" :options="regionOptions"/></b-col>
       <b-col cols="2">

@@ -1,6 +1,9 @@
 <template>
   <b-container fluid class="container-app" data-intro="Infor">
-    <Header title="INFORMATION LIST" />
+    <Header
+      title="INFORMATION LIST"
+      subtitle="List of Most update notice from Garuda Maintenance Facility"
+    />
 
     <b-row>
       <b-col cols="6" md="2" class="mt-2">

@@ -1,6 +1,9 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="NEWSLETTER"></Header>
+    <Header
+      title="NEWSLETTER"
+      subtitle="Send Newsletter about to Garuda Maintenance Facility Update"
+    ></Header>
 
     <b-row>
       <b-col cols="8">

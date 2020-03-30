@@ -1,6 +1,9 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="BIRTHDAY CARD" />
+    <Header
+      title="BIRTHDAY CARD"
+      subtitle="Congratulate Garuda Maintenance Facility Client on their Birthday"
+    />
 
     <b-row>
       <b-col cols="8">

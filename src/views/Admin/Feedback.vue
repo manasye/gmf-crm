@@ -1,6 +1,9 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Feedback List" />
+    <Header
+      title="Feedback List"
+      subtitle="List of Client Feedback about Garuda Maintenance Facility Performance related on Project"
+    />
     <b-row>
       <b-col cols="2">
         <b-form-select v-model="selectVal.company_name" :options="companyOptions" />

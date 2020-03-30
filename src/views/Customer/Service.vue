@@ -2,8 +2,11 @@
   <div style="margin-top: 65px">
     <div class="add-service" v-if="isAdmin()">
       <b-row>
-        <b-col cols="6"><p class="mb-0 mt-1">GMF Services</p></b-col>
-        <b-col cols="6" style="text-align: right">
+        <b-col cols="6">
+          <p class="mb-2">List of Garuda Maintenance Facility Client Services Ability</p>
+          <p class="mb-0 mt-1">GMF Services</p></b-col
+        >
+        <b-col cols="6" style="text-align: right" align-self="end">
           <b-button
             variant="success"
             size="sm"
@@ -17,6 +20,14 @@
           >
         </b-col>
       </b-row>
+    </div>
+
+    <div class="add-service" v-if="!isAdmin()">
+      <b-row>
+        <b-col cols="6">
+          <p class="mb-0">List of Garuda Maintenance Facility Client Services Ability</p>
+        </b-col></b-row
+      >
     </div>
 
     <b-row
