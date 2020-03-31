@@ -238,7 +238,7 @@ export default {
         { key: "project_type", sortable: true },
         { key: "status", sortable: true },
         { key: "quantity", label: "Qty", sortable: true },
-        { key: "rating", sortable: true },
+        { key: "rating", label: "Average Rating", sortable: true },
         { key: "edit", label: "Edit" }
       ],
       projects: [],

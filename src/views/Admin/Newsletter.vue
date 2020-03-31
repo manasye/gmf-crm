@@ -56,6 +56,16 @@ import axios from "axios";
 import swal from "sweetalert";
 
 export default {
+  mounted() {
+    axios
+      .get("/newsletter/read")
+      .then(res => {
+        const data = res.data[0];
+        this.subject = data.subject;
+        this.permalink = data.permalink;
+      })
+      .catch(() => {});
+  },
   data() {
     return {
       subject: "",

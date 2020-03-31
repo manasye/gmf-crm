@@ -4,7 +4,7 @@
       <img :src="getBaseStorage() + details.image" alt class="d-block mb-4" style="width: 70%" />
       <div v-for="(value, name) in details" :key="name" class="mb-2">
         <p style="color: #949699" v-if="name !== 'image'">
-          {{ name === "est_date" ? "Establish Year" : convertSnakeCaseToText(name) }}
+          {{ name === "est_date" ? "Established Year" : convertSnakeCaseToText(name) }}
         </p>
         <p v-if="name !== 'image'">{{ value || "-" }}</p>
       </div>

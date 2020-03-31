@@ -199,7 +199,7 @@ export default {
     },
     renderLabelFeedback(rate) {
       if (rate >= 4) {
-        return "What aspect(s) do you satisfied with?";
+        return "What aspect(s) are you satisfied with?";
       } else {
         return "What aspect(s) do you think we could improve?";
       }

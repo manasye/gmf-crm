@@ -181,7 +181,7 @@ export default {
         { key: "project_type", sortable: true },
         { key: "status", label: "Status", sortable: true },
         { key: "quantity", label: "Qty", sortable: true },
-        { key: "rating", label: "Rating", sortable: true }
+        { key: "rating", label: "Average Rating", sortable: true }
       ],
       historyField: ["date", "rating", { key: "aspect", label: "Aspects" }],
       histories: [{ date: "a", rating: "1" }],

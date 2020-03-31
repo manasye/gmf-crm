@@ -15,13 +15,10 @@
       </p>
       <p class="mb-2 mt-4">Description</p>
       <b-form-textarea v-model="description" rows="3" max-rows="6" />
-      <b-button
-        variant="success"
-        class="mt-4 mb-2"
-        @click="submitProject"
-        data-intro="You can submit your new Non-Project Feedback "
-        >SUBMIT</b-button
-      >
+      <br />
+      <div class="pt-0 pb-4" data-intro="You can submit your new Non-Project Feedback">
+        <b-button variant="success" class="mb-2" @click="submitProject">SUBMIT</b-button>
+      </div>
     </div>
   </b-container>
 </template>

@@ -109,6 +109,10 @@ img {
   text-decoration: underline;
 }
 
+/*.introjs-showElement {*/
+/*  margin-top: 10px !important;*/
+/*}*/
+
 @media (max-width: 700px) {
   html,
   body {

@@ -30,9 +30,6 @@
         show-empty
         responsive
       >
-        <template v-slot:cell(sales)="data">
-          {{ Math.abs(data.value) }}
-        </template>
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
             v-if="getRole() === 'Admin'"
@@ -239,9 +236,17 @@ export default {
       axios
         .get(`/revenue/read/${this.$route.params.id}?${params}`)
         .then(res => {
-          this.revenues = res.data.data;
+          this.revenues = res.data.data.map(r => {
+            return {
+              ...r,
+              sales: this.numberWithDots(Math.abs(r.sales))
+            };
+          });
         })
         .catch(() => {});
+    },
+    numberWithDots(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
   },
   components: {

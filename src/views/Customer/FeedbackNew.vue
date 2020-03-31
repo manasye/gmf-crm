@@ -31,13 +31,12 @@
 
       <br />
       <br />
-      <b-button
-        variant="success"
-        class="mb-2"
-        @click="submitComplaint"
+      <div
+        class="pt-0 pb-4"
         data-intro="You can submit your new complaint along with attachment (Max:50mb)"
-        >SUBMIT</b-button
       >
+        <b-button variant="success" class="mb-2 custom-intro" @click="submitComplaint">SUBMIT</b-button>
+      </div>
     </div>
   </b-container>
 </template>

@@ -21,7 +21,7 @@
         ></b-col
       ><b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
         ><b-button variant="success" style="width: 100%" @click="showModalAlliance = true"
-          >Add Alliance</b-button
+          >Add Aircraft Type</b-button
         ></b-col
       ><b-col cols="2" class="mt-3 text-right" v-if="isAdmin()"
         ><b-button variant="success" style="width: 100%" @click="downloadForm"
@@ -107,15 +107,15 @@
     <b-modal
       v-model="showModalAlliance"
       centered
-      title="Add Alliance"
+      title="Add Aircraft Type"
       v-if="showModalAlliance"
       @ok="addAlliance"
     >
       <b-row>
-        <b-col cols="4"> <label class="mt-2">Alliance</label></b-col>
+        <b-col cols="4"> <label class="mt-2">Aircraft Type</label></b-col>
         <b-col cols="8" class="mb-3"> <b-form-input v-model="alliance" /> </b-col
         ><b-col cols="12">
-          <p class="mb-0 p-link" @click="showModalListAlliance = true">Remove Alliance</p>
+          <p class="mb-0 p-link" @click="showModalListAlliance = true">Remove Aircraft Type</p>
         </b-col></b-row
       >
     </b-modal>
@@ -123,7 +123,7 @@
     <b-modal
       v-model="showModalListAlliance"
       centered
-      title="Remove Alliance"
+      title="Remove Aircraft Type"
       v-if="showModalListAlliance"
     >
       <b-table
@@ -227,7 +227,7 @@
         <b-col cols="8" class="mb-3">
           <b-form-select v-model="editedData.status" :options="statusOptions"
         /></b-col>
-        <b-col cols="4"> <label class="mt-2">Establish Year</label></b-col>
+        <b-col cols="4"> <label class="mt-2">Established Year</label></b-col>
         <b-col cols="8" class="mb-3">
           <b-form-input v-model="editedData.est_date" type="number" />
         </b-col>
@@ -239,7 +239,7 @@
         <b-col cols="8" class="mb-3">
           <b-form-input v-model="editedData.shareholder" />
         </b-col>
-        <b-col cols="4"> <label class="mt-2">Alliance</label></b-col>
+        <b-col cols="4"> <label class="mt-2">Aircraft Type</label></b-col>
         <b-col cols="8" class="mb-3">
           <b-form-select v-model="editedData.alliance" :options="allianceOptions" />
         </b-col>
