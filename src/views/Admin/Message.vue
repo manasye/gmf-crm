@@ -317,7 +317,7 @@ export default {
             for (let k in d) {
               const chatData = {
                 chat_id: k,
-                user_img: this.getUserImage() + d[k].image,
+                user_img: this.getBaseStorage() + d[k].image,
                 user_name: d[k].name,
                 last_message: this.shortenText(d[k].last_message.message || "-", 20),
                 time: moment(d[k].last_message.created_at).format("h:mm"),
