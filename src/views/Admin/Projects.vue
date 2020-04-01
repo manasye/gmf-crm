@@ -104,14 +104,18 @@
       <p class="mb-4">Location &nbsp;&nbsp;&nbsp;&nbsp;{{ projectChosen.location }}</p>
       <b-table show-empty striped hover :items="histories" :fields="historyField" responsive>
         <template v-slot:cell(rating)="rate">
-          <star-rating
-            :rating="+rate.value"
-            read-only
-            :show-rating="true"
-            :star-size="25"
-            :increment="0.5"
-            v-if="rate.value"
-          />
+          <div v-if="rate.value">
+            <div v-for="(r, idx) in rate.item.aspect.map(c => c.rating)" :key="idx">
+              <star-rating
+                :rating="+r"
+                read-only
+                :show-rating="true"
+                :star-size="25"
+                :increment="0.5"
+              />
+            </div>
+          </div>
+
           <p class="mb-0" v-else>Not yet rated</p>
         </template>
         <template v-slot:cell(aspect)="data">

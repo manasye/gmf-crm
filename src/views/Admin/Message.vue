@@ -90,7 +90,7 @@
                     {{ c.message }}
                   </p>
                   <img
-                    src="https://pngimage.net/wp-content/uploads/2018/06/file-logo-png-5.png"
+                    :src="require('../../assets/img/file.png')"
                     v-if="c.type === 'file'"
                     alt=""
                     style="width: 40px; margin-bottom: 6px"
@@ -111,7 +111,7 @@
                       {{ c.message }}
                     </p>
                     <img
-                      src="https://pngimage.net/wp-content/uploads/2018/06/file-logo-png-5.png"
+                      :src="require('../../assets/img/file.png')"
                       v-if="c.type === 'file'"
                       alt=""
                       style="width: 40px; margin-bottom: 6px"

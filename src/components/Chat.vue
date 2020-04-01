@@ -40,7 +40,7 @@ export default {
     setInterval(() => {
       const scImage = document.getElementsByClassName("sc-image");
       for (let i = 0; i < scImage.length; i++) {
-        scImage[i].src = "https://pngimage.net/wp-content/uploads/2018/06/file-logo-png-5.png";
+        scImage[i].src = require("../assets/img/file.png");
       }
     }, 1000);
   },
