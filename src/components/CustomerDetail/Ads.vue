@@ -11,6 +11,7 @@
       responsive
       class="mb-5"
       show-empty
+      empty-text=""
     >
       <template v-slot:cell(image)="data">
         <img :src="getBaseStorage() + data.value" alt="" />
@@ -43,6 +44,7 @@
       :items="adList"
       responsive
       show-empty
+      empty-text=""
       :fields="adsField"
     >
       <template v-slot:cell(image)="data">

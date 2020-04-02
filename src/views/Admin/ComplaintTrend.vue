@@ -1,9 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header
-      title="Complaint Trend"
-      subtitle="Trend of customers complaints by date"
-    ></Header>
+    <Header title="Complaint Trend" subtitle="Trend of customers complaints by date"></Header>
 
     <b-row>
       <b-col cols="2">

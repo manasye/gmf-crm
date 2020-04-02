@@ -38,6 +38,7 @@
       responsive
       @row-clicked="showProjectDetail"
       show-empty
+      empty-text=""
       data-intro="Show all of your Current project with Garuda Maintenance Facility. You can sort by pressing the arrow up and arrow down."
     >
       <template v-slot:cell(status)="data">
@@ -81,16 +82,31 @@
     >
       <p class="mb-2">{{ projectChosen.project_type }}</p>
       <p class="mb-4">Location &nbsp;&nbsp;&nbsp;&nbsp;{{ projectChosen.location }}</p>
-      <b-table show-empty striped hover :items="histories" :fields="historyField" responsive>
+      <b-table
+        show-empty
+        empty-text=""
+        striped
+        hover
+        :items="histories"
+        :fields="historyField"
+        responsive
+      >
         <template v-slot:cell(rating)="rate">
-          <star-rating
-            :rating="+rate.value"
-            read-only
-            :show-rating="true"
-            :star-size="25"
-            :increment="0.5"
-            v-if="+rate.value"
-          />
+          <div v-if="rate.value">
+            <div
+              v-for="(r, idx) in rate.item.aspect.map(c => c.rating)"
+              :key="idx"
+              style="margin-bottom: 30px"
+            >
+              <star-rating
+                :rating="+r"
+                read-only
+                :show-rating="true"
+                :star-size="25"
+                :increment="0.5"
+              />
+            </div>
+          </div>
           <b-button
             variant="primary"
             size="sm"

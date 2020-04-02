@@ -1,9 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header
-      title="Feedback List"
-      subtitle="Post-project performance ratings from customers"
-    />
+    <Header title="Feedback List" subtitle="Post-project performance ratings from customers" />
     <b-row>
       <b-col cols="2">
         <b-form-select v-model="selectVal.company_name" :options="companyOptions" />
@@ -38,6 +35,7 @@
       responsive
       @row-clicked="showFeedback"
       show-empty
+      empty-text=""
     >
       <template v-slot:cell(rating)="rate">
         <star-rating

@@ -1,9 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header
-      title="PROFILE"
-      subtitle="List of user accounts from your company"
-    ></Header>
+    <Header title="PROFILE" subtitle="List of user accounts from your company"></Header>
     <div class="profile-wrapper mt-md-4">
       <b-row>
         <b-col cols="12" md="4" class="mt-4 mt-md-0">

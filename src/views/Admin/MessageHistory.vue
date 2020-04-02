@@ -1,14 +1,12 @@
 <template>
   <b-container fluid class="container-app">
-    <Header
-      title="Message History"
-      subtitle="Chat list with the customers"
-    />
+    <Header title="Message History" subtitle="Chat list with the customers" />
     <b-table
       :fields="historyField"
       :items="histories"
       class="mb-3"
       show-empty
+      empty-text=""
       @row-clicked="showDetail"
       striped
       responsive

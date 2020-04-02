@@ -64,6 +64,7 @@
       responsive
       @row-clicked="showCustomer"
       show-empty
+      empty-text=""
       :style="{ opacity: isLoading ? '0' : '1' }"
     >
       <template v-slot:cell(status)="data">
@@ -137,6 +138,7 @@
         :fields="allianceFields"
         responsive
         show-empty
+        empty-text=""
         ><template v-slot:cell(delete)="data">
           <font-awesome-icon
             v-if="getRole() === 'Admin'"
@@ -164,6 +166,7 @@
         :fields="allianceFields"
         responsive
         show-empty
+        empty-text=""
         ><template v-slot:cell(delete)="data">
           <font-awesome-icon
             v-if="getRole() === 'Admin'"

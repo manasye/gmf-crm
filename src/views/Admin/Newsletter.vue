@@ -1,9 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header
-      title="NEWSLETTER"
-      subtitle="Send GMF newsletter to customers account page"
-    ></Header>
+    <Header title="NEWSLETTER" subtitle="Send GMF newsletter to customers account page"></Header>
 
     <b-row>
       <b-col cols="8">

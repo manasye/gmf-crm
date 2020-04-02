@@ -26,6 +26,7 @@
       responsive
       @row-clicked="showFeedback"
       show-empty
+      empty-text=""
     >
       <template v-slot:cell(rating)="rate">
         <star-rating

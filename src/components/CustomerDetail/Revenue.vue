@@ -28,6 +28,7 @@
         :fields="revenueFields"
         :items="revenues"
         show-empty
+        empty-text=""
         responsive
       >
         <template v-slot:cell(edit)="data">
@@ -63,6 +64,7 @@
         :fields="activityFields"
         :items="activites"
         show-empty
+        empty-text=""
         responsive
       >
         <template v-slot:cell(edit)="data">

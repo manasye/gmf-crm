@@ -41,6 +41,7 @@
       responsive
       @row-clicked="showFeedback"
       show-empty
+      empty-text=""
       data-intro="You can view all your company complaint about GMF service performance related to project"
     >
       <template v-slot:cell(status)="data">

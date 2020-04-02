@@ -1,7 +1,9 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Project List" subtitle="List of ongoing projects, statuses, and project performance
-ratings from customers" />
+    <Header
+      title="Project List"
+      subtitle="List of ongoing projects, statuses, and project performance ratings from customers"
+    />
 
     <b-row>
       <b-col cols="2">
@@ -43,6 +45,7 @@ ratings from customers" />
       responsive
       @row-clicked="showProjectDetail"
       show-empty
+      empty-text=""
       @sort-changed="sortingChanged"
       :no-local-sorting="true"
       :style="{ opacity: isLoading ? '0' : '1' }"
@@ -103,10 +106,22 @@ ratings from customers" />
     >
       <p class="mb-2">{{ projectChosen.project_type }}</p>
       <p class="mb-4">Location &nbsp;&nbsp;&nbsp;&nbsp;{{ projectChosen.location }}</p>
-      <b-table show-empty striped hover :items="histories" :fields="historyField" responsive>
+      <b-table
+        show-empty
+        empty-text=""
+        striped
+        hover
+        :items="histories"
+        :fields="historyField"
+        responsive
+      >
         <template v-slot:cell(rating)="rate">
           <div v-if="rate.value">
-            <div v-for="(r, idx) in rate.item.aspect.map(c => c.rating)" :key="idx">
+            <div
+              v-for="(r, idx) in rate.item.aspect.map(c => c.rating)"
+              :key="idx"
+              style="margin-bottom: 30px"
+            >
               <star-rating
                 :rating="+r"
                 read-only

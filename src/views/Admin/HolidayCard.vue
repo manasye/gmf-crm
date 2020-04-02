@@ -1,9 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header
-      title="Holiday Card List"
-      subtitle="Send holiday greetings to customers account page"
-    />
+    <Header title="Holiday Card List" subtitle="Send holiday greetings to customers account page" />
 
     <b-row>
       <b-col cols="2">
@@ -35,6 +32,7 @@
       responsive
       @row-clicked="showCard"
       show-empty
+      empty-text=""
     >
       <template v-slot:cell(image)="data"
         ><img :src="getBaseStorage() + data.value" alt="" style="width: 70%"

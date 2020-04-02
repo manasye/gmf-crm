@@ -28,6 +28,7 @@
           :items="items"
           class="mb-5"
           show-empty
+          empty-text=""
         >
           <template v-slot:cell(edit)="data">
             <font-awesome-icon
@@ -86,7 +87,7 @@
     <b-modal
       v-model="showModalFleet"
       centered
-      title="Add Alliance"
+      title="Add Fleet Type"
       v-if="showModalFleet"
       @ok="addFleetType"
     >
@@ -105,7 +106,14 @@
       title="Remove Alliance"
       v-if="showModalFleetDelete"
     >
-      <b-table striped hover :items="fleetTypeItems" :fields="fleetTypeFields" responsive show-empty
+      <b-table
+        striped
+        hover
+        :items="fleetTypeItems"
+        :fields="fleetTypeFields"
+        responsive
+        show-empty
+        empty-text=""
         ><template v-slot:cell(delete)="data">
           <font-awesome-icon
             v-if="getRole() === 'Admin'"

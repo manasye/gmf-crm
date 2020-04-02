@@ -1,9 +1,6 @@
 <template>
   <b-container fluid class="container-app">
-    <Header
-      title="INFORMATION LIST"
-      subtitle="List of newsletters and greetings from GMF team"
-    />
+    <Header title="INFORMATION LIST" subtitle="List of newsletters and greetings from GMF team" />
 
     <b-row>
       <b-col cols="6" md="2" class="mt-2">

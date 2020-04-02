@@ -14,6 +14,7 @@
       responsive
       @row-clicked="showCustomer"
       show-empty
+      empty-text=""
     >
       <template v-slot:cell(status)="data">
         <b-badge :variant="getBadgesVariant(data.value)" style="margin-right: 30px">
@@ -49,6 +50,7 @@
       responsive
       @row-clicked="showProject"
       show-empty
+      empty-text=""
     />
     <b-pagination
       v-model="currentPageProject"
@@ -70,6 +72,7 @@
       responsive
       @row-clicked="showName"
       show-empty
+      empty-text=""
     >
       <template v-slot:cell(email)="data"
         ><a :href="data.value">{{ data.value }}</a></template
@@ -95,6 +98,7 @@
       responsive
       @row-clicked="showUsername"
       show-empty
+      empty-text=""
     >
       <template v-slot:cell(email)="data"
         ><a :href="data.value">{{ data.value }}</a></template
@@ -120,6 +124,7 @@
       responsive
       @row-clicked="showService"
       show-empty
+      empty-text=""
     >
       <template v-slot:cell(permalink)="data"
         ><a :href="data.value">{{ data.value }}</a></template
@@ -145,6 +150,7 @@
       responsive
       @row-clicked="showComplaint"
       show-empty
+      empty-text=""
     />
     <b-pagination
       v-model="currentPageComplaint"
@@ -166,6 +172,7 @@
       responsive
       @row-clicked="showFeedback"
       show-empty
+      empty-text=""
     />
     <b-pagination
       v-model="currentPageFeedback"
@@ -187,6 +194,7 @@
       responsive
       @row-clicked="showHoliday"
       show-empty
+      empty-text=""
     >
       <template v-slot:cell(permalink)="data"
         ><a :href="data.value">{{ data.value }}</a></template

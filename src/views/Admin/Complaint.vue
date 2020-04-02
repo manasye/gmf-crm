@@ -41,6 +41,7 @@
       responsive
       @row-clicked="showComplaint"
       show-empty
+      empty-text=""
     >
       <template v-slot:cell(status)="data">
         <b-badge :variant="getVariantBadge(data.value)">

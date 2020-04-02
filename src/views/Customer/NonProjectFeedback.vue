@@ -40,6 +40,7 @@
       responsive
       @row-clicked="showFeedback"
       show-empty
+      empty-text=""
       data-intro="You can view all your company Non-Project Feedback about GMF service performance Not Related to your company project"
     >
       <template v-slot:cell(remark)="data">
