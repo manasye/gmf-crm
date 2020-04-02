@@ -27,7 +27,6 @@
         :items="persons"
         :fields="personField"
         class="mb-5"
-        show-empty
       >
         <template v-slot:cell(pass_raw)="data"
           >{{ displayPass(data.value, data.item.show_pass) }} &nbsp;
@@ -69,7 +68,6 @@
         :items="techs"
         :fields="personField"
         class="mb-5"
-        show-empty
       >
         <template v-slot:cell(pass_raw)="data"
           >{{ displayPass(data.value, data.item.show_pass) }} &nbsp;
@@ -98,15 +96,7 @@
         >ADD NEW GMF CP</b-button
       >
       <h5>GMF CONTACT PERSON</h5>
-      <b-table
-        style="margin-top: 20px;"
-        striped
-        hover
-        responsive
-        :items="cps"
-        :fields="cpField"
-        show-empty
-      >
+      <b-table style="margin-top: 20px;" striped hover responsive :items="cps" :fields="cpField">
         <template v-slot:cell(edit)="data">
           <font-awesome-icon
             v-if="isAdmin()"
