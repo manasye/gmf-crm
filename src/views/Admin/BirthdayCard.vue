@@ -61,7 +61,7 @@
         <p style="font-size: .8rem" class="mt-3 ">
           *Birthday card will be sent automatically according to the customer's birthday. The
           customer's name will be taken from the name when registering customer's account. Maximum
-          file size is 1 MB.
+          file size is 1 MB and ideal image resolution is 500x500 pixel.
         </p>
       </b-col>
     </b-row>
