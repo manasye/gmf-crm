@@ -2,7 +2,7 @@
   <b-container fluid class="container-app">
     <Header
       title="PROFILE"
-      subtitle="Your Company users Profile and Garuda Maintenance Facility Contact Person"
+      subtitle="List of user accounts from your company"
     ></Header>
     <div class="profile-wrapper mt-md-4">
       <b-row>

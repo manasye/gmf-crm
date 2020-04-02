@@ -5,12 +5,16 @@
   >
     <div class="add-service">
       <b-row>
-        <b-col :cols="isAdmin() ? '8' : '12'">
+        <b-col :cols="isAdmin() ? '10' : '12'">
           <Header
             title="GMF Services"
-            subtitle="List of Garuda Maintenance Facility Client Services Ability"
+            :subtitle="
+              isAdmin()
+                ? 'Enter updated details of GMF AeroAsia services be displayed in customers account page'
+                : 'List of GMF AeroAsia services'
+            "
         /></b-col>
-        <b-col cols="4" style="text-align: right" v-if="isAdmin()" align-self="center">
+        <b-col cols="2" style="text-align: right" v-if="isAdmin()" align-self="center">
           <b-button
             variant="success"
             size="sm"

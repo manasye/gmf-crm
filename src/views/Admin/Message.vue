@@ -1,7 +1,7 @@
 <template>
   <b-container fluid class="container-app">
     <b-row>
-      <b-col cols="6"> <Header title="Messages" subtitle="Chat with Client Representative"/></b-col>
+      <b-col cols="6"> <Header title="Messages" subtitle="Respond to chat from the customers"/></b-col>
     </b-row>
 
     <div class="chat-container">

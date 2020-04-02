@@ -2,7 +2,7 @@
   <b-container fluid class="container-app">
     <Header
       title="INFORMATION LIST"
-      subtitle="List of Most update notice from Garuda Maintenance Facility"
+      subtitle="List of newsletters and greetings from GMF team"
     />
 
     <b-row>

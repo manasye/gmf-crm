@@ -1,6 +1,7 @@
 <template>
   <b-container fluid class="container-app">
-    <Header title="Project List" subtitle="List of Garuda Maintenance Facility Client Project" />
+    <Header title="Project List" subtitle="List of ongoing projects, statuses, and project performance
+ratings from customers" />
 
     <b-row>
       <b-col cols="2">

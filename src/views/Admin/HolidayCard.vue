@@ -2,7 +2,7 @@
   <b-container fluid class="container-app">
     <Header
       title="Holiday Card List"
-      subtitle="Congratulate Garuda Maintenance Facility Client on their Holiday"
+      subtitle="Send holiday greetings to customers account page"
     />
 
     <b-row>

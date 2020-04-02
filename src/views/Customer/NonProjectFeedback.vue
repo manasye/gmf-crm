@@ -2,7 +2,11 @@
   <b-container fluid class="container-app">
     <Header
       title="NON-PROJECT FEEDBACK"
-      subtitle="List of Feedback about Garuda Maintenance Facility Performance Not related on Project"
+      :subtitle="
+        isAdmin()
+          ? 'Non-project related performance ratings from customers'
+          : 'Here you can enter a rating for GMF performance on non-project related works'
+      "
     />
 
     <b-row class="mt-0 mt-md-4">

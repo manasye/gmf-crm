@@ -2,7 +2,7 @@
   <b-container fluid class="container-app">
     <Header
       title="Complaint Trend"
-      subtitle="Garuda Maintenance Facility Performance Graph by Client Complaint"
+      subtitle="Trend of customers complaints by date"
     ></Header>
 
     <b-row>

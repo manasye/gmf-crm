@@ -2,7 +2,7 @@
   <b-container fluid class="container-app">
     <Header
       title="PROJECT LIST"
-      subtitle="List of Your Current Project with Garuda Maintenance Facility"
+      subtitle="List of your current and past projects in GMF AeroAsia (please kindly give rating/review for the finished projects)"
     />
 
     <b-row data-intro="You can filter the Project list">

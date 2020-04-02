@@ -2,7 +2,7 @@
   <b-container fluid class="container-app">
     <Header
       title="COMPLAINT LIST"
-      subtitle="List of Your Complaint about Garuda Maintenance Facility Performance"
+      subtitle="List of your submitted complaints to GMF team and the status updates"
     />
 
     <b-row class="mt-0 mt-md-4">

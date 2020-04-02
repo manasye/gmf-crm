@@ -2,7 +2,7 @@
   <b-container fluid class="container-app">
     <Header
       title="Message History"
-      subtitle="Show all of your chat with Garuda Maintenance Facility Client"
+      subtitle="Chat list with the customers"
     />
     <b-table
       :fields="historyField"

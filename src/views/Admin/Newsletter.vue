@@ -2,7 +2,7 @@
   <b-container fluid class="container-app">
     <Header
       title="NEWSLETTER"
-      subtitle="Send Newsletter about to Garuda Maintenance Facility Update"
+      subtitle="Send GMF newsletter to customers account page"
     ></Header>
 
     <b-row>

@@ -2,7 +2,7 @@
   <b-container fluid class="container-app">
     <Header
       title="Feedback List"
-      subtitle="List of Client Feedback about Garuda Maintenance Facility Performance related on Project"
+      subtitle="Post-project performance ratings from customers"
     />
     <b-row>
       <b-col cols="2">

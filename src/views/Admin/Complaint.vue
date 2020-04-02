@@ -2,7 +2,7 @@
   <b-container fluid class="container-app">
     <Header
       title="Complaint List"
-      subtitle="List of Client Complaint about Garuda Maintenance Facility Performance"
+      subtitle="List of complaints from the customers and the status update"
     />
 
     <b-row>

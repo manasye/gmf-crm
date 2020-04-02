@@ -2,7 +2,7 @@
   <b-container fluid class="container-app">
     <Header
       title="BIRTHDAY CARD"
-      subtitle="Congratulate Garuda Maintenance Facility Client on their Birthday"
+      subtitle="Send personalized birthday greetings to customers account page"
     />
 
     <b-row>

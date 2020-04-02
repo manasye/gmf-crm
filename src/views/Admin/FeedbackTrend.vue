@@ -2,7 +2,7 @@
   <b-container fluid class="container-app">
     <Header
       title="Feedback Trend"
-      subtitle="Garuda Maintenance Facility Performance Graph by Client Feedback"
+      subtitle="Customers rating trend of GMF performance by date"
     ></Header>
 
     <b-row>

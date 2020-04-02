@@ -1,12 +1,12 @@
 <template>
   <div style="margin-bottom: 10px">
     <b-row no-gutters>
-      <b-col cols="12" md="8" order="2" order-md="1">
+      <b-col cols="12" md="9" order="2" order-md="1">
         <b-breadcrumb :items="breadcrumbs" v-if="breadcrumbs.length > 0"></b-breadcrumb>
         <h2>{{ title }}</h2>
-        <p class="mb-2">{{ subtitle }}</p>
+        <p :class="isAdmin() ? 'mb-2' : 'mb-0'">{{ subtitle }}</p>
       </b-col>
-      <b-col cols="12" md="4" order="1" order-md="2" v-if="getRole() === 'Customer'">
+      <b-col cols="12" md="3" order="1" order-md="2" v-if="getRole() === 'Customer'">
         <div class="support">
           <p>SUPPORT</p>
           <img src="../assets/img/call.png" alt /> +62 21 550 8609, M-F 8 AM - 4 PM WIB
